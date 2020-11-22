@@ -50,8 +50,8 @@ mkdir -p /tmp/migration
 cd /tmp/migration
 sudo cp /opt/traefik/acme.json .
 sudo chmod 775 /tmp/migration/acme.json
-# Do *NOT* forget the --resolver at the end! (le = Let's Encrypt resolver, see traefik/traefik.yml)
-docker run --rm -v ${PWD}:/data -w /data containous/traefik-migration-tool acme -i acme.json -o acme2.json --resolver le
+# Do *NOT* forget the --resolver at the end! (leresolver = Let's Encrypt resolver, see traefik/traefik.yml)
+docker run --rm -v ${PWD}:/data -w /data containous/traefik-migration-tool acme -i acme.json -o acme2.json --resolver leresolver
 mkdir -p /data/config/traefik
 sudo cp acme2.json /data/config/traefik/acme.json
 sudo chmod 600 /data/config/traefik/acme.json

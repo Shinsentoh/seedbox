@@ -6,7 +6,7 @@ services:
         container_name: traefik
         restart: always
         command:
-            - --certificatesresolvers.le.acme.email=${ACME_MAIL}
+            - --certificatesresolvers.leresolver.acme.email=${ACME_MAIL}
             - --pilot.token=${PILOT_TOKEN}
         ports:
             - "80:80"
@@ -37,13 +37,14 @@ services:
         volumes:
             - configRutorrent:/config
             - torrents:/data
-        ports:
-            - 8080:8080
-            - 6881:6881
-            - 6881:6881/udp
+        # ports:
+        #     - 8080:8080
+        #     - 6881:6881
+        #     - 6881:6881/udp
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
             - "traefik.http.routers.rutorrent.rule=Host(`torrent.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
 
@@ -68,12 +69,15 @@ services:
             - VERSION=docker
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.plex-seedbox.loadbalancer.server.port=32400"
+            - "traefik.http.services.plex.loadbalancer.server.port=32400"
             - "traefik.http.routers.plex.rule=Host(`plex.${TRAEFIK_DOMAIN}`)"
 
     jackett:
         image: sclemenceau/docker-jackett:cloudproxy
         container_name: jackett
+        depends_on:
+            flaresolver:
+                condition: service_healthy
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
@@ -85,6 +89,7 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.jackett.loadbalancer.server.port=9117"
             - "traefik.http.routers.jackett.rule=Host(`jackett.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
 
@@ -102,11 +107,12 @@ services:
         volumes:
             - configMedusa:/config
             - alldata:/data
-        ports:
-            - 8081:8081
+        # ports:
+        #     - 8081:8081
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.medusa.loadbalancer.server.port=8081"
             - "traefik.http.routers.medusa.rule=Host(`medusa.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.medusa.middlewares=common-auth@file"
 
@@ -124,6 +130,7 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.radarr.loadbalancer.server.port=7878"
             - "traefik.http.routers.radarr.rule=Host(`movie.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
 
@@ -156,6 +163,7 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.lidarr.loadbalancer.server.port=6767"
             - "traefik.http.routers.lidarr.rule=Host(`book.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
 
@@ -187,7 +195,7 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.jdownloader-seedbox.loadbalancer.server.port=5800"
+            - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
             - "traefik.http.routers.jdownloader.rule=Host(`jdownloader.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
 
@@ -226,8 +234,8 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.services.nextcloud-seedbox.loadbalancer.server.scheme=https"
-            - "traefik.http.services.nextcloud-seedbox.loadbalancer.server.port=443"
+            - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+            - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
 
     portainer:
         image: portainer/portainer
@@ -259,6 +267,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.netdata.rule=Host(`netdata.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.netdata.middlewares=common-auth@file"
+            - "traefik.http.services.netdata.loadbalancer.server.port=19999"
+
 
     duplicati:
         image: linuxserver/duplicati
@@ -276,6 +286,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.duplicati.rule=Host(`backup.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
+            - "traefik.http.services.duplicati.loadbalancer.server.port=8200"
 
     webconsole:
         image: cdue/webconsole
@@ -291,11 +302,11 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.webconsole.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.webconsole.middlewares=common-auth@file"
+            - "traefik.http.services.webconsole.loadbalancer.server.port=80"
 
 networks:
-  default:
-    external:
-      name: "traefik-network"
+  traefik-network:
+    external: true
 
 volumes:
     alldata:
