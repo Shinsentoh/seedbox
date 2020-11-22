@@ -1,4 +1,9 @@
 #!/bin/bash
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Please, run this script as root."
+    exit
+fi
+
 . ./tools.lib
 
 # docker
@@ -7,19 +12,19 @@ if ! command -v docker &> /dev/null; then
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
     echo "[$0] Adding the Docker repository to APT sources ..."
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
     echo "[$0] updating the package database with the Docker packages from the newly added repo ..."
-    sudo apt-get update &> logfile.txt
+    apt-get update &> logfile.txt
 
     echo "[$0] Making sure you are about to install from the Docker repo instead of the default Ubuntu repo ..."
     apt-cache policy docker-ce &> logfile.txt
 
     echo "[$0] Installing Docker ..."
-    sudo apt-get install -y docker-ce &> logfile.txt
+    apt-get install -y docker-ce &> logfile.txt
 
     echo "[$0] Checking that docker is running ..."
-    sudo systemctl status docker
+    systemctl status docker
 else
     echo "[$0] docker is already installed."
 fi
@@ -28,10 +33,10 @@ fi
 if ! command -v docker-compose &> /dev/null; then
     DOCKER_COMPOSE_VERSION=$(getGithubLatestRelease "docker/compose")
     echo "[$0] Installing docker-compose version $DOCKER_COMPOSE_VERSION ..."
-    sudo curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose
+    curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose
 
     echo "[$0] Settings permissions to execute /usr/local/bin/docker-compose ..."
-    sudo chmod +x /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
 
     echo "[$0] check docker-compose version installed ..."
     docker-compose --version

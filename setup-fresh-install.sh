@@ -1,27 +1,24 @@
 #!/bin/bash
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Please, run this script as root."
+    exit
+fi
 
 chmod +x *.sh
 
 # install docker
-./init-install-docker.sh
+./init/install-docker.sh
 
 # init .env file and treafik
-./init.sh
+./init/init.sh
 
+source .env
 echo "login as user '$MEDIA_USER' to perform docker operations"
-CUR_USER=$(whoami)
 
-if [ $CUR_USER != $MEDIA_USER ]; then
-    # log as MEDIA_USER, add the traefik network and run our docker images
-exec sudo -i -u $MEDIA_USER /bin/bash - << eof
-    docker network create traefik-network 2>&1 || true
-    ./update-all.sh
-    exit 0
-eof
-else
-    docker network create traefik-network 2>&1 || true
-    ./update-all.sh
-fi
+docker network create traefik-network 2>&1 || true
+./update-all.sh
+
+#./init-setup-nextcloud.sh
 
 # back as previous user
 echo "[$0] Done."

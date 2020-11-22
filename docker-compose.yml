@@ -65,7 +65,7 @@ services:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
-            - VERSION=latest
+            - VERSION=docker
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.plex-seedbox.loadbalancer.server.port=32400"
@@ -83,20 +83,14 @@ services:
             - configJackett:/config
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
-        networks:
-            - torrent
-        flaresolver:
-            image: noahcardoza/cloudproxy
-            restart: unless-stopped
-            networks:
-                - torrent
-        networks:
-            torrent:
-                external: false
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.jackett.rule=Host(`jackett.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
+
+    flaresolver:
+        image: noahcardoza/cloudproxy
+        restart: unless-stopped
 
     medusa:
         image: ghcr.io/linuxserver/medusa
