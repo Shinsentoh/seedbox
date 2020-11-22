@@ -8,22 +8,24 @@ seedbox and personal media server.
 | Application          | Web Interface              | Docker image                                                           | Version (image tag) | Notes               |
 -----------------------|----------------------------|------------------------------------------------------------------------|-------------------------|---------------------|
 | Plex                 | plex.yourdomain.com        | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)          | *latest*                | Media Streaming     |
-| Deluge               | deluge.yourdomain.com      | [linuxserver/deluge](https://hub.docker.com/r/linuxserver/deluge)      | *latest*                | Torrents downloader |
-| Sonarr               | sonarr.yourdomain.com      | [linuxserver/sonarr](https://hub.docker.com/r/linuxserver/sonarr)      | *preview*               | TV Shows monitor    |
+| Rutorrent            | rutorrent.yourdomain.com   | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)      | *latest*                | Torrents downloader |
+<!-- | Sonarr               | sonarr.yourdomain.com      | [linuxserver/sonarr](https://hub.docker.com/r/linuxserver/sonarr)      | *preview*               | TV Shows monitor    | -->
+| Medusa               | medusa.yourdomain.com      | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)      | *preview*               | TV Shows monitor    |
 | Radarr               | radarr.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)      | *nightly*                | Movies monitor      |
 | Bazarr               | bazarr.yourdomain.com      | [linuxserver/bazarr](https://hub.docker.com/r/linuxserver/bazarr)      | *latest*                | Subtitles monitor   |
 | Lidarr               | lidarr.yourdomain.com      | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)      | *preview*               | Music monitor       |
-| Jackett              | jackett.yourdomain.com     | [linuxserver/jackett](https://hub.docker.com/r/linuxserver/jackett)    | *latest*                | Tracker indexer     |
+| Jackett              | jackett.yourdomain.com     | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*      | Tracker indexer     |
 | JDownloader          | jdownloader.yourdomain.com | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)| *latest*                | Direct downloader   |
 | Tautulli (plexPy)    | tautulli.yourdomain.com    | [linuxserver/tautulli](https://hub.docker.com/r/linuxserver/tautulli)  | *latest*                | Plex stats and admin|
-| NextCloud            | nextcloud.yourdomain.com   | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)  | *latest*                | Files management    |
+| NextCloud            | nextcloud.yourdomain.com   | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)| *latest*                | Files management    |
 | NextCloud-db (MariaDB) | not reachable   | [mariadb](https://hub.docker.com/r/_/mariadb)  | *10*                | DB for Nextcloud    |
 | Portainer            | portainer.yourdomain.com   | [portainer/portainer](https://hub.docker.com/r/portainer/portainer)    | *latest*                | Container management|
 | Netdata              | netdata.yourdomain.com     | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)            | *latest*                | Server monitoring   |
 | Duplicati            | duplicati.yourdomain.com   | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)| *latest*                | Backups             |
+| Web-console          | shell.yourdomain.com       | [cdue/webconsole](https://hub.docker.com/r/cdue/webconsole)            | *latest*               | TV Shows monitor    |
 
 The front-end reverse proxy (Traefik - **check the next section if you have already the seedbox with Traefik v1**) routes based on the lowest level subdomain
- (e.g. `deluge.example.com` would route to deluge). Since this is how the router
+ (e.g. `plex.example.com` would route to plex). Since this is how the router
 works, it is recommended for you to get a top level domain. If you do not have
 one, you can edit your domains locally by changing your hosts file or use a
 browser plugin that changes the host header.
@@ -100,7 +102,6 @@ See https://hub.docker.com/r/linuxserver/plex.
 
 ## Where is my data?
 
-All data is saved in the docker volumes `seedbox_config` or
-`seedbox_torrents`.
-These volumes are mapped to the `config` and `torrents` folders located in `/data` on the host. You can change these static paths in the docker-compose.yml file.
+All data is saved in the docker volumes `config` or `torrents` and `media`.
+These volumes are mapped to the `config` and `torrents` folders located on the host in `$BASE_PATH` directory which is a variable you can change in the .env file and the docker-compose.yml file.
 Thanks to the **local-persist** Docker plugin, the data located in these volumes is persistent, meaning that volumes are not deleted, even when using the ```docker-compose down``` command. It would be a shame to loose everything by running a simple docker command ;-)
