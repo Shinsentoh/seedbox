@@ -75,9 +75,6 @@ services:
     jackett:
         image: sclemenceau/docker-jackett:cloudproxy
         container_name: jackett
-        depends_on:
-            flaresolver:
-                condition: service_healthy
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
