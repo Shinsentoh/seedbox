@@ -24,7 +24,7 @@ if ! id "$username" &>/dev/null; then
     cp -R $PATH_TORRENTS/* $BASE_PATH/torrents/complete
     mkdir -p $PATH_MEDIA $PATH_MEDIA/movies $PATH_MEDIA/tvShows $PATH_MEDIA/musics $PATH_MEDIA/other $PATH_MEDIA/books $PATH_MEDIA/animes
     mkdir -p $PATH_CONFIG $PATH_CONFIG/plex $PATH_CONFIG/rutorrent $PATH_CONFIG/medusa $PATH_CONFIG/radarr $PATH_CONFIG/bazarr $PATH_CONFIG/jackett $PATH_CONFIG/lidarr $PATH_CONFIG/deluge $PATH_CONFIG/tautulli $PATH_CONFIG/jdownloader $PATH_CONFIG/nextcloud-db $PATH_CONFIG/nextcloud $PATH_CONFIG/nextcloud-data $PATH_CONFIG/duplicati
-    mkdir -p $PATH_CONFIG/traefik $PATH_CONFIG/traefik/behaviour
+    mkdir -Rp $PATH_CONFIG/traefik/* $PATH_CONFIG/traefik/behaviour
     cp -R ./traefik $PATH_CONFIG/traefik/behaviour
     echo "[$0] settings directories to be owned by $username ..."
     chown -R $username:$username $BASE_PATH # make all directory owned by user $username
