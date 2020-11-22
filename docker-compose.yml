@@ -366,7 +366,7 @@ volumes:
     nextcloudDb:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/nextcloud-db
+            mountpoint: ${BASE_PATH}/config/nextcloud-db
     configNextcloud:
         driver: local-persist
         driver_opts:
