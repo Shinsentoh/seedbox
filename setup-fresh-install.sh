@@ -13,7 +13,6 @@ chmod +x *.sh
 ./init.sh
 
 source .env
-echo "login as user '$MEDIA_USER' to perform docker operations"
 
 docker network create traefik-network 2>&1 || true
 ./update-all.sh

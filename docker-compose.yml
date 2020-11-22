@@ -91,8 +91,9 @@ services:
             - "traefik.http.routers.jackett.rule=Host(`jackett.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
 
-    flaresolver:
+    cloudproxy:
         image: noahcardoza/cloudproxy
+        container_name: cloudproxy
         restart: unless-stopped
 
     medusa:
@@ -186,7 +187,7 @@ services:
         restart: unless-stopped
         volumes:
             - configJdownloader:/config
-            - alldata:/data
+            - media:/data
         environment:
             - USER_ID=${PUID}
             - GROUP_ID=${PGID}
