@@ -44,7 +44,7 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.rutorrent.rule=Host(`rutorrent.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rutorrent.rule=Host(`torrent.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
 
     plex:
@@ -124,24 +124,24 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.radarr.rule=Host(`radarr.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.radarr.rule=Host(`movie.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
 
-    bazarr:
-        image: linuxserver/bazarr
-        container_name: bazarr
-        restart: always
-        volumes:
-            - alldata:/data
-            - configBazarr:/config
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.bazarr.middlewares=common-auth@file"
+    # bazarr:
+    #     image: linuxserver/bazarr
+    #     container_name: bazarr
+    #     restart: always
+    #     volumes:
+    #         - alldata:/data
+    #         - configBazarr:/config
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.bazarr.middlewares=common-auth@file"
 
     lidarr:
         image: linuxserver/lidarr:preview
@@ -156,23 +156,23 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.lidarr.rule=Host(`lidarr.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.lidarr.rule=Host(`book.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
 
-    tautulli:
-        image: linuxserver/tautulli
-        container_name: tautulli
-        restart: always
-        volumes:
-            - configTautulli:/config
-            - config:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.tautulli.rule=Host(`tautulli.${TRAEFIK_DOMAIN}`)"
+    # tautulli:
+    #     image: linuxserver/tautulli
+    #     container_name: tautulli
+    #     restart: always
+    #     volumes:
+    #         - configTautulli:/config
+    #         - config:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.tautulli.rule=Host(`tautulli.${TRAEFIK_DOMAIN}`)"
 
     jdownloader:
         image: jlesage/jdownloader-2
@@ -220,12 +220,12 @@ services:
             - TZ=${TZ}
         volumes:
             - configNextcloud:/config
-            - nextclouddata:/data
+            - nextcloudData:/data
             - media:/media
             - config:/seedbox-config
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.nextcloud-seedbox.loadbalancer.server.scheme=https"
             - "traefik.http.services.nextcloud-seedbox.loadbalancer.server.port=443"
 
@@ -274,7 +274,7 @@ services:
             - alldata:/source
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.duplicati.rule=Host(`duplicati.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.duplicati.rule=Host(`backup.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
 
     webconsole:
@@ -289,7 +289,7 @@ services:
             - alldata:/mounted_directory
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.webconsole.rule=Host(`webconsole.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.webconsole.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.webconsole.middlewares=common-auth@file"
 
 networks:
