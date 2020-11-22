@@ -305,8 +305,9 @@ services:
             - "traefik.http.services.webconsole.loadbalancer.server.port=80"
 
 networks:
-  traefik-network:
-    external: true
+  default:
+    external:
+      name: "traefik-network"
 
 volumes:
     alldata:
