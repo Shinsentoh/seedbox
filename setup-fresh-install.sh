@@ -1,6 +1,6 @@
 ﻿#!/bin/bash
 
-#chmod +x init-install-docker.sh init-add-user.sh init-setup-nextcloud.sh init.sh update-all.sh
+chmod +x *.sh
 
 # install docker
 ./init-install-docker.sh
