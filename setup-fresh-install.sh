@@ -7,10 +7,10 @@ fi
 chmod +x *.sh
 
 # install docker
-./init/install-docker.sh
+./install-docker.sh
 
 # init .env file and treafik
-./init/init.sh
+./init.sh
 
 source .env
 echo "login as user '$MEDIA_USER' to perform docker operations"

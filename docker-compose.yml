@@ -318,10 +318,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/rutorrent
-    configSonarr:
+    configMedusa:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/sonarr
+            mountpoint: ${BASE_PATH}/config/medusa
     configRadarr:
         driver: local-persist
         driver_opts:
