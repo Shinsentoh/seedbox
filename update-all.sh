@@ -5,8 +5,8 @@ source .env
 echo "${HTTP_USER}:${HTTP_PASSWORD}" > ${BASE_PATH}/config/traefik/behaviour/http_auth
 chown seedbox:seedbox ${BASE_PATH}/config/traefik/behaviour/http_auth
 
-echo "[$0] ***** Pulling all images... *****"
-docker-compose pull
+#echo "[$0] ***** Pulling all images... *****"
+#docker-compose pull
 echo "[$0] ***** Recreating containers if required... *****"
 docker-compose up -d --remove-orphans
 echo "[$0] ***** Done updating containers *****"

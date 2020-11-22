@@ -7,6 +7,7 @@ services:
         restart: always
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
+            - "--api.insecure"
             - "--pilot.token=${PILOT_TOKEN}"
         ports:
             - "80:80"
