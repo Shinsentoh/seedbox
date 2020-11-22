@@ -13,7 +13,7 @@ services:
             - "443:443"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./traefik:/etc/traefik:ro
+            - traefikBehaviour:/etc/traefik:ro
             - configTraefik:/config:ro
         environment:
             - TRAEFIK_DOMAIN=${TRAEFIK_DOMAIN}
@@ -315,6 +315,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config
+    traefikBehaviour:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/traefik/behaviour
     configTraefik:
         driver: local-persist
         driver_opts:
