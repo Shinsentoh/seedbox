@@ -3,7 +3,7 @@
 # Create/update http_auth file according to values in .env file
 source .env
 echo "${HTTP_USER}:${HTTP_PASSWORD}" > ${BASE_PATH}/config/traefik/behaviour/http_auth
-chown seedbox:seedbox ${BASE_PATH}/config/traefik/behaviour/http_auth
+chown -R seedbox:seedbox ${BASE_PATH}
 
 #echo "[$0] ***** Pulling all images... *****"
 #docker-compose pull
