@@ -9,21 +9,21 @@ seedbox and personal media server.
 -----------------------|----------------------------|------------------------------------------------------------------------|-------------------------|---------------------|
 | Plex                 | plex.yourdomain.com        | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)          | *latest*                | Media Streaming     |
 | Rutorrent            | rutorrent.yourdomain.com   | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)      | *latest*                | Torrents downloader |
-<!-- | Sonarr               | sonarr.yourdomain.com      | [linuxserver/sonarr](https://hub.docker.com/r/linuxserver/sonarr)      | *preview*               | TV Shows monitor    | -->
-| Medusa               | medusa.yourdomain.com      | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)      | *preview*               | TV Shows monitor    |
-| Radarr               | radarr.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)      | *nightly*                | Movies monitor      |
-| Bazarr               | bazarr.yourdomain.com      | [linuxserver/bazarr](https://hub.docker.com/r/linuxserver/bazarr)      | *latest*                | Subtitles monitor   |
-| Lidarr               | lidarr.yourdomain.com      | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)      | *preview*               | Music monitor       |
+| Medusa               | medusa.yourdomain.com      | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)      | *latest*               | TV Shows monitor    |
+| Radarr               | radarr.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)      | *latest*                | Movies monitor      |
+| Lidarr               | lidarr.yourdomain.com      | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)      | *latest*               | Music monitor       |
 | Jackett              | jackett.yourdomain.com     | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*      | Tracker indexer     |
 | JDownloader          | jdownloader.yourdomain.com | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)| *latest*                | Direct downloader   |
-| Tautulli (plexPy)    | tautulli.yourdomain.com    | [linuxserver/tautulli](https://hub.docker.com/r/linuxserver/tautulli)  | *latest*                | Plex stats and admin|
 | NextCloud            | nextcloud.yourdomain.com   | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)| *latest*                | Files management    |
-| NextCloud-db (MariaDB) | not reachable   | [mariadb](https://hub.docker.com/r/_/mariadb)  | *10*                | DB for Nextcloud    |
+| NextCloud-db (MariaDB) | not reachable   | [linuxserver/mariadb](https://hub.docker.com/r/linuxserver/mariadb)  | *latest*                | DB for Nextcloud    |
 | Portainer            | portainer.yourdomain.com   | [portainer/portainer](https://hub.docker.com/r/portainer/portainer)    | *latest*                | Container management|
 | Netdata              | netdata.yourdomain.com     | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)            | *latest*                | Server monitoring   |
 | Duplicati            | duplicati.yourdomain.com   | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)| *latest*                | Backups             |
 | Web-console          | shell.yourdomain.com       | [cdue/webconsole](https://hub.docker.com/r/cdue/webconsole)            | *latest*               | TV Shows monitor    |
 
+<!-- | Sonarr               | sonarr.yourdomain.com      | [linuxserver/sonarr](https://hub.docker.com/r/linuxserver/sonarr)      | *preview*               | TV Shows monitor    | -->
+<!-- | Bazarr               | bazarr.yourdomain.com      | [linuxserver/bazarr](https://hub.docker.com/r/linuxserver/bazarr)      | *latest*                | Subtitles monitor   | -->
+<!-- | Tautulli (plexPy)    | tautulli.yourdomain.com    | [linuxserver/tautulli](https://hub.docker.com/r/linuxserver/tautulli)  | *latest*                | Plex stats and admin| -->
 The front-end reverse proxy (Traefik - **check the next section if you have already the seedbox with Traefik v1**) routes based on the lowest level subdomain
  (e.g. `plex.example.com` would route to plex). Since this is how the router
 works, it is recommended for you to get a top level domain. If you do not have
