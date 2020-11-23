@@ -30,18 +30,14 @@ services:
         image: mondedie/rutorrent:latest
         container_name: rutorrent
         environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
+            - GID=${PGID}
+            - UID=${PUID}
             - TZ=${TZ}
             - DHT_RTORRENT=on
             - PORT_RTORRENT=6881
         volumes:
             - configRutorrent:/config
             - torrents:/data
-        # ports:
-        #     - 8080:8080
-        #     - 6881:6881
-        #     - 6881:6881/udp
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -105,9 +101,8 @@ services:
             - TZ=${TZ}
         volumes:
             - configMedusa:/config
-            - alldata:/data
-        # ports:
-        #     - 8081:8081
+            - tvShows:/tv
+            - torrents:/downloads
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -116,12 +111,13 @@ services:
             - "traefik.http.routers.medusa.middlewares=common-auth@file"
 
     radarr:
-        image: linuxserver/radarr:nightly
+        image: linuxserver/radarr
         container_name: radarr
         restart: always
         volumes:
             - configRadarr:/config
-            - alldata:/data
+            - movies:/movies
+            - torrents:/downloads
             - /etc/localtime:/etc/localtime:ro
         environment:
             - PGID=${PGID}
@@ -129,40 +125,23 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.radarr.loadbalancer.server.port=7878"
             - "traefik.http.routers.radarr.rule=Host(`movie.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
 
-    # bazarr:
-    #     image: linuxserver/bazarr
-    #     container_name: bazarr
-    #     restart: always
-    #     volumes:
-    #         - alldata:/data
-    #         - configBazarr:/config
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.bazarr.middlewares=common-auth@file"
-
     lidarr:
-        image: linuxserver/lidarr:preview
+        image: linuxserver/lidarr
         container_name: lidarr
         restart: always
         volumes:
             - configLidarr:/config
-            - alldata:/data
+            - musics:/musics
+            - torrents:/downloads
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.lidarr.loadbalancer.server.port=6767"
             - "traefik.http.routers.lidarr.rule=Host(`book.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
 
@@ -199,18 +178,20 @@ services:
             - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
 
     nextcloud-db:
-        image: mariadb:10
+        image: linuxserver/mariadb
         container_name: nextcloud-db
         command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - TZ=${TZ}
         volumes:
-            - nextcloudDb:/var/lib/mysql
+            - nextcloudDb:/config
         labels:
             - "traefik.enable=false"
 
@@ -234,10 +215,9 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
-            - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
 
     portainer:
-        image: portainer/portainer
+        image: portainer/portainer-ce
         container_name: portainer
         restart: always
         volumes:
@@ -385,6 +365,18 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media
+    musics:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/media/musics
+    tvShows:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/media/tvShows
+    movies:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/media/movies
     configDuplicati:
         driver: local-persist
         driver_opts:
