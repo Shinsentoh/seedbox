@@ -29,6 +29,12 @@ if ! id "$username" &>/dev/null; then
     touch $PATH_CONFIG/traefik/acme.json && chmod 600 $PATH_CONFIG/traefik/acme.json
     echo "[$0] settings directories to be owned by $username ..."
     chown -R $username:$username $BASE_PATH # make all directory owned by user $username
+
+    MEDIA_GID=$(id $username -g)
+    MEDIA_UID=$(id $username -u)
+
+    sed -i -e "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
+    sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 else
     mkdir -p $PATH_TORRENTS
     mkdir -p $PATH_MEDIA
@@ -37,13 +43,6 @@ fi
 
 #echo "[$0] adding $username to group docker ..."
 adduser $username docker
-
-# below not needed as each shell file will source .env
-# MEDIA_GID=$(id $username -g)
-# MEDIA_UID=$(id $username -u)
-
-# sed -i -e "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
-# sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 
 echo "[$0] Done."
 exit 0

@@ -83,6 +83,8 @@ Edit the `.env` file and change the variables as desired.
 The variables are all self-explanatory.
 Sames goes for `open-tunnel.sh` script to open a tunnel with port forwarding in order to access Plex Tools directly in your browser. (documentation needs to be updated - for now just install manually Plex Tools)
 
+Follow those guidelines to setup cloudproxy in Jackett: https://github.com/abeloin/Jackett#configuring-cloudproxy-integration
+
 ## Running & updating
 
 ```sh
