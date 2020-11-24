@@ -265,23 +265,56 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.duplicati.rule=Host(`backup.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
-            - "traefik.http.services.duplicati.loadbalancer.server.port=8200"
+            - "traefiahk.http.services.duplicati.loadbalancer.server.port=8200"
 
-    webconsole:
-        image: cdue/webconsole
-        container_name: webconsole
+    # webconsole:
+    #     image: cdue/webconsole
+    #     container_name: webconsole
+    #     restart: unless-stopped
+    #     environment:
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.webconsole.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.webconsole.middlewares=common-auth@file"
+    #         - "traefik.http.services.webconsole.loadbalancer.server.port=80"
+
+    shellinabox:
+        image: sspreitzer/shellinabox:latest
+        container_name: shellinabox
         restart: unless-stopped
+        environment:
+            - SIAB_USER=${MEDIA_USER}
+            - SIAB_PASSWORD=${SIAB_PASSWORD}
+            - SIAB_GROUP=${MEDIA_USER}
+            - SIAB_HOME=/home/{$MEDIA_USER}
+            - SIAB_USERID=${PUID}
+            - SIAB_GROUPID=${PGID}
+            - SIAB_SUDO=true
+            - SIAB_PKGS=${SIAB_PKGS}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.shellinabox.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
+            - "traefik.http.services.shellinabox.loadbalancer.server.port=80"
+
+    muximux:
+        image: ghcr.io/linuxserver/muximux
+        container_name: muximux
         environment:
             - PUID=${PUID}
             - PGID=${PGID}
             - TZ=${TZ}
+        restart: unless-stopped
         volumes:
-            - alldata:/mounted_directory
+            - configMuximus:/config
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.webconsole.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.webconsole.middlewares=common-auth@file"
-            - "traefik.http.services.webconsole.loadbalancer.server.port=80"
+            - "traefik.http.routers.muximux.rule=Host(`muximux.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.muximux.middlewares=common-auth@file"
+            - "traefik.http.services.muximux.loadbalancer.server.port=80"
 
 networks:
   default:
@@ -377,6 +410,14 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/movies
+    configWebconsole:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/webconsole
+    configMuximus:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/muximus
     configDuplicati:
         driver: local-persist
         driver_opts:
