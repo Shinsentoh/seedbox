@@ -103,7 +103,7 @@ services:
             - TZ=${TZ}
         volumes:
             - configMedusa:/config
-            - tvShows:/tv
+            - media:/media
             - torrents:/downloads
         restart: unless-stopped
         labels:
