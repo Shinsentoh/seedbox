@@ -298,7 +298,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.shellinabox.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
-            - "traefik.http.services.shellinabox.loadbalancer.server.port=80"
+            - "traefik.http.services.shellinabox.loadbalancer.server.port=4200"
 
     muximux:
         image: ghcr.io/linuxserver/muximux

@@ -19,7 +19,7 @@ seedbox and personal media server.
 | Portainer            | portainer.yourdomain.com   | [portainer/portainer](https://hub.docker.com/r/portainer/portainer)    | *latest*                | Container management|
 | Netdata              | netdata.yourdomain.com     | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)            | *latest*                | Server monitoring   |
 | Duplicati            | backup.yourdomain.com   | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)| *latest*                | Backups             |
-| Muximus            | muximus.yourdomain.com   | [linuxserver/muximux](https://hub.docker.com/r/linuxserver/muximux)| *latest*                | manage your HTPC apps             |
+| Muximux            | muximux.yourdomain.com   | [linuxserver/muximux](https://hub.docker.com/r/linuxserver/muximux)| *latest*                | manage your HTPC apps             |
 | Shel in a box          | shell.yourdomain.com       | [sspreitzer/shellinabox](https://hub.docker.com/r/sspreitzer/shellinabox)            | *latest*               | Web Console    |
 <!-- | Web-console          | shell.yourdomain.com       | [cdue/webconsole](https://hub.docker.com/r/cdue/webconsole)            | *latest*               | TV Shows monitor    | -->
 
