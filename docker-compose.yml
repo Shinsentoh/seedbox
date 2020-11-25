@@ -64,6 +64,8 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
             - VERSION=docker
+            - PLEX_CLAIM=claim-vy7qccuF8phpRK6XV9Ft
+            - ADVERTISE_IP=plex.${TRAEFIK_DOMAIN}:443
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
