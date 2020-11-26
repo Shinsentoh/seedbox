@@ -176,7 +176,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
-            - "traefik.http.routers.jdownloader.rule=Host(`jdownloader.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.jdownloader.rule=Host(`ddl.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
 
     nextcloud-db:
@@ -224,10 +224,12 @@ services:
         restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
+            - configPortainer:/data
         command: --admin-password ${PORTAINER_ADMIN_PASSWORD} --host=unix:///var/run/docker.sock
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.portainer.rule=Host(`portainer.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.portainer.rule=Host(`docker.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
     netdata:
         image: netdata/netdata
@@ -269,20 +271,6 @@ services:
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
             - "traefiahk.http.services.duplicati.loadbalancer.server.port=8200"
 
-    # webconsole:
-    #     image: cdue/webconsole
-    #     container_name: webconsole
-    #     restart: unless-stopped
-    #     environment:
-    #         - PUID=${PUID}
-    #         - PGID=${PGID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.webconsole.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.webconsole.middlewares=common-auth@file"
-    #         - "traefik.http.services.webconsole.loadbalancer.server.port=80"
-
     shellinabox:
         image: sspreitzer/shellinabox:latest
         container_name: shellinabox
@@ -301,22 +289,6 @@ services:
             - "traefik.http.routers.shellinabox.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
             - "traefik.http.services.shellinabox.loadbalancer.server.port=4200"
-
-    muximux:
-        image: ghcr.io/linuxserver/muximux
-        container_name: muximux
-        environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - TZ=${TZ}
-        restart: unless-stopped
-        volumes:
-            - configMuximus:/config
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.muximux.rule=Host(`muximux.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.muximux.middlewares=common-auth@file"
-            - "traefik.http.services.muximux.loadbalancer.server.port=80"
 
     organizr:
         image: organizr/organizr
@@ -420,22 +392,14 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/musics
-    tvShows:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/media/tvShows
     movies:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/movies
-    configWebconsole:
+    configPortainer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/webconsole
-    configMuximus:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/config/muximus
+            mountpoint: ${BASE_PATH}/config/portainer
     configOrganizr:
         driver: local-persist
         driver_opts:
