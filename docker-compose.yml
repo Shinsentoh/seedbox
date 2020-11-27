@@ -212,11 +212,9 @@ services:
             - configNextcloud:/config
             - nextcloudData:/data
             - media:/media
-            - config:/seedbox-config
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
 
     portainer:
         image: portainer/portainer-ce
@@ -229,6 +227,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`docker.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
     netdata:
@@ -306,6 +305,37 @@ services:
             - "traefik.http.routers.organizr.middlewares=common-auth@file"
             - "traefik.http.services.organizr.loadbalancer.server.port=80"
 
+    sftp:
+        image: netresearch/sftp
+        volumes:
+            - alldata:/home/${MEDIA_USER}/upload
+            # - /host/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
+            # - /host/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
+        ports:
+            - "5757:22"
+        command: "${MEDIA_USER}:${FTP_PASS}:${PUID}:${PGID}"
+
+    openvpn:
+        image: ghcr.io/linuxserver/openvpn-as
+        container_name: openvpn
+        cap_add:
+            - NET_ADMIN
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - TZ=${TZ}
+        volumes:
+            - configOpenVPN:/config
+        ports:
+            - 9443:9443
+            - 1194:1194/udp
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.openvpn.rule=Host(`vpn.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.openvpn.middlewares=common-auth@file"
+            - "traefik.http.services.openvpn.loadbalancer.server.port=943"
+
 networks:
   default:
     external:
@@ -356,10 +386,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/lidarr
-    configDeluge:
+    configMylar:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/deluge
+            mountpoint: ${BASE_PATH}/config/mylarr
     configTautulli:
         driver: local-persist
         driver_opts:
@@ -380,6 +410,26 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/nextcloud-data
+    configPortainer:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/portainer
+    configOrganizr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/organizr
+    configOpenVPN:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/openVPN
+    configDuplicati:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/duplicati
+    backups:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/backups
     torrents:
         driver: local-persist
         driver_opts:
@@ -396,19 +446,3 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/movies
-    configPortainer:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/config/portainer
-    configOrganizr:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/config/organizr
-    configDuplicati:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/config/duplicati
-    backups:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/backups
