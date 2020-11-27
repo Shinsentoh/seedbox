@@ -64,8 +64,8 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
             - MAXMEM=2048
-            - ADMIN_DNS_PREFIX=ubooquity # not part of the image variables, only used inside this file for the labels
-            - READER_DNS_PREFIX=reader   # not part of the image variables, only used inside this file for the labels
+            - ADMIN_DNS_PREFIX=ubooquity
+            - READER_DNS_PREFIX=reader
         volumes:
             - configUbooquity:/config
             - books:/books
