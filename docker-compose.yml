@@ -76,13 +76,13 @@ services:
             - "traefik.http.services.reader.loadbalancer.server.port=2202"
             - "traefik.http.routers.reader.service=reader"
             - "traefik.http.routers.reader.middlewares=common-auth@file, readerToAdmin"
-            - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin[/]?$"
+            - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin[/]?$$"
             - "traefik.http.middlewares.readerToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
             # router ubooquity - Admin UI
             - "traefik.http.routers.ubooquity.rule=Host(`${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.ubooquity.loadbalancer.server.port=2203"
             - "traefik.http.routers.ubooquity.middlewares=common-auth@file, redirectToAdmin"
-            - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$"
+            - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
     #endregion
 
