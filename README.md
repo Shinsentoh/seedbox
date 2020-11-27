@@ -8,6 +8,7 @@ seedbox and personal media server.
 | Application           | Web Interface             | Docker image                                                                      | Version tags  | Notes                 |
 ------------------------|---------------------------|-----------------------------------------------------------------------------------|---------------|------------------------
 | Plex                  | plex.yourdomain.com       | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)                     | *latest*      | Media Streaming       |
+| Ubooquity             | reader.yourdomain.com     | [linuxserver/ubooquity](https://hub.docker.com/r/linuxserver/ubooquity)           | *latest*      | Books & Comics Reader |
 | Rutorrent             | torrent.yourdomain.com    | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)                 | *latest*      | Torrents downloader   |
 | JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader     |
 | Medusa                | medusa.yourdomain.com     | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)                 | *latest*      | TV Shows monitor      |

@@ -1,6 +1,8 @@
 version: "3.7"
 
 services:
+#region Containers
+    #region NetWork
     traefik:
         image: traefik
         container_name: traefik
@@ -25,26 +27,9 @@ services:
             - "traefik.http.routers.traefik.rule=Host(`traefik.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
+    #endregion
 
-    rutorrent:
-        image: mondedie/rutorrent:latest
-        container_name: rutorrent
-        environment:
-            - GID=${PGID}
-            - UID=${PUID}
-            - TZ=${TZ}
-            - DHT_RTORRENT=on
-            - PORT_RTORRENT=6881
-        volumes:
-            - configRutorrent:/config
-            - torrents:/data
-        restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
-            - "traefik.http.routers.rutorrent.rule=Host(`torrent.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
-
+    #region Streaming/Reader
     plex:
         image: linuxserver/plex
         container_name: plex
@@ -71,6 +56,107 @@ services:
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
             - "traefik.http.routers.plex.rule=Host(`plex.${TRAEFIK_DOMAIN}`)"
 
+    ubooquity:
+        image: ghcr.io/linuxserver/ubooquity
+        container_name: ubooquity
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - MAXMEM=2048
+        volumes:
+            - configUbooquity:/config
+            - books:/books
+            - comics:/comics
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.ubooquity_front.rule=Host(`reader.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.services.ubooquity_front.loadbalancer.server.port=2202"
+            - "traefik.http.routers.ubooquity_front.middlewares=common-auth@file"
+            - "traefik.http.routers.ubooquity_admin.rule=Host(`ubooquity.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.services.ubooquity_admin.loadbalancer.server.port=2203"
+            - "traefik.http.routers.ubooquity_admin.middlewares=common-auth@file"
+    #endregion
+
+    #region Downloader
+    rutorrent:
+        image: mondedie/rutorrent:latest
+        container_name: rutorrent
+        environment:
+            - GID=${PGID}
+            - UID=${PUID}
+            - TZ=${TZ}
+            - DHT_RTORRENT=on
+            - PORT_RTORRENT=6881
+        volumes:
+            - configRutorrent:/config
+            - torrents:/data
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
+            - "traefik.http.routers.rutorrent.rule=Host(`torrent.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
+
+    jdownloader:
+        image: jlesage/jdownloader-2
+        container_name: jdownloader
+        restart: unless-stopped
+        volumes:
+            - configJdownloader:/config
+            - media:/data
+        environment:
+            - USER_ID=${PUID}
+            - GROUP_ID=${PGID}
+            - TZ=${TZ}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
+            - "traefik.http.routers.jdownloader.rule=Host(`ddl.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
+    #endregion Downloader
+
+    #region Cloud
+    nextcloud-db:
+        image: linuxserver/mariadb
+        container_name: nextcloud-db
+        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+        restart: always
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        volumes:
+            - nextcloudDb:/config
+        labels:
+            - "traefik.enable=false"
+
+    # See init-setup-nextcloud.sh for first install
+    nextcloud:
+        depends_on:
+            - nextcloud-db
+        image: linuxserver/nextcloud
+        container_name: nextcloud
+        restart: always
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configNextcloud:/config
+            - nextcloudData:/data
+            - media:/media
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
+    #endregion Cloud
+
+    #region Media monitors
     jackett:
         image: sclemenceau/docker-jackett:cloudproxy
         container_name: jackett
@@ -162,78 +248,11 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.mylar.rule=Host(`mylar.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.mylar.middlewares=common-auth@file"
             - "traefik.http.services.mylar.loadbalancer.server.port=8090"
+            - "traefik.http.routers.mylar.middlewares=common-auth@file"
+    #endregion Media monitors
 
-    # tautulli:
-    #     image: linuxserver/tautulli
-    #     container_name: tautulli
-    #     restart: always
-    #     volumes:
-    #         - configTautulli:/config
-    #         - config:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.tautulli.rule=Host(`tautulli.${TRAEFIK_DOMAIN}`)"
-
-    jdownloader:
-        image: jlesage/jdownloader-2
-        container_name: jdownloader
-        restart: unless-stopped
-        volumes:
-            - configJdownloader:/config
-            - media:/data
-        environment:
-            - USER_ID=${PUID}
-            - GROUP_ID=${PGID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
-            - "traefik.http.routers.jdownloader.rule=Host(`ddl.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
-
-    nextcloud-db:
-        image: linuxserver/mariadb
-        container_name: nextcloud-db
-        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-        restart: always
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-        volumes:
-            - nextcloudDb:/config
-        labels:
-            - "traefik.enable=false"
-
-    # See init-setup-nextcloud.sh for first install
-    nextcloud:
-        depends_on:
-            - nextcloud-db
-        image: linuxserver/nextcloud
-        container_name: nextcloud
-        restart: always
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configNextcloud:/config
-            - nextcloudData:/data
-            - media:/media
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
-
+    #region Administration
     portainer:
         image: portainer/portainer-ce
         container_name: portainer
@@ -347,7 +366,7 @@ services:
             - configOpenVPN:/config
         ports:
             - 9443:9443
-            - 1194:1194/udp
+        - 1194:1194/udp
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -355,11 +374,32 @@ services:
             - "traefik.http.routers.openvpn.middlewares=common-auth@file"
             - "traefik.http.services.openvpn.loadbalancer.server.port=943"
 
+
+        # tautulli:
+        #     image: linuxserver/tautulli
+        #     container_name: tautulli
+        #     restart: always
+        #     volumes:
+        #         - configTautulli:/config
+        #         - config:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
+        #     environment:
+        #         - PGID=${PGID}
+        #         - PUID=${PUID}
+        #         - TZ=${TZ}
+        #     labels:
+        #         - "traefik.enable=true"
+        #         - "traefik.http.routers.tautulli.rule=Host(`tautulli.${TRAEFIK_DOMAIN}`)"
+    #endregion Administration
+#endregion Containers
+
+#region Networks
 networks:
   default:
     external:
       name: "traefik-network"
+#endregion Networks
 
+#region Volumes
 volumes:
     alldata:
         driver: local-persist
@@ -369,6 +409,7 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config
+    #region Volumes Config
     traefikBehaviour:
         driver: local-persist
         driver_opts:
@@ -449,6 +490,11 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/duplicati
+    configUbooquity:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/ubooquity
+    #endregion Config
     backups:
         driver: local-persist
         driver_opts:
@@ -457,6 +503,7 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/torrents/
+    #region Volumes Media
     media:
         driver: local-persist
         driver_opts:
@@ -477,3 +524,5 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/books
+    #endregion Media
+#endregion Volumes
