@@ -24,7 +24,7 @@ services:
         labels:
             - "traefik.enable=true"
             # Docker labels for enabling Traefik dashboard
-            - "traefik.http.routers.traefik.rule=Host(`traefik.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
     #endregion
@@ -50,11 +50,11 @@ services:
             - TZ=${TZ}
             - VERSION=docker
             - PLEX_CLAIM=claim-vy7qccuF8phpRK6XV9Ft
-            - ADVERTISE_IP=plex.${TRAEFIK_DOMAIN}:443
+            - ADVERTISE_IP=${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}:443
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
-            - "traefik.http.routers.plex.rule=Host(`plex.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.plex.rule=Host(`${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
 
     ubooquity:
         image: ghcr.io/linuxserver/ubooquity
@@ -64,8 +64,6 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
             - MAXMEM=2048
-            - ADMIN_DNS_PREFIX=ubooquity
-            - READER_DNS_PREFIX=reader
         volumes:
             - configUbooquity:/config
             - books:/books
@@ -74,18 +72,18 @@ services:
         labels:
             - "traefik.enable=true"
             # router reader - Web UI
-            - "traefik.http.routers.reader.rule=Host(`${READER_DNS_PREFIX}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.reader.rule=Host(`${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.reader.loadbalancer.server.port=2202"
             - "traefik.http.routers.reader.service=reader"
             - "traefik.http.routers.reader.middlewares=common-auth@file, readerToAdmin"
-            - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${READER_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin[/]?$"
-            - "traefik.http.middlewares.readerToAdmin.redirectregex.replacement=https://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin"
+            - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin[/]?$"
+            - "traefik.http.middlewares.readerToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
             # router ubooquity - Admin UI
-            - "traefik.http.routers.ubooquity.rule=Host(`${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.ubooquity.rule=Host(`${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.ubooquity.loadbalancer.server.port=2203"
             - "traefik.http.routers.ubooquity.middlewares=common-auth@file, redirectToAdmin"
-            - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}[/]?$"
-            - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin"
+            - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$"
+            - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
     #endregion
 
     #region Downloader
@@ -105,7 +103,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
-            - "traefik.http.routers.rutorrent.rule=Host(`torrent.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rutorrent.rule=Host(`${RUTORRENT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
 
     jdownloader:
@@ -122,7 +120,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
-            - "traefik.http.routers.jdownloader.rule=Host(`ddl.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.jdownloader.rule=Host(`${JDOWNLOADER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
     #endregion Downloader
 
@@ -162,7 +160,7 @@ services:
             - media:/media
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.nextcloud.rule=Host(`cloud.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #endregion Cloud
 
     #region Media monitors
@@ -181,7 +179,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.jackett.loadbalancer.server.port=9117"
-            - "traefik.http.routers.jackett.rule=Host(`jackett.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
 
     cloudproxy:
@@ -204,7 +202,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.medusa.loadbalancer.server.port=8081"
-            - "traefik.http.routers.medusa.rule=Host(`medusa.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.medusa.rule=Host(`${MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.medusa.middlewares=common-auth@file"
 
     radarr:
@@ -222,7 +220,7 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.radarr.rule=Host(`movie.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.radarr.rule=Host(`${RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
 
     lidarr:
@@ -239,7 +237,7 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.lidarr.rule=Host(`book.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
 
     mylar:
@@ -256,7 +254,7 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.mylar.rule=Host(`comic.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.mylar.rule=Host(`${MYLAR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.mylar.loadbalancer.server.port=8090"
             - "traefik.http.routers.mylar.middlewares=common-auth@file"
     #endregion Media monitors
@@ -272,7 +270,7 @@ services:
         command: --host=unix:///var/run/docker.sock
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.portainer.rule=Host(`docker.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
@@ -293,7 +291,7 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:rw
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.netdata.rule=Host(`netdata.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.netdata.rule=Host(`${NETDATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.netdata.middlewares=common-auth@file"
             - "traefik.http.services.netdata.loadbalancer.server.port=19999"
 
@@ -312,7 +310,7 @@ services:
             - alldata:/source
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.duplicati.rule=Host(`backup.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.duplicati.rule=Host(`${DUPLICATI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
             - "traefiahk.http.services.duplicati.loadbalancer.server.port=8200"
 
@@ -331,7 +329,7 @@ services:
             - SIAB_PKGS=${SIAB_PKGS}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.shellinabox.rule=Host(`shell.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.shellinabox.rule=Host(`${SHELLINABOX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
             - "traefik.http.services.shellinabox.loadbalancer.server.port=4200"
 
@@ -347,7 +345,7 @@ services:
             - configOrganizr:/config
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.organizr.rule=Host(`home.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.organizr.rule=Host(`${ORGANIZR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.organizr.middlewares=common-auth@file"
             - "traefik.http.services.organizr.loadbalancer.server.port=80"
 
@@ -379,7 +377,7 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.openvpn.rule=Host(`vpn.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.openvpn.middlewares=common-auth@file"
             - "traefik.http.services.openvpn.loadbalancer.server.port=943"
 
@@ -397,7 +395,7 @@ services:
         #         - TZ=${TZ}
         #     labels:
         #         - "traefik.enable=true"
-        #         - "traefik.http.routers.tautulli.rule=Host(`tautulli.${TRAEFIK_DOMAIN}`)"
+        #         - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #endregion Administration
 #endregion Containers
 
