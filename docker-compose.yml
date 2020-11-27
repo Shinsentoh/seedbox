@@ -328,8 +328,7 @@ services:
         container_name: sftp
         volumes:
             - alldata:/home/${MEDIA_USER}/upload
-            - configSftp/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
-            - configSftp/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
+            - configSftp/:/etc/ssh/
         ports:
             - "${FTP_PORT}:22"
         restart: unless-stopped
