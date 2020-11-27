@@ -354,7 +354,7 @@ services:
         image: netresearch/sftp
         container_name: sftp
         volumes:
-            - alldata:/home/${MEDIA_USER}/upload
+            - alldata:/home/${FTP_USER}/upload
             - configSftp/:/etc/ssh/
         ports:
             - "${FTP_PORT}:22"
@@ -373,15 +373,15 @@ services:
         volumes:
             - configOpenVPN:/config
         ports:
+            - 943:943
             - 9443:9443
             - 1194:1194/udp
         restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.openvpn.middlewares=common-auth@file"
-            - "traefik.http.services.openvpn.loadbalancer.server.port=943"
-
+        # labels:
+        #     - "traefik.enable=true"
+        #     - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+        #     - "traefik.http.routers.openvpn.middlewares=common-auth@file"
+        #     - "traefik.http.services.openvpn.loadbalancer.server.port=943"
 
         # tautulli:
         #     image: linuxserver/tautulli
