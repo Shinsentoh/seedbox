@@ -307,13 +307,15 @@ services:
 
     sftp:
         image: netresearch/sftp
+        container_name: sftp
         volumes:
             - alldata:/home/${MEDIA_USER}/upload
             # - /host/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
             # - /host/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
         ports:
-            - "5757:22"
-        command: "${MEDIA_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
+            - "${FTP_PORT}:22"
+        restart: unless-stopped
+        command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
