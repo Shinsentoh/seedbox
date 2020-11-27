@@ -64,6 +64,8 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
             - MAXMEM=2048
+            - ADMIN_DNS_PREFIX=ubooquity # not part of the image variables, only used inside this file for the labels
+            - READER_DNS_PREFIX=reader   # not part of the image variables, only used inside this file for the labels
         volumes:
             - configUbooquity:/config
             - books:/books
@@ -72,15 +74,18 @@ services:
         labels:
             - "traefik.enable=true"
             # router reader - Web UI
-            - "traefik.http.routers.reader.rule=Host(`reader.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.reader.rule=Host(`${READER_DNS_PREFIX}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.reader.loadbalancer.server.port=2202"
-            - "traefik.http.routers.reader.middlewares=common-auth@file"
             - "traefik.http.routers.reader.service=reader"
+            - "traefik.http.routers.reader.middlewares=common-auth@file, readerToAdmin"
+            - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${READER_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin[/]?$"
+            - "traefik.http.middlewares.readerToAdmin.redirectregex.replacement=https://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin"
             # router ubooquity - Admin UI
-            - "traefik.http.routers.ubooquity.rule=Host(`ubooquity.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.ubooquity.rule=Host(`${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.services.ubooquity.loadbalancer.server.port=2203"
-            - "traefik.http.routers.ubooquity.middlewares=common-auth@file"
-            - "traefik.http.routers.ubooquity.service=ubooquity"
+            - "traefik.http.routers.ubooquity.middlewares=common-auth@file, redirectToAdmin"
+            - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}[/]?$"
+            - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${ADMIN_DNS_PREFIX}.${TRAEFIK_DOMAIN}/admin"
     #endregion
 
     #region Downloader
