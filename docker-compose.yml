@@ -313,7 +313,7 @@ services:
             # - /host/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
         ports:
             - "5757:22"
-        command: "${MEDIA_USER}:${FTP_PASS}:${PUID}:${PGID}"
+        command: "${MEDIA_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
