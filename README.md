@@ -9,18 +9,18 @@ seedbox and personal media server.
 ------------------------|---------------------------|-----------------------------------------------------------------------------------|---------------|------------------------
 | Plex                  | plex.yourdomain.com       | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)                     | *latest*      | Media Streaming       |
 | Rutorrent             | torrent.yourdomain.com    | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)                 | *latest*      | Torrents downloader   |
+| JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader     |
 | Medusa                | medusa.yourdomain.com     | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)                 | *latest*      | TV Shows monitor      |
 | Radarr                | movie.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)                 | *latest*      | Movies monitor        |
 | Lidarr                | book.yourdomain.com       | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)                 | *latest*      | Music monitor         |
-| Mylar                 | comic.yourdomain.com      | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)                 | *latest*      | Comics monitor        |
+| Mylar                 | comic.yourdomain.com      | [linuxserver/mylar3](https://hub.docker.com/r/linuxserver/mylar3)                 | *latest*      | Comics monitor        |
 | Jackett               | jackett.yourdomain.com    | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*  | Tracker indexer       |
-| JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader     |
 | NextCloud             | cloud.yourdomain.com      | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)           | *latest*      | private cloud         |
 | NextCloud-db (MariaDB)| not reachable             | [linuxserver/mariadb](https://hub.docker.com/r/linuxserver/mariadb)               | *latest*      | DB for Nextcloud      |
 | Portainer             | docker.yourdomain.com     | [portainer/portainer-ce](https://hub.docker.com/r/portainer/portainer-ce)         | *latest*      | Container management  |
 | Netdata               | netdata.yourdomain.com    | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)                       | *latest*      | Server monitoring     |
 | Duplicati             | backup.yourdomain.com     | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)           | *latest*      | Backups               |
-| Organizr              | home.yourdomain.com       | [organizr/organizr](https://hub.docker.com/r/organizr/organizr)                   | *latest*      | Access all your apps  |
+| Organizr              | home.yourdomain.com       | [organizr/organizr](https://hub.docker.com/r/organizr/organizr)                   | *latest*      | Hub for your apps     |
 | Shel in a box         | shell.yourdomain.com      | [sspreitzer/shellinabox](https://hub.docker.com/r/sspreitzer/shellinabox)         | *latest*      | Web Console           |
 | OpenPVN               | vpn.yourdomain.com        | [linuxserver/openvpn-as](https://hub.docker.com/r/linuxserver/openvpn-as)         | *latest*      | VPN                   |
 | SFTP                  | SFTP port                 | [netresearch/sftp](https://hub.docker.com/r/netresearch/sftp)                     | *latest*      | SFTP                  |

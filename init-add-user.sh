@@ -20,8 +20,8 @@ if ! id "$username" &>/dev/null; then
     mkdir -p $PATH_TORRENTS $PATH_TORRENTS/movie $PATH_TORRENTS/music $PATH_TORRENTS/tv $PATH_TORRENTS/other $PATH_TORRENTS/software $PATH_TORRENTS/game $PATH_TORRENTS/vr $PATH_TORRENTS/book
     mkdir -p $BASE_PATH/torrents/complete
     cp -R $PATH_TORRENTS/* $BASE_PATH/torrents/complete
-    mkdir -p $PATH_MEDIA $PATH_MEDIA/movies $PATH_MEDIA/tvShows $PATH_MEDIA/musics $PATH_MEDIA/other $PATH_MEDIA/books $PATH_MEDIA/animes
-    mkdir -p $PATH_CONFIG $PATH_CONFIG/plex $PATH_CONFIG/rutorrent $PATH_CONFIG/medusa $PATH_CONFIG/radarr $PATH_CONFIG/bazarr $PATH_CONFIG/jackett $PATH_CONFIG/lidarr $PATH_CONFIG/deluge $PATH_CONFIG/tautulli $PATH_CONFIG/jdownloader $PATH_CONFIG/nextcloud-db $PATH_CONFIG/nextcloud $PATH_CONFIG/nextcloud-data $PATH_CONFIG/duplicati $PATH_CONFIG/portainer $PATH_CONFIG/openVPN $PATH_CONFIG/sftp
+    mkdir -p $PATH_MEDIA $PATH_MEDIA/movies $PATH_MEDIA/tvShows $PATH_MEDIA/musics $PATH_MEDIA/other $PATH_MEDIA/books $PATH_MEDIA/animes $PATH_MEDIA/books/comics
+    mkdir -p $PATH_CONFIG $PATH_CONFIG/plex $PATH_CONFIG/rutorrent $PATH_CONFIG/medusa $PATH_CONFIG/radarr $PATH_CONFIG/bazarr $PATH_CONFIG/mylarr $PATH_CONFIG/jackett $PATH_CONFIG/lidarr $PATH_CONFIG/deluge $PATH_CONFIG/tautulli $PATH_CONFIG/jdownloader $PATH_CONFIG/nextcloud-db $PATH_CONFIG/nextcloud $PATH_CONFIG/nextcloud-data $PATH_CONFIG/duplicati $PATH_CONFIG/portainer $PATH_CONFIG/openVPN $PATH_CONFIG/sftp
     mkdir -p $PATH_CONFIG/traefik $PATH_CONFIG/traefik/behaviour
     cp -R ./traefik/* $PATH_CONFIG/traefik/behaviour
     touch $PATH_CONFIG/traefik/acme.json && chmod 600 $PATH_CONFIG/traefik/acme.json

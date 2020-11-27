@@ -147,6 +147,24 @@ services:
             - "traefik.http.routers.lidarr.rule=Host(`book.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
 
+    mylar:
+        image: ghcr.io/linuxserver/mylar3
+        container_name: mylar
+        volumes:
+            - configMylar:/config
+            - comics:/comics
+            - torrents:/downloads
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.mylar.rule=Host(`mylar.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.mylar.middlewares=common-auth@file"
+            - "traefik.http.services.mylar.loadbalancer.server.port=8090"
+
     # tautulli:
     #     image: linuxserver/tautulli
     #     container_name: tautulli
@@ -452,3 +470,11 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/media/movies
+    comics:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/media/books/comics
+    books:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/media/books
