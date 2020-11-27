@@ -310,8 +310,8 @@ services:
         container_name: sftp
         volumes:
             - alldata:/home/${MEDIA_USER}/upload
-            # - /host/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
-            # - /host/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
+            - configSftp/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
+            - configSftp/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub
         ports:
             - "${FTP_PORT}:22"
         restart: unless-stopped
@@ -424,6 +424,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/openVPN
+    configSftp:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/sftp
     configDuplicati:
         driver: local-persist
         driver_opts:
