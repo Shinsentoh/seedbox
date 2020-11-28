@@ -132,7 +132,6 @@ services:
     nextcloud-db:
         image: linuxserver/mariadb
         container_name: nextcloud-db
-        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         environment:
             - PGID=${PGID}
