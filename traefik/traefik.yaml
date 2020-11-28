@@ -17,20 +17,22 @@ providers:
     watch: true
 
 entryPoints:
-  insecure:
+  web:
     address: ":80"
     http:
       redirections:
         entryPoint:
-          to: secure
+          to: websecure
           scheme: https
-  secure:
+  websecure:
     address: ":443"
     http:
       tls:
         certResolver: leresolver
       middlewares:
         - security-headers@file
+  openvpn:
+    address: ":1194/udp"
 
 # Allow self-signed certificates for https backends (nextcloud for example)
 serversTransport:
@@ -42,4 +44,4 @@ certificatesResolvers:
       storage: /config/acme.json
       httpChallenge:
         # used during the challenge
-        entryPoint: insecure
+        entryPoint: web
