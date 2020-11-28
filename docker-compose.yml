@@ -26,11 +26,8 @@ services:
             # Docker labels for enabling Traefik dashboard
             - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
-            - "traefik.http.routers.traefik.entrypoints=websecure"
+            - "traefik.http.routers.traefik.middlewares=common-auth@file"
             - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-            - "traefik.http.routers.traefik.middlewares=common-auth@file, security-headers@file,  traefik"
-            - "traefik.http.middlewares.traefik.redirectregex.regex=^https?://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
-            - "traefik.http.middlewares.traefik.redirectregex.replacement=https://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/dashboard"
     #endregion
 
     #region Streaming/Reader
