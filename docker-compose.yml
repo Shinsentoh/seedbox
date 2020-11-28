@@ -10,7 +10,6 @@ services:
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
             - "--pilot.token=${PILOT_TOKEN}"
-#            - "--api"
         ports:
             - "80:80"
             - "443:443"
@@ -28,7 +27,6 @@ services:
             - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
- #           - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     #endregion
 
     #region Streaming/Reader
@@ -276,19 +274,21 @@ services:
 
     #region Administration
     portainer:
-        image: portainer/portainer
+        image: portainer/portainer-ce:latest
         container_name: portainer
         restart: always
         volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
             - /var/run/docker.sock:/var/run/docker.sock
             - configPortainer:/data
-        command: -H unix:///var/run/docker.sock
+        # command: --host=unix:///var/run/docker.sock
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.portainer.loadbalancer.server.port=9000"
             - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.routers.portainer.service=portainer"
+            - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
     netdata:
         image: netdata/netdata
@@ -393,12 +393,16 @@ services:
         volumes:
             - configOpenVPN:/config
         restart: unless-stopped
+        ports:
+            - 1194:1194/udp
+            - 9443:9443
+            - 943:943
         labels:
             - "traefik.enable=true"
             # udp
-            - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
-            - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
-            - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
+            # - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
+            # - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
+            # - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
             # tcp
             # - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
             # - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
