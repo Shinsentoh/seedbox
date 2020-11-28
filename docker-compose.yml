@@ -10,7 +10,7 @@ services:
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
             - "--pilot.token=${PILOT_TOKEN}"
-            - "--api.dashboard=true"
+            - "--api"
         ports:
             - "80:80"
             - "443:443"
