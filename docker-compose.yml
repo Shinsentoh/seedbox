@@ -395,13 +395,14 @@ services:
             - "traefik.enable=true"
             # udp
             - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
+            - "traefik.udp.routers.openvpn-udp.rule=HostSNI(`*`)"
             - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
             - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
-            # tcp
-            - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
-            - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
-            - "traefik.tcp.routers.openvpn-tcp.entrypoints=secure"
-            - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
+            # # tcp
+            # - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
+            # - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
+            # - "traefik.tcp.routers.openvpn-tcp.entrypoints=secure"
+            # - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
             # http
             - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
             - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
