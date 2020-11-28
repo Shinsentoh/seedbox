@@ -53,8 +53,9 @@ services:
             - ADVERTISE_IP=${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}:443
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.plex.loadbalancer.server.port=32400"
             - "traefik.http.routers.plex.rule=Host(`${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.plex.service=plex"
+            - "traefik.http.services.plex.loadbalancer.server.port=32400"
 
     ubooquity:
         image: ghcr.io/linuxserver/ubooquity
@@ -103,9 +104,10 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
             - "traefik.http.routers.rutorrent.rule=Host(`${RUTORRENT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
+            - "traefik.http.routers.rutorrent.service=rutorrent"
+            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
 
     jdownloader:
         image: jlesage/jdownloader-2
@@ -120,9 +122,10 @@ services:
             - TZ=${TZ}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
             - "traefik.http.routers.jdownloader.rule=Host(`${JDOWNLOADER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
+            - "traefik.http.routers.jdownloader.service=jdownloader"
+            - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
     #endregion Downloader
 
     #region Cloud
@@ -162,6 +165,8 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.nextcloud.service=nextcloud"
+            - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
     #endregion Cloud
 
     #region Media monitors
@@ -179,9 +184,10 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.jackett.loadbalancer.server.port=9117"
             - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
+            - "traefik.http.routers.jackett.service=jackett"
+            - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
     cloudproxy:
         image: noahcardoza/cloudproxy
@@ -202,9 +208,10 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.medusa.loadbalancer.server.port=8081"
             - "traefik.http.routers.medusa.rule=Host(`${MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.medusa.middlewares=common-auth@file"
+            - "traefik.http.routers.medusa.service=medusa"
+            - "traefik.http.services.medusa.loadbalancer.server.port=8081"
 
     radarr:
         image: linuxserver/radarr
@@ -223,6 +230,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.radarr.rule=Host(`${RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
+            - "traefik.http.routers.radarr.service=radarr"
+            - "traefik.http.services.radarr.loadbalancer.server.port=7878"
 
     lidarr:
         image: linuxserver/lidarr
@@ -240,6 +249,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
+            - "traefik.http.routers.lidarr.service=lidarr"
+            - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
 
     mylar:
         image: ghcr.io/linuxserver/mylar3
@@ -256,8 +267,9 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.mylar.rule=Host(`${MYLAR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.services.mylar.loadbalancer.server.port=8090"
             - "traefik.http.routers.mylar.middlewares=common-auth@file"
+            - "traefik.http.routers.mylar.service=mylar"
+            - "traefik.http.services.mylar.loadbalancer.server.port=8090"
     #endregion Media monitors
 
     #region Administration
@@ -273,6 +285,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.portainer.middlewares=common-auth@file"
+            - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
     netdata:
@@ -294,8 +307,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.netdata.rule=Host(`${NETDATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.netdata.middlewares=common-auth@file"
+            - "traefik.http.routers.netdata.service=netdata"
             - "traefik.http.services.netdata.loadbalancer.server.port=19999"
-
 
     duplicati:
         image: linuxserver/duplicati
@@ -313,6 +326,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.duplicati.rule=Host(`${DUPLICATI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
+            - "traefik.http.routers.duplicati.service=duplicati"
             - "traefiahk.http.services.duplicati.loadbalancer.server.port=8200"
 
     shellinabox:
@@ -332,6 +346,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.shellinabox.rule=Host(`${SHELLINABOX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
+            - "traefik.http.routers.shellinabox.service=shellinabox"
             - "traefik.http.services.shellinabox.loadbalancer.server.port=4200"
 
     organizr:
@@ -348,6 +363,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.organizr.rule=Host(`${ORGANIZR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.organizr.middlewares=common-auth@file"
+            - "traefik.http.routers.organizr.service=organizr"
             - "traefik.http.services.organizr.loadbalancer.server.port=80"
 
     sftp:
@@ -373,15 +389,15 @@ services:
         volumes:
             - configOpenVPN:/config
         ports:
-            - 943:943
             - 9443:9443
             - 1194:1194/udp
         restart: unless-stopped
-        # labels:
-        #     - "traefik.enable=true"
-        #     - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-        #     - "traefik.http.routers.openvpn.middlewares=common-auth@file"
-        #     - "traefik.http.services.openvpn.loadbalancer.server.port=943"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.openvpn.middlewares=common-auth@file"
+            - "traefik.http.routers.openvpn.service=openvpn"
+            - "traefik.http.services.openvpn.loadbalancer.server.port=943"
 
         # tautulli:
         #     image: linuxserver/tautulli
@@ -397,6 +413,8 @@ services:
         #     labels:
         #         - "traefik.enable=true"
         #         - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+                # - "traefik.http.routers.tautulli.service=tautulli"
+                # - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
     #endregion Administration
 #endregion Containers
 
