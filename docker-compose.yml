@@ -10,7 +10,7 @@ services:
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
             - "--pilot.token=${PILOT_TOKEN}"
-            - "--api"
+#            - "--api"
         ports:
             - "80:80"
             - "443:443"
@@ -27,7 +27,7 @@ services:
             - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
-            - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+ #           - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     #endregion
 
     #region Streaming/Reader
@@ -392,19 +392,19 @@ services:
         labels:
             - "traefik.enable=true"
             # udp
-            - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
             - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
             - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
+            - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
             # # tcp
-            # - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
-            # - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
-            # - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
-            # - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
+            - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
+            - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
+            - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
+            - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
             # http
-            - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
             - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
             - "traefik.http.routers.openvpn-http.service=openvpn-http"
+            - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
 
         # tautulli:
         #     image: linuxserver/tautulli
