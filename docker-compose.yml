@@ -27,7 +27,8 @@ services:
             - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.entrypoints=websecure"
-            - "traefik.http.routers.traefik.middlewares=common-auth@file, traefik"
+            - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+            - "traefik.http.routers.traefik.middlewares=common-auth@file, security-headers@file,  traefik"
             - "traefik.http.middlewares.traefik.redirectregex.regex=^https?://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
             - "traefik.http.middlewares.traefik.redirectregex.replacement=https://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/dashboard"
     #endregion
@@ -395,13 +396,12 @@ services:
             - "traefik.enable=true"
             # udp
             - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
-            - "traefik.udp.routers.openvpn-udp.rule=HostSNI(`*`)"
             - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
             - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
             # # tcp
             # - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
             # - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
-            # - "traefik.tcp.routers.openvpn-tcp.entrypoints=secure"
+            # - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
             # - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
             # http
             - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
