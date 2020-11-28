@@ -130,19 +130,18 @@ services:
 
     #region Cloud
     nextcloud-db:
-        image: linuxserver/mariadb
+        image: mariadb:10
         container_name: nextcloud-db
+        command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
         restart: always
         environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - TZ=${TZ}
         volumes:
-            - nextcloudDb:/config
+            - nextcloudDb:/var/lib/mysql
         labels:
             - "traefik.enable=false"
 
