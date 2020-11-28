@@ -276,7 +276,7 @@ services:
 
     #region Administration
     portainer:
-        image: portainer/portainer-ce:latest
+        image: portainer/portainer
         container_name: portainer
         restart: always
         volumes:
