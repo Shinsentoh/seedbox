@@ -10,6 +10,7 @@ services:
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
             - "--pilot.token=${PILOT_TOKEN}"
+            - "--api.dashboard=true"
         ports:
             - "80:80"
             - "443:443"
@@ -23,9 +24,11 @@ services:
         labels:
             - "traefik.enable=true"
             # Docker labels for enabling Traefik dashboard
-            - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+            - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
-            - "traefik.http.routers.traefik.middlewares=common-auth@file"
+            - "traefik.http.routers.traefik.middlewares=common-auth@file, traefik"
+            - "traefik.http.middlewares.traefik.redirectregex.regex=^https?://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
+            - "traefik.http.middlewares.traefik.redirectregex.replacement=https://${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/dashboard"
     #endregion
 
     #region Streaming/Reader
@@ -127,23 +130,6 @@ services:
             - "traefik.http.routers.jdownloader.service=jdownloader"
     #endregion Downloader
 
-    #region Cloud
-    # nextcloud-db:
-    #     image: mariadb:10
-    #     container_name: nextcloud-db
-    #     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    #     restart: always
-    #     environment:
-    #         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    #         - MYSQL_DATABASE=${MYSQL_DATABASE}
-    #         - MYSQL_USER=${MYSQL_USER}
-    #         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - nextcloudDb:/var/lib/mysql
-    #     labels:
-    #         - "traefik.enable=false"
-
     nextcloud-db:
         image: linuxserver/mariadb
         container_name: nextcloud-db
@@ -175,7 +161,7 @@ services:
         volumes:
             - configNextcloud:/config
             - nextcloudData:/data
-            - media:/media
+            - media:/media:ro
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
@@ -407,19 +393,19 @@ services:
         labels:
             - "traefik.enable=true"
             # udp
-            - "traefik.udp.services.openvpn.loadbalancer.server.port=1194"
-            - "traefik.udp.routers.openvpn.entrypoints=openvpn"
-            - "traefik.udp.routers.openvpn.service=openvpn"
+            - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
+            - "traefik.udp.routers.openvpn-udp.entrypoints=openvpn"
+            - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
             # tcp
-            - "traefik.tcp.services.openvpn.loadbalancer.server.port=1194"
-            - "traefik.tcp.routers.openvpn.rule=HostSNI(`*`)"
-            - "traefik.tcp.routers.openvpn.entrypoints=secure"
-            - "traefik.tcp.routers.openvpn.service=openvpn"
+            - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=1194"
+            - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
+            - "traefik.tcp.routers.openvpn-tcp.entrypoints=secure"
+            - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
             # http
-            - "traefik.http.services.openvpn.loadbalancer.server.port=943"
-            - "traefik.http.routers.openvpn.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.openvpn.middlewares=common-auth@file"
-            - "traefik.http.routers.openvpn.service=openvpn"
+            - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
+            - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
+            - "traefik.http.routers.openvpn-http.service=openvpn-http"
 
         # tautulli:
         #     image: linuxserver/tautulli
