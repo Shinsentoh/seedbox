@@ -262,7 +262,7 @@ services:
 
     #region Administration
     portainer:
-        image: portainer/portainer-ce
+        image: portainer/portainer-ce:2.0.0-alpine
         container_name: portainer
         restart: always
         volumes:
