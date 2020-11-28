@@ -18,4 +18,11 @@ docker exec -it -u abc -w /config/www/nextcloud \
       --data-dir \"/data\" \
   "
 
+# set the trusted domain to be able to use nextcloud
+docker exec -it -u abc -w /config/www/nextcloud \
+  nextcloud bash -c " \
+    php occ config:system:set \
+      trusted_domains 1 --value=${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN} \
+  "
+
 echo "[$0] Done."

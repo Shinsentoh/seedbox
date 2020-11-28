@@ -326,7 +326,7 @@ services:
             - "traefik.http.routers.duplicati.rule=Host(`${DUPLICATI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
             - "traefik.http.routers.duplicati.service=duplicati"
-            - "traefiahk.http.services.duplicati.loadbalancer.server.port=8200"
+            - "traefik.http.services.duplicati.loadbalancer.server.port=8200"
 
     shellinabox:
         image: sspreitzer/shellinabox:latest
