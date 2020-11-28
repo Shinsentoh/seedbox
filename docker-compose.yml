@@ -164,6 +164,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.nextcloud.service=nextcloud"
+            - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
             - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
     #endregion Cloud
 
@@ -278,7 +279,7 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - configPortainer:/data
-        command: --host=unix:///var/run/docker.sock
+        command: -H unix:///var/run/docker.sock
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
