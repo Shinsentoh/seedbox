@@ -13,7 +13,6 @@ services:
         ports:
             - "80:80"
             - "443:443"
-            - "1194:1194/udp"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - traefikBehaviour:/etc/traefik:ro
@@ -27,6 +26,7 @@ services:
             - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
+            - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     #endregion
 
     #region Streaming/Reader
@@ -34,13 +34,6 @@ services:
         image: linuxserver/plex
         container_name: plex
         restart: always
-        # ports:
-        #     - "32400:32400"
-        #     - "32400:32400/udp"
-        #     - "32469:32469"
-        #     - "32469:32469/udp"
-        #     - "5353:5353/udp"
-        #     - "1900:1900/udp"
         volumes:
             - configPlex:/config
             - media:/data
@@ -286,25 +279,25 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.portainer.middlewares=common-auth@file"
+            # - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
     netdata:
         image: netdata/netdata
-        restart: always
         container_name: netdata
-        hostname: netdata.${TRAEFIK_DOMAIN}
-        environment:
-            PGID: 999
+        restart: unless-stopped
+        hostname: ${NETDATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}
         cap_add:
             - SYS_PTRACE
         security_opt:
             - apparmor:unconfined
         volumes:
+            - /etc/passwd:/host/etc/passwd:ro
+            - /etc/group:/host/etc/group:ro
             - /proc:/host/proc:ro
             - /sys:/host/sys:ro
-            - /var/run/docker.sock:/var/run/docker.sock:rw
+            - /etc/os-release:/host/etc/os-release:ro
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.netdata.loadbalancer.server.port=19999"
@@ -339,7 +332,7 @@ services:
             - SIAB_USER=${MEDIA_USER}
             - SIAB_PASSWORD=${SIAB_PASSWORD}
             - SIAB_GROUP=${MEDIA_USER}
-            - SIAB_HOME=/home/{$MEDIA_USER}
+            - SIAB_HOME=/home/${MEDIA_USER}
             - SIAB_USERID=${PUID}
             - SIAB_GROUPID=${PGID}
             - SIAB_SUDO=true
