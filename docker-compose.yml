@@ -88,14 +88,12 @@ services:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
-            - BASE_URL=/ombi
         volumes:
             - configOmbi:/config
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.ombi.rule=Host(`${OMBI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.ombi.middlewares=common-auth@file"
             - "traefik.http.routers.ombi.service=ombi"
             - "traefik.http.services.ombi.loadbalancer.server.port=3579"
     #endregion
