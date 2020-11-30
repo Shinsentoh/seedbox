@@ -82,7 +82,7 @@ services:
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
 
     ombi:
-        image: ghcr.io/linuxserver/ombi
+        image: ghcr.io/linuxserver/ombi:v4.0.731-ls20
         container_name: ombi
         environment:
             - PGID=${PGID}
