@@ -551,7 +551,7 @@ volumes:
     configOmbi:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/ubooquity
+            mountpoint: ${BASE_PATH}/config/ombi
     #endregion Config
     backups:
         driver: local-persist
