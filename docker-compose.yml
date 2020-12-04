@@ -37,6 +37,7 @@ services:
         volumes:
             - configPlex:/config
             - media:/data
+            - torrents:/downloads
             - /tmp:/tmp
         environment:
             - PGID=${PGID}
@@ -427,22 +428,22 @@ services:
             - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
             - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
 
-        # tautulli:
-        #     image: linuxserver/tautulli
-        #     container_name: tautulli
-        #     restart: always
-        #     volumes:
-        #         - configTautulli:/config
-        #         - config:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
-        #     environment:
-        #         - PGID=${PGID}
-        #         - PUID=${PUID}
-        #         - TZ=${TZ}
-        #     labels:
-        #         - "traefik.enable=true"
-        #         - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-        #         - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-        #         - "traefik.http.routers.tautulli.service=tautulli"
+        tautulli:
+            image: linuxserver/tautulli
+            container_name: tautulli
+            restart: always
+            volumes:
+                - configTautulli:/config
+                - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
+            environment:
+                - PGID=${PGID}
+                - PUID=${PUID}
+                - TZ=${TZ}
+            labels:
+                - "traefik.enable=true"
+                - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+                - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+                - "traefik.http.routers.tautulli.service=tautulli"
     #endregion Administration
 #endregion Containers
 
@@ -476,6 +477,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/config/plex
+    configPlexLogs:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
     configRutorrent:
         driver: local-persist
         driver_opts:
