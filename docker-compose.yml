@@ -388,15 +388,23 @@ services:
         volumes:
             - alldata:/home/${FTP_USER}/upload
             - configSftp/:/etc/ssh/
-        ports:
-            - "${FTP_PORT}:22"
+        # ports:
+        #     - "${FTP_PORT}:22"
         restart: unless-stopped
         command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.tcp.routers.sftp.rule=HostSNI(`*`)"
+            - "traefik.tcp.routers.sftp.entrypoints=sftp"
+            - "traefik.tcp.routers.sftp.service=sftp"
+            - "traefik.tcp.services.sftp.loadbalancer.server.port=${FTP_PORT}"
 
-    # a revoir
+    # a revoir 443 => 9443
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
         container_name: openvpn
+        depends_on:
+            - "traefik"
         cap_add:
             - NET_ADMIN
         environment:
@@ -406,9 +414,9 @@ services:
         volumes:
             - configOpenVPN:/config
         restart: unless-stopped
-        ports:
-            - 9443:9443
-            - 1194:1194/udp
+        # ports:
+        #     - 9443:9443
+        #     - 1194:1194/udp
         labels:
             - "traefik.enable=true"
             # udp
@@ -416,11 +424,11 @@ services:
             # - "traefik.udp.routers.openvpn-udp.service=openvpn-udp"
             # - "traefik.udp.services.openvpn-udp.loadbalancer.server.port=1194"
             # tcp
-            # - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`*`)"
-            # - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
-            # - "traefik.tcp.routers.openvpn-tcp.tls=true"
-            # - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
-            # - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=9443"
+            - "traefik.tcp.routers.openvpn-tcp.rule=HostSNI(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.tcp.routers.openvpn-tcp.entrypoints=websecure"
+            - "traefik.tcp.routers.openvpn-tcp.tls.passthrough=true"
+            - "traefik.tcp.routers.openvpn-tcp.service=openvpn-tcp"
+            - "traefik.tcp.services.openvpn-tcp.loadbalancer.server.port=9443"
             # http
             - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
