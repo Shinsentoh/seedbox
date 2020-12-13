@@ -6,5 +6,5 @@ fi
 
 source ./fresh-server-configuration/.serverEnv
 
-apt-get install curl tee systemctl
+apt-get install curl systemctl
 
