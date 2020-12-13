@@ -12,7 +12,7 @@ if [[ ! -f ./fresh-server-configuration/.serverEnv ]]; then
   cp ./fresh-server-configuration/.serverEnv.sample ./fresh-server-configuration/.serverEnv
 fi
 
-if [ ${EDITOR} != "nano" ]; then
+if [[ ! "$EDITOR" = "nano" ]]; then
   while true; do
       read -p "Would you like to make nano your default editor ?" yn
       case $yn in
