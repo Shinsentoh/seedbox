@@ -1,0 +1,17 @@
+alias all-logs="docker ps -q | xargs -P 13 -L 1 docker logs --follow"
+alias dockerStopAll="docker stop $(docker ps -a -q)"
+alias dockerStartAll="docker start $(docker ps -a -q)"
+alias dockerup="docker-compose up -d --remove-orphans"
+alias dockerdown="docker-compose down --remove-orphans"
+alias ..='cd ..'
+alias df='df -kTh'
+alias du='du -kh'
+alias kk='ll'
+alias la='ll -A'
+alias ll='ls -lv --group-directories-first'
+alias lr='ll -R'
+alias ls='ls -h --color'
+alias mkdir='mkdir -p'
+alias path='echo -e ${PATH//:/\\n}'
+alias top='xtitle Processes on $HOST && top'
+alias which='type -a'

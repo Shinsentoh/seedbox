@@ -12,10 +12,10 @@ fi
 
 # editing .env file
 read -s -p "Press {Enter} to edit the .env file"
-nano .env
+"${EDITOR:-vi}" .env
 source .env
 
 # add new user
-./init-add-user.sh
+./docker-configuration/init-add-user.sh
 
 echo "[$0] Done."

@@ -140,47 +140,6 @@ services:
             - "traefik.http.routers.jdownloader.service=jdownloader"
     #endregion Downloader
 
-    #region Cloud
-    nextcloud-db:
-        image: linuxserver/mariadb
-        container_name: nextcloud-db
-        restart: always
-        environment:
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - nextcloudDb:/config
-        labels:
-            - "traefik.enable=false"
-
-    # See init-setup-nextcloud.sh for first install
-    nextcloud:
-        depends_on:
-            - nextcloud-db
-        image: linuxserver/nextcloud
-        container_name: nextcloud
-        restart: always
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configNextcloud:/config
-            - nextcloudData:/data
-            - media:/media:ro
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
-            - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
-            - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.nextcloud.service=nextcloud"
-    #endregion Cloud
-
     #region Media monitors
     jackett:
         image: sclemenceau/docker-jackett:cloudproxy
@@ -283,6 +242,47 @@ services:
             - "traefik.http.routers.mylar.middlewares=common-auth@file"
             - "traefik.http.routers.mylar.service=mylar"
     #endregion Media monitors
+
+    #region Cloud
+    nextcloud-db:
+        image: linuxserver/mariadb
+        container_name: nextcloud-db
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - nextcloudDb:/config
+        labels:
+            - "traefik.enable=false"
+
+    # See init-setup-nextcloud.sh for first install
+    nextcloud:
+        depends_on:
+            - nextcloud-db
+        image: linuxserver/nextcloud
+        container_name: nextcloud
+        restart: always
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configNextcloud:/config
+            - nextcloudData:/data
+            - media:/media:ro
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+            - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+            - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.nextcloud.service=nextcloud"
+    #endregion Cloud
 
     #region Administration
     portainer:
@@ -450,129 +450,129 @@ volumes:
     config:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}
     #region Volumes Config
     traefikBehaviour:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/traefik/behaviour
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/traefik/behaviour
     configTraefik:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/traefik
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/traefik
     configPlex:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/plex
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex
     configPlexLogs:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
     configRutorrent:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/rutorrent
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rutorrent
     configMedusa:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/medusa
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/medusa
     configRadarr:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/radarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
     configBazarr:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/bazarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/bazarr
     configJackett:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/jackett
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/jackett
     configLidarr:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/lidarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/lidarr
     configMylar:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/mylarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/mylarr
     configTautulli:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/tautulli
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/tautulli
     configJdownloader:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/jdownloader
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/jdownloader
     nextcloudDb:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/nextcloud-db
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/nextcloud-db
     configNextcloud:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/nextcloud
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/nextcloud
     nextcloudData:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/nextcloud-data
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/nextcloud-data
     configPortainer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/portainer
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/portainer
     configOrganizr:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/organizr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/organizr
     configOpenVPN:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/openVPN
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/openVPN
     configSftp:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/sftp
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sftp
     configDuplicati:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/duplicati
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/duplicati
     configUbooquity:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/ubooquity
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ubooquity
     configOmbi:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/config/ombi
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ombi
     #endregion Config
     backups:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/backups
+            mountpoint: ${BASE_PATH}/${BACKUP_DIR_NAME}
     torrents:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/torrents/
+            mountpoint: ${BASE_PATH}/${TORRENT_DIR_NAME}
     #region Volumes Media
     media:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/media
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}
     musics:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/media/musics
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/musics
     movies:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/media/movies
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies
     comics:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/media/books/comics
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books/comics
     books:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/media/books
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books
     #endregion Media
 #endregion Volumes

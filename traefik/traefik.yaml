@@ -31,8 +31,6 @@ entryPoints:
         certResolver: leresolver
       middlewares:
         - security-headers@file
-  openvpn:
-    address: ":1194/udp"
 
 # Allow self-signed certificates for https backends (nextcloud for example)
 serversTransport:

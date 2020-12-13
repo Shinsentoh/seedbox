@@ -2,70 +2,37 @@
 
 A collection of Dockerfiles and a docker-compose configuration to set up a
 seedbox and personal media server.
+This seedbox setup is based on the excellent work from jfroment (https://github.com/jfroment/seedbox) which I customized to fit my usage, and hopefully yours :)
 
 ## Included Applications
 
-| Application           | Web Interface             | Docker image                                                                      | Version tags  | Notes                 |
-------------------------|---------------------------|-----------------------------------------------------------------------------------|---------------|------------------------
-| Plex                  | plex.yourdomain.com       | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)                     | *latest*      | Media Streaming       |
-| Ubooquity             | reader.yourdomain.com     | [linuxserver/ubooquity](https://hub.docker.com/r/linuxserver/ubooquity)           | *latest*      | Books & Comics Reader |
-| Rutorrent             | torrent.yourdomain.com    | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)                 | *latest*      | Torrents downloader   |
-| JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader     |
-| Medusa                | medusa.yourdomain.com     | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)                 | *latest*      | TV Shows monitor      |
-| Radarr                | movie.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)                 | *latest*      | Movies monitor        |
-| Lidarr                | book.yourdomain.com       | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)                 | *latest*      | Music monitor         |
-| Mylar                 | comic.yourdomain.com      | [linuxserver/mylar3](https://hub.docker.com/r/linuxserver/mylar3)                 | *latest*      | Comics monitor        |
-| Jackett               | jackett.yourdomain.com    | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*  | Tracker indexer       |
-| NextCloud             | cloud.yourdomain.com      | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)           | *latest*      | private cloud         |
-| NextCloud-db (MariaDB)| not reachable             | [linuxserver/mariadb](https://hub.docker.com/r/linuxserver/mariadb)               | *latest*      | DB for Nextcloud      |
-| Portainer             | docker.yourdomain.com     | [portainer/portainer-ce](https://hub.docker.com/r/portainer/portainer-ce)         | *latest*      | Container management  |
-| Netdata               | netdata.yourdomain.com    | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)                       | *latest*      | Server monitoring     |
-| Duplicati             | backup.yourdomain.com     | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)           | *latest*      | Backups               |
-| Organizr              | home.yourdomain.com       | [organizr/organizr](https://hub.docker.com/r/organizr/organizr)                   | *latest*      | Hub for your apps     |
-| Shel in a box         | shell.yourdomain.com      | [sspreitzer/shellinabox](https://hub.docker.com/r/sspreitzer/shellinabox)         | *latest*      | Web Console           |
-| OpenPVN               | vpn.yourdomain.com        | [linuxserver/openvpn-as](https://hub.docker.com/r/linuxserver/openvpn-as)         | *latest*      | VPN                   |
-| SFTP                  | SFTP port                 | [netresearch/sftp](https://hub.docker.com/r/netresearch/sftp)                     | *latest*      | SFTP                  |
-
-<!-- | Tautulli (plexPy)     | tautulli.yourdomain.com   | [linuxserver/tautulli](https://hub.docker.com/r/linuxserver/tautulli)             | *latest*      | Plex stats and admin  | -->
-The front-end reverse proxy (Traefik - **check the next section if you have already the seedbox with Traefik v1**) routes based on the lowest level subdomain
- (e.g. `plex.example.com` would route to plex). Since this is how the router
-works, it is recommended for you to get a top level domain. If you do not have
-one, you can edit your domains locally by changing your hosts file or use a
-browser plugin that changes the host header.
-
-Traefik takes care of valid Let's Encrypt certificates and auto-renewal.
-
-Note: Plex is also available directly through the `32400` port without going
-through the reverse proxy.
-
-## September 2020 - Upgrade to Traefik v2 instructions
-
-Before upgrading Traefik to version 2, please check the following:
-
-- In this repo, Traefik v2 upgrade is as seamless as possible (same environment variables than before, out-of-the-box config file...).
-- **First, ``git pull`` to grab the latest code.**
-- The ``HTTP_PASSWORD`` variable now must be simple-quoted in the .env file. See the updated ``.env.sample`` file (which has also been reorganized)
-- Run ``init.sh`` in order to create required Docker objects (network name has changed).
-- You can update your acme.json to a Traefik v2-compliant one by doing the following (before launching Traefik v2):
-
-```sh
-mkdir -p /tmp/migration
-cd /tmp/migration
-sudo cp /opt/traefik/acme.json .
-sudo chmod 775 /tmp/migration/acme.json
-# Do *NOT* forget the --resolver at the end! (leresolver = Let's Encrypt resolver, see traefik/traefik.yml)
-docker run --rm -v ${PWD}:/data -w /data containous/traefik-migration-tool acme -i acme.json -o acme2.json --resolver leresolver
-mkdir -p /data/config/traefik
-sudo cp acme2.json /data/config/traefik/acme.json
-sudo chmod 600 /data/config/traefik/acme.json
-# When you already have a backup!
-sudo rm -rf /opt/traefik /tmp/migration
-```
-
-- As from Traefik v2, as Http Authentication is now possible on the Traefik console, the latter is enabled at ``traefik.yourdomain.com``.
-- After all this, you can simply do: ``./update-all.sh``! Voilà!
+| Application           | Web Interface             | Docker image                                                                      | Version tags  | Notes                  |
+------------------------|---------------------------|-----------------------------------------------------------------------------------|---------------|-------------------------
+| Traefik               | traefik.yourdomain.com    | [traefik](https://hub.docker.com/_/traefik)                                       | *latest*      | Routing                |
+| Plex                  | plex.yourdomain.com       | [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex)                     | *latest*      | Media Streaming        |
+| Ubooquity             | reader.yourdomain.com     | [linuxserver/ubooquity](https://hub.docker.com/r/linuxserver/ubooquity)           | *latest*      | Books & Comics Reader  |
+| Ombi                  | ombi.yourdomain.com       | [linuxserver/ombi](https://hub.docker.com/r/linuxserver/ombi)                     | *v4.0*        | Movies/Series requests |
+| Rutorrent             | torrent.yourdomain.com    | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)                 | *latest*      | Torrents downloader    |
+| JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader      |
+| Jackett               | jackett.yourdomain.com    | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*  | Tracker indexer        |
+| Medusa                | medusa.yourdomain.com     | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)                 | *latest*      | TV Shows monitor       |
+| Radarr                | movie.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)                 | *latest*      | Movies monitor         |
+| Lidarr                | book.yourdomain.com       | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)                 | *latest*      | Music monitor          |
+| Mylar                 | comic.yourdomain.com      | [linuxserver/mylar3](https://hub.docker.com/r/linuxserver/mylar3)                 | *latest*      | Comics monitor         |
+| NextCloud-db (MariaDB)| not reachable             | [linuxserver/mariadb](https://hub.docker.com/r/linuxserver/mariadb)               | *latest*      | DB for Nextcloud       |
+| NextCloud             | cloud.yourdomain.com      | [linuxserver/nextcloud](https://hub.docker.com/r/linuxserver/nextcloud)           | *latest*      | private cloud          |
+| Portainer             | docker.yourdomain.com     | [portainer/portainer-ce](https://hub.docker.com/r/portainer/portainer-ce)         | *latest*      | Container management   |
+| Netdata               | netdata.yourdomain.com    | [netdata/netdata](https://hub.docker.com/r/netdata/netdata)                       | *latest*      | Server monitoring      |
+| Duplicati             | backup.yourdomain.com     | [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)           | *latest*      | Backups                |
+| Shel in a box         | shell.yourdomain.com      | [sspreitzer/shellinabox](https://hub.docker.com/r/sspreitzer/shellinabox)         | *latest*      | Web Console            |
+| Organizr              | home.yourdomain.com       | [organizr/organizr](https://hub.docker.com/r/organizr/organizr)                   | *latest*      | Hub for your apps      |
+| SFTP                  | not reachable             | [netresearch/sftp](https://hub.docker.com/r/netresearch/sftp)                     | *latest*      | SFTP                   |
+| OpenPVN               | vpn.yourdomain.com        | [linuxserver/openvpn-as](https://hub.docker.com/r/linuxserver/openvpn-as)         | *latest*      | VPN                    |
+| Tautulli              | tautulli.yourdomain.com   | [linuxserver/tautulli](https://hub.docker.com/r/linuxserver/tautulli)             | *latest*      | Plex stats and admin   |
 
 ## Dependencies
+
+Linux OS using apt-get to get packages and bash as a shell.
 
 - [Docker](https://github.com/docker/docker) >= 1.13.0
     + Install guidelines for Ubuntu 16.04: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
@@ -73,22 +40,33 @@ sudo rm -rf /opt/traefik /tmp/migration
     + Install guidelines for Ubuntu 16.04: https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
 - [local-persist Docker plugin](https://github.com/CWSpear/local-persist): installed directly on host (not in container). This is a volume plugin that extends the default local driver’s functionality by allowing you specify a mountpoint anywhere on the host, which enables the files to always persist, even if the volume is removed via `docker volume rm`. Use *systemd* install for Ubuntu 16.04.
 
-## Configuration
+## Fresh Server installation
 
-Before running, please create the volumes which will be statically mapped to the ones on the host:
-
+If you want to install those containers on a brand new linux server with a running linux OS (see Dependencies), run those commands:
 ```sh
-sudo su -c "mkdir /data && mkdir /data/config && mkdir /data/torrents""
-./init.sh
+apt-get update
+apt-get install git
+git clone https://github.com/Shinsentoh/seedbox.git /opt/docker-seedbox/ && cd "$_"
+chmod +x server-fresh-install.sh
+./server-fresh-install.sh
+```
+That's it
+
+## Seedbox docker stack installation on existing server
+
+If git is not installed :
+```sh
+apt-get update
+apt-get install git
+```
+then clone the repo:
+```sh
+git clone https://github.com/Shinsentoh/seedbox.git /opt/docker-seedbox/ && cd "$_"
+chmod +x docker-fresh-install.sh
+./docker-fresh-install.sh
 ```
 
-Edit the `.env` file and change the variables as desired.
-The variables are all self-explanatory.
-Sames goes for `open-tunnel.sh` script to open a tunnel with port forwarding in order to access Plex Tools directly in your browser. (documentation needs to be updated - for now just install manually Plex Tools)
-
-Follow those guidelines to setup cloudproxy in Jackett: https://github.com/abeloin/Jackett#configuring-cloudproxy-integration
-
-## Running & updating
+## Running & updating docker containers
 
 ```sh
 ./update-all.sh

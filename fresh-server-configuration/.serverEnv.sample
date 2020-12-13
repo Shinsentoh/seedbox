@@ -1,0 +1,20 @@
+# user to use instead of root, can use sudo
+ADD_USER=false
+USER=abc
+# will copy content of aliases.txt to the $USER's .bashrc
+ADD_ALIASES_TO_USER_SHELL=false
+
+# sftp port (useful to upload a backup to be restored later)
+ADD_SFTP=false
+SFTP_PORT=22
+
+# if you need to change the default location for docker images (/var/lib/docker)
+CHANGE_DOCKER_DEFAULT_IMAGES_LOCATION=false
+# in most case, if your '/' partition is small and you'd like to use your other big partition to stock those images
+NEW_DOCKER_IMAGES_LOCATION=/home/docker
+
+# FireWall
+ADD_FIREWALL=false
+
+# Fail2ban
+ADD_FAIL2BAN=false

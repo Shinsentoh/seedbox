@@ -1,0 +1,4 @@
+﻿installer le serveur
+apt-get update
+apt-get install git
+git clone https://github.com/Shinsentoh/seedbox.git /opt/docker-seedbox/ && cd "$_"
