@@ -40,7 +40,7 @@ Linux OS using apt-get to get packages and bash as a shell.
     + Install guidelines for Ubuntu 16.04: https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
 - [local-persist Docker plugin](https://github.com/CWSpear/local-persist): installed directly on host (not in container). This is a volume plugin that extends the default local driver’s functionality by allowing you specify a mountpoint anywhere on the host, which enables the files to always persist, even if the volume is removed via `docker volume rm`. Use *systemd* install for Ubuntu 16.04.
 
-## Fresh Server installation
+## Installation on a brand new Server
 
 If you want to install those containers on a brand new linux server with a running linux OS (see Dependencies), run those commands:
 ```sh
@@ -52,7 +52,7 @@ chmod +x server-fresh-install.sh
 ```
 That's it
 
-## Seedbox docker stack installation on existing server
+## Installation on an existing server
 
 If git is not installed :
 ```sh
@@ -66,17 +66,17 @@ chmod +x docker-fresh-install.sh
 ./docker-fresh-install.sh
 ```
 
-## Running & updating docker containers
+## updating docker containers
+
+Make sure you install the dependencies and finish configuration before doing this.
 
 ```sh
 ./update-all.sh
 ```
+Warning: Docker Hub has a limit to 100 images pulls over 6 hours, don't use 'update-all.sh' too often in this laptime as it's using 'docker-compose pull' which tries to pull images from Docker Hub.
 
 docker-compose should manage all the volumes and network setup for you. If it
 does not, verify that your docker and docker-compose version is updated.
-
-Make sure you install the dependencies and finish configuration before doing
-this.
 
 ## PlexPass
 

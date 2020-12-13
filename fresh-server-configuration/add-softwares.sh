@@ -6,4 +6,5 @@ fi
 
 source ./fresh-server-configuration/.serverEnv
 
-apt-get install nano curl tee systemctl
+apt-get install curl tee systemctl
+
