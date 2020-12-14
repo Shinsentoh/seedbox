@@ -5,13 +5,13 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source ./fresh-server-configuration/.serverEnv
+source fresh-server-configuration/.serverEnv
 
 if [ "$ADD_SFTP" = true ] ; then
     echo "[$0] Adding Sftp server using openssh-server ..."
     apt install openssh-server
     sed -i "s/Port 22/Port ${SFTP_PORT}/g" /etc/ssh/sshd_config
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
-    systemctl restart sshd.service
+    service sshd restart
     echo "[$0] Sftp enabled, listening on port ${SFTP_PORT} ..."
 fi

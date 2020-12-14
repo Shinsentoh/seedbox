@@ -4,7 +4,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source ./fresh-server-configuration/.serverEnv
+source fresh-server-configuration/.serverEnv
 
-apt-get install curl systemctl
+apt-get install curl software-properties-common
 

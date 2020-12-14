@@ -4,7 +4,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source ./fresh-server-configuration/.serverEnv
+source fresh-server-configuration/.serverEnv
 
 if [ "$ADD_USER" = true ] ; then
     # creates user and his home directory
@@ -14,6 +14,6 @@ if [ "$ADD_USER" = true ] ; then
 
     if [ "$ADD_ALIASES_TO_USER_SHELL" = true ] ; then
         # copy aliases into the user bashrc to have them for later
-        cat ./fresh-server-configuration/aliases.sh >> /home/$USER/.bashrc
+        cat fresh-server-configuration/aliases.txt >> /home/$USER/.bashrc
     fi
 fi

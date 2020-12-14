@@ -4,7 +4,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source ./fresh-server-configuration/.serverEnv
+source fresh-server-configuration/.serverEnv
 
 if [ "$ADD_FIREWALL" = true ] ; then
     echo "[$0] Installing packages to manage the firewall (iptables)."

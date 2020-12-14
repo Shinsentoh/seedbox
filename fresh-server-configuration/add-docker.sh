@@ -9,7 +9,7 @@ fi
 # docker
 if ! command -v docker &> /dev/null; then
     echo "[$0] Adding the GPG key for the official Docker repository to your system ..."
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
     echo "[$0] Adding the Docker repository to APT sources ..."
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -23,8 +23,8 @@ if ! command -v docker &> /dev/null; then
     echo "[$0] Installing Docker ..."
     apt-get install -y docker-ce &> ./logfile-seedbox-docker.log
 
-    STATUS="$(systemctl is-active docker)"
-    if [ ! "${STATUS}" = "active" ]; then
+    ANY_SERVICE_STATUS="$(isRunningService docker)"
+    if [ ! $ANY_SERVICE_STATUS ]; then
         echo "[$0] Service docker is not running ... aborting script."
         exit 1
     fi
@@ -50,12 +50,12 @@ fi
 # local-persist Docker plugin
 # This is a volume plugin that extends the default local driver’s functionality by allowing you specify a mountpoint anywhere on the host,
 # which enables the files to always persist, even if the volume is removed via docker volume rm
-serviceName=docker-volume-local-persist
-if systemctl --all --type service | grep -q "$serviceName"; then
+ANY_SERVICE_STATUS="$(isRunningService docker-volume-local-persist)"
+if [ ! $ANY_SERVICE_STATUS ]; then
     echo "[$0] service $serviceName is already installed."
 else
     echo "[$0] Installing local-persist Docker plugin."
-    curl -fsSL https://raw.githubusercontent.com/MatchbookLab/local-persist/master/scripts/install.sh | sudo bash
+    curl -fsSL https://raw.githubusercontent.com/MatchbookLab/local-persist/master/scripts/install.sh | bash
 fi
 
 echo "[$0] Done."

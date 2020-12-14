@@ -8,8 +8,8 @@ echo "[$0] Done with server configuration."
 
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
-if [[ ! -f ./fresh-server-configuration/.serverEnv ]]; then
-  cp ./fresh-server-configuration/.serverEnv.sample ./fresh-server-configuration/.serverEnv
+if [[ ! -f fresh-server-configuration/.serverEnv ]]; then
+  cp fresh-server-configuration/.serverEnv.sample fresh-server-configuration/.serverEnv
 fi
 
 if [[ ! "$EDITOR" = "nano" ]]; then
@@ -27,8 +27,8 @@ fi
 
 # editing .serverEnv file
 read -s -p "Press {Enter} to edit the .serverEnv file"
-"${EDITOR:-vi}" ./fresh-server-configuration/.serverEnv
-source ./fresh-server-configuration/.serverEnv
+"${EDITOR:-vi}" fresh-server-configuration/.serverEnv
+source fresh-server-configuration/.serverEnv
 
 # add needed softwares to run all the scripts
 ./fresh-server-configuration/add-softwares.sh

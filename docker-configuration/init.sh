@@ -10,6 +10,19 @@ if [[ ! -f .env ]]; then
   cp .env.sample .env
 fi
 
+if [[ ! "$EDITOR" = "nano" ]]; then
+  while true; do
+      read -p "Would you like to make nano your default editor ? [y/n]: " yn
+      case $yn in
+          [Yy]* ) apt-get install nano;
+                  EDITOR=nano;
+                  break;;
+          [Nn]* ) break;;
+          * ) echo "Please answer yes or no.";;
+      esac
+  done
+fi
+
 # editing .env file
 read -s -p "Press {Enter} to edit the .env file"
 "${EDITOR:-vi}" .env
