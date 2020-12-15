@@ -10,7 +10,7 @@ source fresh-server-configuration/.serverEnv
 if [ "$ADD_SFTP" = true ] ; then
     echo "[$0] Adding Sftp server using openssh-server ..."
     apt install openssh-server
-    sed -i "s/#?Port 22/Port ${SFTP_PORT}/g" /etc/ssh/sshd_config
+    sed -i "s/#\?Port [[:digit:]]\+/Port ${SFTP_PORT}/g" /etc/ssh/sshd_config
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
     service sshd restart
     echo "[$0] Sftp enabled, listening on port ${SFTP_PORT} ..."
