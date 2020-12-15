@@ -24,7 +24,7 @@ if ! command -v docker &> /dev/null; then
     apt-get install -y docker-ce &> ./logfile-seedbox-docker.log
 
     ANY_SERVICE_STATUS="$(isRunningService docker)"
-    if [ "$ANY_SERVICE_STATUS" = "0" ]; then
+    if [ $ANY_SERVICE_STATUS -ne 0 ]; then
         echo "[$0] Service docker is not running ... aborting script."
         exit 1
     fi
@@ -51,7 +51,7 @@ fi
 # This is a volume plugin that extends the default local driver’s functionality by allowing you specify a mountpoint anywhere on the host,
 # which enables the files to always persist, even if the volume is removed via docker volume rm
 ANY_SERVICE_STATUS="$(isRunningService docker-volume-local-persist)"
-if [ "$ANY_SERVICE_STATUS" = "0" ]; then
+if [ $ANY_SERVICE_STATUS -ne 0 ]; then
     echo "[$0] service $serviceName is already installed."
 else
     echo "[$0] Installing local-persist Docker plugin."
