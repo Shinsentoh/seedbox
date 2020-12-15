@@ -43,6 +43,8 @@ Linux OS using apt-get to get packages and bash as a shell.
 ## Installation on a brand new Server
 
 If you want to install those containers on a brand new linux server with a running linux OS (see Dependencies), run those commands:
+Login as root (```su```), then:
+
 ```sh
 apt-get update
 apt-get install git

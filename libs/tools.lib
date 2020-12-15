@@ -13,16 +13,16 @@
 
 isRunningService() {
   if [ "$#" = 0 ]; then
-    echo "Usage $0 "
+    echo "Usage $0"
     exit 0
   fi
 
   service=$1
   is_running=$(ps aux | grep -v grep | grep -v "$0" | grep $service | wc -l | awk '{print $1}')
 
-  if [ $is_running != "0" ]; then
-    return 1
+  if [ $is_running = "1" ]; then
+    echo 1
   else
-    return 0
+    echo 0
   fi
 }
