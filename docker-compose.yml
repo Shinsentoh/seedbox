@@ -142,13 +142,14 @@ services:
 
     #region Media monitors
     jackett:
-        image: sclemenceau/docker-jackett:cloudproxy
+        image: ghcr.io/linuxserver/jackett
         container_name: jackett
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
-            - JACKETT_NO_UPDATES=1
+            - AUTO_UPDATE=false
+            - RUN_OPTS='-FlareSolverrURL="http://flaresolverr:8191"'
         volumes:
             - configJackett:/config
             - /etc/localtime:/etc/localtime:ro
@@ -160,9 +161,11 @@ services:
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
 
-    cloudproxy:
-        image: noahcardoza/cloudproxy
-        container_name: cloudproxy
+    flaresolver:
+        image: ghcr.io/flaresolverr/flaresolverr
+        container_name: flaresolverr
+        environment:
+            - CAPTCHA_SOLVER=hcaptcha-solver
         restart: unless-stopped
 
     medusa:

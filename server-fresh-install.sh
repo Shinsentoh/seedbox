@@ -39,7 +39,7 @@ source fresh-server-configuration/.serverEnv
 # can be run before the docker installation
 ./fresh-server-configuration/docker-config.sh
 
-read -s -p "Press {Enter} to continue with containers installation"
+read -s -p "Press {Enter} to continue with docker installation and seedbox containers setup"
 
 # install docker, setup the user folders and run the containers
 ./docker-fresh-install.sh
