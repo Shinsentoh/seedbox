@@ -11,7 +11,7 @@ if [ "$ADD_FIREWALL" = true ] ; then
     # iproute2 iproute2-doc => command 'ss'
     # net-tools => command 'netstat'
     # iptables-persistent netfilter-persistent => play with the firewall and keep configuration on each reboot
-    apt-get install iproute2 iproute2-doc net-tools iptables-persistent netfilter-persistent
+    apt-get install iproute2 iproute2-doc net-tools iptables-persistent netfilter-persistent &> ./logfile-seedbox-docker.log
     # let's be sure it will be started again after reboot
     systemctl enable netfilter-persistent
     # not using this repo anymore in case it comes to an end one day, but feel free to use it instead of the local file if you want.

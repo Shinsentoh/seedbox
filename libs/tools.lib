@@ -8,8 +8,14 @@
 # $ getGithubLatestRelease "creationix/nvm"
 # v0.31.4
 
+isInstalledService() {
+  if [ "$#" = 0 ]; then
+    echo "Usage $0"
+    exit 0
+  fi
 
-#!/bin/bash
+  service $1 status | grep -q loaded && echo 0 || echo 1
+}
 
 isRunningService() {
   if [ "$#" = 0 ]; then
@@ -17,12 +23,5 @@ isRunningService() {
     exit 0
   fi
 
-  service=$1
-  is_running=$(ps aux | grep -v grep | grep -v "$0" | grep $service | wc -l | awk '{print $1}')
-
-  if [ $is_running = "1" ]; then
-    echo 1
-  else
-    echo 0
-  fi
+  service $1 status | grep -q running && echo 0 || echo 1
 }

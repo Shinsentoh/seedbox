@@ -25,8 +25,7 @@ if ! command -v docker &> /dev/null; then
 
     ANY_SERVICE_STATUS="$(isRunningService docker)"
     if [ $ANY_SERVICE_STATUS -ne 0 ]; then
-        echo "[$0] Service docker is not running ... aborting script."
-        exit 1
+        exit 100
     fi
 else
     echo "[$0] docker is already installed."
@@ -50,8 +49,9 @@ fi
 # local-persist Docker plugin
 # This is a volume plugin that extends the default local driver’s functionality by allowing you specify a mountpoint anywhere on the host,
 # which enables the files to always persist, even if the volume is removed via docker volume rm
-ANY_SERVICE_STATUS="$(isRunningService docker-volume-local-persist)"
-if [ $ANY_SERVICE_STATUS -ne 0 ]; then
+serviceName=docker-volume-local-persist
+ANY_SERVICE_STATUS=$(isInstalledService "$serviceName")
+if [ $ANY_SERVICE_STATUS -eq 0 ]; then
     echo "[$0] service $serviceName is already installed."
 else
     echo "[$0] Installing local-persist Docker plugin."

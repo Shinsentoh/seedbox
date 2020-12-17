@@ -39,9 +39,12 @@ source fresh-server-configuration/.serverEnv
 # can be run before the docker installation
 ./fresh-server-configuration/docker-config.sh
 
+read -s -p "Press {Enter} to continue with containers installation"
+
 # install docker, setup the user folders and run the containers
 ./docker-fresh-install.sh
 
+read -s -p "Press {Enter} to continue with firewall initialisation based on the current opened ports"
 # add and configure the firewall
 ./fresh-server-configuration/add-firewall.sh
 

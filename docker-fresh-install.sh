@@ -8,7 +8,12 @@ find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
 echo "[$0] Starting docker installation ..."
 ./fresh-server-configuration/add-docker.sh
-echo "[$0] Done with docker installation."
+if [ $? -ne 0 ]; then
+    echo "[$0] Service docker is not running ... aborting script."
+    exit 100
+else
+    echo "[$0] Done with docker installation."
+fi
 
 echo "[$0] Starting docker-seedbox configuration ..."
 # init .env file and treafik
