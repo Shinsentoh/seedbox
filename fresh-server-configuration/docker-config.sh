@@ -12,5 +12,5 @@ if [ "$CHANGE_DOCKER_DEFAULT_IMAGES_LOCATION" = true ] ; then
     ## will free space for the old containers
     # docker system prune -a
     ## reload docker to apply this location change
-    # service docker restart
+    # systemctl restart  docker
 fi

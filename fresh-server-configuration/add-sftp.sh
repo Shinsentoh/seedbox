@@ -12,6 +12,6 @@ if [ "$ADD_SFTP" = true ] ; then
     apt install openssh-server &> ./logfile-seedbox-docker.log
     sed -i "s/#\?Port [[:digit:]]\+/Port ${SFTP_PORT}/g" /etc/ssh/sshd_config
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
-    service sshd restart
+    systemctl restart sshd
     echo "[$0] Sftp enabled, listening on port ${SFTP_PORT} ..."
 fi

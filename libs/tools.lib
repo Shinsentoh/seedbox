@@ -14,7 +14,7 @@ isInstalledService() {
     exit 0
   fi
 
-  service $1 status | grep -q loaded && echo 0 || echo 1
+  systemctl status $1 | grep -q loaded && echo 0 || echo 1
 }
 
 isRunningService() {
@@ -23,5 +23,5 @@ isRunningService() {
     exit 0
   fi
 
-  service $1 status | grep -q running && echo 0 || echo 1
+  systemctl status $1 | grep -q running && echo 0 || echo 1
 }
