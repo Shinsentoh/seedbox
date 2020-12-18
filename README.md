@@ -14,7 +14,7 @@ This seedbox setup is based on the excellent work from jfroment (https://github.
 | Ombi                  | ombi.yourdomain.com       | [linuxserver/ombi](https://hub.docker.com/r/linuxserver/ombi)                     | *v4.0*        | Movies/Series requests |
 | Rutorrent             | torrent.yourdomain.com    | [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent)                 | *latest*      | Torrents downloader    |
 | JDownloader           | ddl.yourdomain.com        | [jlesage/jdownloader-2](https://hub.docker.com/r/jlesage/jdownloader-2)           | *latest*      | Direct downloader      |
-| Jackett               | jackett.yourdomain.com    | [sclemenceau/trakttoplex](https://hub.docker.com/r/sclemenceau/docker-jackett)    | *cloudproxy*  | Tracker indexer        |
+| Jackett               | jackett.yourdomain.com    | [linuxserver/jackett](https://hub.docker.com/r/linuxserver/jackett)               | *cloudproxy*  | Tracker indexer        |
 | Medusa                | medusa.yourdomain.com     | [linuxserver/medusa](https://hub.docker.com/r/linuxserver/medusa)                 | *latest*      | TV Shows monitor       |
 | Radarr                | movie.yourdomain.com      | [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)                 | *latest*      | Movies monitor         |
 | Lidarr                | book.yourdomain.com       | [linuxserver/lidarr](https://hub.docker.com/r/linuxserver/lidarr)                 | *latest*      | Music monitor          |

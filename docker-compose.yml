@@ -160,6 +160,8 @@ services:
             - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
+        depends_on:
+            - flaresolverr
 
     flaresolver:
         image: ghcr.io/flaresolverr/flaresolverr

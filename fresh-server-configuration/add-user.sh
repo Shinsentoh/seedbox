@@ -6,14 +6,16 @@ fi
 
 source fresh-server-configuration/.serverEnv
 
-if [ "$ADD_USER" = true ] ; then
-    # creates user and his home directory
-    adduser $USER
-    # add user to group sudo to be able to run root commands
-    usermod -aG sudo $USER
+if [ id "$ADD_USER" &>/dev/null; -ne 0 ] ; then
+    if [ "$ADD_USER" = true ] ; then
+        # creates user and his home directory
+        adduser $USER
+        # add user to group sudo to be able to run root commands
+        usermod -aG sudo $USER
 
-    if [ "$ADD_ALIASES_TO_USER_SHELL" = true ] ; then
-        # copy aliases into the user bashrc to have them for later
-        cat fresh-server-configuration/aliases.txt >> /home/$USER/.bashrc
+        if [ "$ADD_ALIASES_TO_USER_SHELL" = true ] ; then
+            # copy aliases into the user bashrc to have them for later
+            cat fresh-server-configuration/aliases.txt >> /home/$USER/.bashrc
+        fi
     fi
 fi

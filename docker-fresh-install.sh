@@ -24,7 +24,7 @@ source .env
 docker network create traefik-network 2>&1 || true
 ./docker-configuration/update-all.sh
 
-./docker-configuration/init-setup-nextcloud.sh
+./docker-configuration/after-setup-nextcloud.sh
 
 # todo: use cron to update ? OR is it handled by watchtower
 

@@ -22,13 +22,13 @@ if [ "$ADD_FIREWALL" = true ] ; then
     echo "[$0] allowing all current listening ports into the firewall."
     # export all listening ports and protocol as iptables commands
     ss -lntu | tail -n+3 | awk '{gsub(/.*:/,"",$5) ; print "iptables -A INPUT -p" $1 " --dport " $5 " -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT" }' | sort -u -k5n -k3 > fresh-server-configuration/input-rules.sh
-    chmod +x input-rules.sh
+    chmod +x fresh-server-configuration/input-rules.sh
     # run the commands to open those ports
     ./fresh-server-configuration/input-rules.sh
     # save the whole configuration, so that it is restored on the each reboot
     netfilter-persistent save
     # clean temp files.
-    rm fresh-server-configuration/basic-rules.iptables fresh-server-configuration/input-rules.sh
+    rm fresh-server-configuration/input-rules.sh
     echo "[$0] Done setting up the firewall."
     echo "DO NOT CLOSE or EXIT THIS SSH CONNECTION, before runnin the below test:"
     echo "Open another ssh connection to this server to make sure it is reachable through ssh with this new firewall configuration.".
