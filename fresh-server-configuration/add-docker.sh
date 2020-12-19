@@ -9,10 +9,11 @@ fi
 # docker
 if ! command -v docker &> /dev/null; then
     echo "[$0] Adding the GPG key for the official Docker repository to your system ..."
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    linux_os_name=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
+    curl -fsSL https://download.docker.com/linux/$linux_os_name/gpg | apt-key add -
 
     echo "[$0] Adding the Docker repository to APT sources ..."
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$linux_os_name $(lsb_release -cs) stable"
 
     echo "[$0] updating the package database with the Docker packages from the newly added repo ..."
     apt-get update &> ./logfile-seedbox-docker.log

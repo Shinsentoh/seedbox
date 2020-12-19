@@ -1,4 +1,6 @@
-﻿getGithubLatestRelease() {
+#!/bin/bash
+
+getGithubLatestRelease() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
@@ -14,7 +16,7 @@ isInstalledService() {
     exit 0
   fi
 
-  systemctl status $1 | grep -q loaded && echo 0 || echo 1
+  systemctl --all --type service | grep -q "$1" && echo 0 || echo 1
 }
 
 isRunningService() {

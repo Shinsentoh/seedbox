@@ -6,10 +6,10 @@ fi
 
 source fresh-server-configuration/.serverEnv
 
-if [ id "$ADD_USER" &>/dev/null -ne 0 ] ; then
+if [ ! id "$ADD_USER" &>/dev/null ] ; then
     if [ "$ADD_USER" = true ] ; then
         # creates user and his home directory
-        adduser $USER
+        /usr/sbin/adduser $USER
         # add user to group sudo to be able to run root commands
         usermod -aG sudo $USER
 
