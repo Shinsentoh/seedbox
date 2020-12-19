@@ -141,7 +141,7 @@ services:
     #endregion Downloader
 
     #region Media monitors
-    flaresolver:
+    flaresolverr:
         image: ghcr.io/flaresolverr/flaresolverr
         container_name: flaresolverr
         environment:
