@@ -27,6 +27,8 @@ if ! command -v docker &> /dev/null; then
     ANY_SERVICE_STATUS="$(isRunningService docker)"
     if [ $ANY_SERVICE_STATUS -ne 0 ]; then
         exit 100
+    else
+        echo "[$0] service docker installed."
     fi
 else
     echo "[$0] docker is already installed."
@@ -56,7 +58,13 @@ if [ $ANY_SERVICE_STATUS -eq 0 ]; then
     echo "[$0] service $serviceName is already installed."
 else
     echo "[$0] Installing local-persist Docker plugin."
-    curl -fsSL https://raw.githubusercontent.com/MatchbookLab/local-persist/master/scripts/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/MatchbookLab/local-persist/master/scripts/install.sh | bash &> ./logfile-seedbox-docker.log
+    ANY_SERVICE_STATUS=$(isInstalledService "$serviceName")
+    if [ $ANY_SERVICE_STATUS -ne 0 ]; then
+        exit 100
+    else
+        echo "[$0] service $serviceName installed."
+    fi
 fi
 
 echo "[$0] Done."

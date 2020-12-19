@@ -141,9 +141,18 @@ services:
     #endregion Downloader
 
     #region Media monitors
+    flaresolver:
+        image: ghcr.io/flaresolverr/flaresolverr
+        container_name: flaresolverr
+        environment:
+            - CAPTCHA_SOLVER=hcaptcha-solver
+        restart: unless-stopped
+
     jackett:
         image: ghcr.io/linuxserver/jackett
         container_name: jackett
+        depends_on:
+            - flaresolverr
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
@@ -160,15 +169,6 @@ services:
             - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
-        depends_on:
-            - flaresolverr
-
-    flaresolver:
-        image: ghcr.io/flaresolverr/flaresolverr
-        container_name: flaresolverr
-        environment:
-            - CAPTCHA_SOLVER=hcaptcha-solver
-        restart: unless-stopped
 
     medusa:
         image: ghcr.io/linuxserver/medusa
