@@ -14,7 +14,7 @@ SCRIPT_DIR=$(pwd)
 
 if ! id "$username" &>/dev/null; then
     echo "[$0] Creating user: $username ..."
-    adduser $username
+    /usr/sbin/adduser $username
 fi
 
 echo "[$0] Creating directories for $username ..."
@@ -43,7 +43,7 @@ echo "[$0] Setting user UID and GID in the .env file for $username ..."
 sed -i -e "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
 sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 
-adduser $username docker
+/usr/sbin/adduser $username docker
 
 echo "[$0] Done."
 exit 0
