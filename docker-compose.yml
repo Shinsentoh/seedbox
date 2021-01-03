@@ -209,6 +209,46 @@ services:
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
             - "traefik.http.routers.radarr.service=radarr"
 
+    #region Folks
+    medusa-folks:
+        image: ghcr.io/linuxserver/medusa
+        container_name: medusa-folks
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configFolksMedusa:/config
+            - media:/media
+            - torrents:/downloads
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.medusa-folks.loadbalancer.server.port=8081"
+            - "traefik.http.routers.medusa-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
+            - "traefik.http.routers.medusa-folks.service=medusa-folks"
+
+    # radarr-folks:
+    #     image: linuxserver/radarr
+    #     container_name: radarr-folks
+    #     restart: always
+    #     volumes:
+    #         - configFolksRadarr:/config
+    #         - movies:/movies
+    #         - torrents:/downloads
+    #         - /etc/localtime:/etc/localtime:ro
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.radarr-folks.loadbalancer.server.port=7878"
+    #         - "traefik.http.routers.radarr-folks.rule=Host(`${FOLKS_RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.radarr-folks.middlewares=common-auth@file"
+    #         - "traefik.http.routers.radarr-folks.service=radarr-folks"
+
     lidarr:
         image: linuxserver/lidarr
         container_name: lidarr
@@ -246,6 +286,8 @@ services:
             - "traefik.http.routers.mylar.rule=Host(`${MYLAR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.mylar.middlewares=common-auth@file"
             - "traefik.http.routers.mylar.service=mylar"
+    #endregion Folks
+
     #endregion Media monitors
 
     #region Cloud
@@ -482,10 +524,18 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/medusa
+    configFolksMedusa:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/medusa
     configRadarr:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
+    # configFolksRadarr:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/radarr
     configBazarr:
         driver: local-persist
         driver_opts:
@@ -497,11 +547,11 @@ volumes:
     configLidarr:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/lidarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/lidarr
     configMylar:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/mylarr
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/mylarr
     configTautulli:
         driver: local-persist
         driver_opts:
@@ -545,7 +595,7 @@ volumes:
     configUbooquity:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ubooquity
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/ubooquity
     configOmbi:
         driver: local-persist
         driver_opts:

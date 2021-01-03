@@ -11,7 +11,7 @@ if [ "$ADD_FIREWALL" = true ] ; then
     # iproute2 iproute2-doc => command 'ss'
     # net-tools => command 'netstat'
     # iptables-persistent netfilter-persistent => play with the firewall and keep configuration on each reboot
-    apt-get install iproute2 iproute2-doc net-tools iptables-persistent netfilter-persistent &> ./logfile-seedbox-docker.log
+    apt-get install iproute2 iproute2-doc net-tools iptables-persistent netfilter-persistent #&> ./logfile-seedbox-docker.log
     # let's be sure it will be started again after reboot
     systemctl enable netfilter-persistent
     # not using this repo anymore in case it comes to an end one day, but feel free to use it instead of the local file if you want.
@@ -30,7 +30,7 @@ if [ "$ADD_FIREWALL" = true ] ; then
     # clean temp files.
     rm fresh-server-configuration/input-rules.sh
     echo "[$0] Done setting up the firewall."
-    echo "DO NOT CLOSE or EXIT THIS SSH CONNECTION, before runnin the below test:"
+    echo "DO NOT CLOSE or EXIT THIS SSH CONNECTION, before running the below test:"
     echo "Open another ssh connection to this server to make sure it is reachable through ssh with this new firewall configuration.".
     echo "If it's not working, run 'netfilter-persistent flush' to flush the rules and then 'netfilter-persistent save' to be sure you'll keep access to this server even after a reboot until you figure out why it's not working."
 
