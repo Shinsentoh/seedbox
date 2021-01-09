@@ -334,12 +334,15 @@ services:
             - SYS_PTRACE
         security_opt:
             - apparmor:unconfined
+        environment:
+            - PGID=$(grep docker /etc/group | cut -d ':' -f 3)
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
             - /proc:/host/proc:ro
             - /sys:/host/sys:ro
             - /etc/os-release:/host/etc/os-release:ro
+            - /var/run/docker.sock:/var/run/docker.sock:rw
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.netdata.loadbalancer.server.port=19999"
