@@ -335,8 +335,7 @@ services:
         security_opt:
             - apparmor:unconfined
         environment:
-            - PGID=${NETDATA_DOCKER_PGID}
-            - PUID=${PUID}
+            - PGID=${PGID}
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
