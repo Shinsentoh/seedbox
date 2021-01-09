@@ -112,7 +112,7 @@ services:
             - CHECK_PERM_DATA=false
         volumes:
             - configRutorrent:/config
-            - torrents:/data
+            - alldata:/data
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -179,8 +179,7 @@ services:
             - TZ=${TZ}
         volumes:
             - configMedusa:/config
-            - media:/media
-            - torrents:/downloads
+            - alldata:/data
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -195,8 +194,7 @@ services:
         restart: always
         volumes:
             - configRadarr:/config
-            - movies:/movies
-            - torrents:/downloads
+            - alldata:/data
             - /etc/localtime:/etc/localtime:ro
         environment:
             - PGID=${PGID}
@@ -219,8 +217,7 @@ services:
             - TZ=${TZ}
         volumes:
             - configFolksMedusa:/config
-            - media:/media
-            - torrents:/downloads
+            - alldata:/data
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -229,34 +226,13 @@ services:
             - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
             - "traefik.http.routers.medusa-folks.service=medusa-folks"
 
-    # radarr-folks:
-    #     image: linuxserver/radarr
-    #     container_name: radarr-folks
-    #     restart: always
-    #     volumes:
-    #         - configFolksRadarr:/config
-    #         - movies:/movies
-    #         - torrents:/downloads
-    #         - /etc/localtime:/etc/localtime:ro
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.radarr-folks.loadbalancer.server.port=7878"
-    #         - "traefik.http.routers.radarr-folks.rule=Host(`${FOLKS_RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.radarr-folks.middlewares=common-auth@file"
-    #         - "traefik.http.routers.radarr-folks.service=radarr-folks"
-
     lidarr:
         image: linuxserver/lidarr
         container_name: lidarr
         restart: always
         volumes:
             - configLidarr:/config
-            - musics:/musics
-            - torrents:/downloads
+            - alldata:/data
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
@@ -322,7 +298,7 @@ services:
         volumes:
             - configNextcloud:/config
             - nextcloudData:/data
-            - media:/media:ro
+            - alldata:/data:ro
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
@@ -536,10 +512,6 @@ volumes:
     #     driver: local-persist
     #     driver_opts:
     #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/radarr
-    configBazarr:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/bazarr
     configJackett:
         driver: local-persist
         driver_opts:
