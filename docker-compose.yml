@@ -298,7 +298,7 @@ services:
         volumes:
             - configNextcloud:/config
             - nextcloudData:/data
-            - alldata:/data:ro
+            - alldata:/seedbox:ro
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
