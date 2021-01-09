@@ -335,7 +335,7 @@ services:
         security_opt:
             - apparmor:unconfined
         environment:
-            - PGID=$(grep docker /etc/group | cut -d ':' -f 3)
+            - PGID=${NETDATA_DOCKER_PGID}
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
