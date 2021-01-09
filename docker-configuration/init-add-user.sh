@@ -43,6 +43,9 @@ echo "[$0] Setting user UID and GID in the .env file for $username ..."
 sed -i -e "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
 sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 
+TMP_NETDATA_DOCKER_PGID=$(grep docker /etc/group | cut -d ':' -f 3)
+sed -i -e "s/NETDATA_DOCKER_PGID=[[:digit:]]*/NETDATA_DOCKER_PGID=$TMP_NETDATA_DOCKER_PGID/g" .env
+
 /usr/sbin/adduser $username docker
 
 echo "[$0] Done."
