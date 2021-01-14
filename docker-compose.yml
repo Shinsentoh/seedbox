@@ -374,7 +374,6 @@ services:
         container_name: shellinabox
         restart: unless-stopped
         environment:
-            - SIAB_USERCSS="Colors:+/usr/share/shellinabox/color.css,Normal:-/usr/share/shellinabox/white-on-black.css,Monochrome:-/usr/share/shellinabox/monochrome.css"
             - SIAB_USER=${MEDIA_USER}
             - SIAB_PASSWORD=${SIAB_PASSWORD}
             - SIAB_GROUP=${MEDIA_USER}
@@ -445,7 +444,7 @@ services:
     tautulli:
         image: linuxserver/tautulli
         container_name: tautulli
-        restart: always
+        restart: unless-stopped
         volumes:
             - configTautulli:/config
             - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
@@ -462,7 +461,7 @@ services:
     filebrowser:
         image: hurlenko/filebrowser
         container_name: filebrowser
-        restart: always
+        restart: unless-stopped
         user: "${PUID}:${PGID}"
         volumes:
             - alldata:/data
