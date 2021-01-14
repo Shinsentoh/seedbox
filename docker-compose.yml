@@ -460,17 +460,19 @@ services:
             - "traefik.http.routers.tautulli.service=tautulli"
 
     filebrowser:
-        image: filebrowser/filebrowser
+        image: hurlenko/filebrowser
+        restart: always
+        user: "${PUID}:${PGID}"
         volumes:
-            - alldata:/srv
-            - configFileBrowser/filebrowser.db:/database.db
-            - configFileBrowser/.filebrowser.json:/.filebrowser.json
+            - alldata:/data
+            - configFileBrowser:/config
+        environment:
+            - FB_BASEURL=/filebrowser
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.filebrowser.loadbalancer.server.port=80"
-            - "traefik.http.routers.filebrowser.rule=Host(`${FILE_BROWSER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.filebrowser.service=filebrowser"
-        restart: always
+            - "traefik.http.services.tautulli.loadbalancer.server.port=8080"
+            - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.tautulli.service=tautulli"
     #endregion Administration
 #endregion Containers
 
