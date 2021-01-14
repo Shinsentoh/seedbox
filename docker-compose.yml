@@ -461,6 +461,7 @@ services:
 
     filebrowser:
         image: hurlenko/filebrowser
+        container_name: filebrowser
         restart: always
         user: "${PUID}:${PGID}"
         volumes:
