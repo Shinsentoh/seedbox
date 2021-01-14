@@ -458,6 +458,19 @@ services:
             - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
             - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.tautulli.service=tautulli"
+
+    filebrowser:
+        image: filebrowser/filebrowser
+        volumes:
+            - alldata:/srv
+            - configFileBrowser/filebrowser.db:/database.db
+            - configFileBrowser/.filebrowser.json:/.filebrowser.json
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.filebrowser.loadbalancer.server.port=80"
+            - "traefik.http.routers.filebrowser.rule=Host(`${FILE_BROWSER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.filebrowser.service=filebrowser"
+        restart: always
     #endregion Administration
 #endregion Containers
 
@@ -487,6 +500,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/traefik
+    configFileBrowser:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/fileBrowser
     configPlex:
         driver: local-persist
         driver_opts:
