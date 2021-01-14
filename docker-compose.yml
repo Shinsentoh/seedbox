@@ -458,22 +458,6 @@ services:
             - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.tautulli.service=tautulli"
 
-    filebrowser:
-        image: hurlenko/filebrowser
-        container_name: filebrowser
-        restart: unless-stopped
-        user: "${PUID}:${PGID}"
-        volumes:
-            - alldata:/data
-            - configFileBrowser:/config
-        environment:
-            - FB_BASEURL=/filebrowser
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.filebrowser.loadbalancer.server.port=8080"
-            - "traefik.http.routers.filebrowser.rule=Host(`${FILE_BROWSER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.filebrowser.middlewares=common-auth@file"
-            - "traefik.http.routers.filebrowser.service=filebrowser"
     #endregion Administration
 #endregion Containers
 
@@ -503,10 +487,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/traefik
-    configFileBrowser:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/fileBrowser
     configPlex:
         driver: local-persist
         driver_opts:

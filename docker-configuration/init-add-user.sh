@@ -46,9 +46,6 @@ sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 TMP_NETDATA_DOCKER_PGID=$(grep docker /etc/group | cut -d ':' -f 3)
 sed -i -e "s/NETDATA_DOCKER_PGID=[[:digit:]]*/NETDATA_DOCKER_PGID=$TMP_NETDATA_DOCKER_PGID/g" .env
 
-touch $BASE_PATH/fileBrowser/filebrowser.db &> /dev/null
-touch $BASE_PATH/fileBrowser/.filebrowser.json &> /dev/null
-
 /usr/sbin/adduser $username docker
 
 echo "[$0] Done."
