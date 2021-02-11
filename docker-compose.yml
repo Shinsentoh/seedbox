@@ -482,6 +482,8 @@ services:
     #region Games
     valheim:
         image: mbround18/valheim:latest
+        container_name: valheim
+        restart: unless-stopped
         ports:
             - 2456:2456/udp
             - 2457:2457/udp
