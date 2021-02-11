@@ -492,11 +492,11 @@ services:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
-            - "NAME=${VALHEIM_SV_NAME}"
-            - "WORLD=Dedicated"
+            - NAME=${VALHEIM_SV_NAME}
+            - WORLD="Dedicated"
             - PORT=2456
             - PUBLIC=1
-            - "PASSWORD=${VALHEIM_SV_PWD}"
+            - PASSWORD=${VALHEIM_SV_PWD}
             - AUTO_UPDATE=0
         volumes:
             - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
