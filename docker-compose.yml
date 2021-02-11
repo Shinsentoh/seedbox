@@ -501,6 +501,7 @@ services:
         volumes:
             - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
             - valheimServer:/home/steam/valheim
+            - /tmp:/tmp
     #enregion Games
 #endregion Containers
 
