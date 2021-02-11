@@ -493,7 +493,7 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
             - NAME=${VALHEIM_SV_NAME}
-            - WORLD="Dedicated"
+            - WORLD=${VALHEIM_SV_WORLD}
             - PORT=2456
             - PUBLIC=1
             - PASSWORD=${VALHEIM_SV_PWD}
