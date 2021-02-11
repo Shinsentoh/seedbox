@@ -497,8 +497,8 @@ services:
             - "PASSWORD=${VALHEIM_SV_PWD}"
             - AUTO_UPDATE=0
         volumes:
-            - ./valheim/saves:/home/steam/.config/unity3d/IronGate/Valheim
-            - ./valheim/server:/home/steam/valheim
+            - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
+            - valheimServer:/home/steam/valheim
     #enregion Games
 #endregion Containers
 
@@ -653,9 +653,13 @@ volumes:
     #endregion Media
 
     #region games
-    valheim:
+    valheimSaves:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/valheim
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/saves/
+    valheimServer:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
     #enregion games
 #endregion Volumes
