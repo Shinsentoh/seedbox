@@ -478,6 +478,28 @@ services:
             - "traefik.http.routers.doublecommander.service=doublecommander"
 
     #endregion Administration
+
+    #region Games
+    valheim:
+        image: mbround18/valheim:latest
+        ports:
+            - 2456:2456/udp
+            - 2457:2457/udp
+            - 2458:2458/udp
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - "NAME=${VALHEIM_SV_NAME}"
+            - "WORLD=Dedicated"
+            - PORT=2456
+            - PUBLIC=1
+            - "PASSWORD=${VALHEIM_SV_PWD}"
+            - AUTO_UPDATE=0
+        volumes:
+            - ./valheim/saves:/home/steam/.config/unity3d/IronGate/Valheim
+            - ./valheim/server:/home/steam/valheim
+    #enregion Games
 #endregion Containers
 
 #region Networks
@@ -629,4 +651,11 @@ volumes:
         driver_opts:
             mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books
     #endregion Media
+
+    #region games
+    valheim:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/valheim
+    #enregion games
 #endregion Volumes
