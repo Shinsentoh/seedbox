@@ -483,6 +483,7 @@ services:
     odin:
         image: mbround18/valheim-odin:latest
         container_name: odin
+        restart: unless-stopped
         volumes:
             - odin-output:/data/odin/target/release
     valheim:
@@ -502,7 +503,7 @@ services:
             - NAME=${VALHEIM_SV_NAME}
             - WORLD=${VALHEIM_SV_WORLD}
             - PORT=2456
-            - PUBLIC=${VALHEIM_PUBLIC}
+            - PUBLIC=0
             - PASSWORD=${VALHEIM_SV_PWD}
             - AUTO_UPDATE=0
         volumes:
