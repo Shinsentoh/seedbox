@@ -25,6 +25,7 @@ if [ "$ADD_FIREWALL" = true ] ; then
     chmod +x fresh-server-configuration/input-rules.sh
     # run the commands to open those ports
     ./fresh-server-configuration/input-rules.sh
+    ./fresh-server-configuration/other-input-rules.sh
     # save the whole configuration, so that it is restored on the each reboot
     netfilter-persistent save
     # clean temp files.
