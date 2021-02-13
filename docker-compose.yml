@@ -502,7 +502,7 @@ services:
             - NAME=${VALHEIM_SV_NAME}
             - WORLD=${VALHEIM_SV_WORLD}
             - PORT=2456
-            - PUBLIC=1
+            - PUBLIC=${VALHEIM_PUBLIC}
             - PASSWORD=${VALHEIM_SV_PWD}
             - AUTO_UPDATE=0
         volumes:
