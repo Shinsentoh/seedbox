@@ -480,15 +480,15 @@ services:
     #endregion Administration
 
     #region Games
-    odin:
-        image: mbround18/valheim-odin:latest
-        container_name: odin
-        restart: unless-stopped
-        volumes:
-            - odin-output:/data/odin/target/release
+    # odin:
+    #     image: mbround18/valheim-odin:latest
+    #     container_name: odin
+    #     restart: unless-stopped
+    #     volumes:
+    #         - odin-output:/data/odin/target/release
     valheim:
-        depends_on:
-            - odin
+        # depends_on:
+        #     - odin
         image: mbround18/valheim:latest
         container_name: valheim
         restart: unless-stopped
@@ -503,9 +503,10 @@ services:
             - NAME=${VALHEIM_SV_NAME}
             - WORLD=${VALHEIM_SV_WORLD}
             - PORT=2456
-            - PUBLIC=0
+            - PUBLIC={VALHEIM_SV_PUBLIC}
             - PASSWORD=${VALHEIM_SV_PWD}
-            - AUTO_UPDATE=0
+            - AUTO_UPDATE=1
+            - AUTO_UPDATE_SCHEDULE="0 6 * * *"
         volumes:
             - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
             - valheimServer:/home/steam/valheim
@@ -673,9 +674,9 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
-    odin-output:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/odin/
+    # odin-output:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/odin/
     #enregion games
 #endregion Volumes
