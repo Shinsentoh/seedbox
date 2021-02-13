@@ -502,7 +502,7 @@ services:
             - TZ=${TZ}
             - NAME=${VALHEIM_SV_NAME}
             - WORLD=${VALHEIM_SV_WORLD}
-            - PORT=2456
+            - PORT=${VALHEIM_SV_PORT}
             - PUBLIC=${VALHEIM_SV_PUBLIC}
             - PASSWORD=${VALHEIM_SV_PWD}
             - AUTO_UPDATE=1
