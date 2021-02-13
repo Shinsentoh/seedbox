@@ -511,7 +511,7 @@ services:
             - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
             - valheimServer:/home/steam/valheim
             - /tmp:/tmp
-            - odin-output:/home/steam/.odin
+            #- odin-output:/home/steam/.odin
     #enregion Games
 #endregion Containers
 
