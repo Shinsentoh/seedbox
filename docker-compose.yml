@@ -482,6 +482,7 @@ services:
     #region Games
     odin:
         image: mbround18/valheim-odin:latest
+        container_name: odin
         volumes:
             - odin-output:/data/odin/target/release
     valheim:
