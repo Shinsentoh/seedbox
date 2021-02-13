@@ -674,5 +674,8 @@ volumes:
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
     odin-output:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/odin/
     #enregion games
 #endregion Volumes
