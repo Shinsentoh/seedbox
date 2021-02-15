@@ -493,9 +493,8 @@ services:
         container_name: valheim
         restart: unless-stopped
         ports:
-            - 2456:2456/udp
-            - 2457:2457/udp
-            - 2458:2458/udp
+            - 2456:2458
+            - 2456:2458/udp
             - 27015:27030
             - 27015:27030/udp
             - 3478/udp
