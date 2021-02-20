@@ -516,8 +516,8 @@ services:
             - PORT=${VALHEIM_SV_PORT}
             - PUBLIC=${VALHEIM_SV_PUBLIC}
             - PASSWORD=${VALHEIM_SV_PWD}
-            - AUTO_UPDATE=1
-            - AUTO_UPDATE_SCHEDULE="0 6 * * *"
+            - AUTO_UPDATE=0
+            #- AUTO_UPDATE_SCHEDULE="0 6 * * *"
         volumes:
             - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
             - valheimServer:/home/steam/valheim
