@@ -486,50 +486,11 @@ services:
     #     restart: unless-stopped
     #     volumes:
     #         - odin-output:/data/odin/target/release
-    valheim:
-        # depends_on:
-        #     - odin
-        image: mbround18/valheim:latest
-        container_name: valheim
-        restart: unless-stopped
-        ports:
-            - 2456:2456
-            - 2457:2457
-            - 2458:2458
-            - 27000-27037:27000-27037
-            - 3478:3478
-            - 4379:4379
-            - 4380:4380
-            - 2456:2456/udp
-            - 2457:2457/udp
-            - 2458:2458/udp
-            - 27000-27037:27000-27037/udp
-            - 3478:3478/udp
-            - 4379:4379/udp
-            - 4380:4380/udp
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-            - NAME=${VALHEIM_SV_NAME}
-            - WORLD=${VALHEIM_SV_WORLD}
-            - PORT=${VALHEIM_SV_PORT}
-            - PUBLIC=${VALHEIM_SV_PUBLIC}
-            - PASSWORD=${VALHEIM_SV_PWD}
-            - AUTO_UPDATE=0
-            #- AUTO_UPDATE_SCHEDULE="0 6 * * *"
-        volumes:
-            - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
-            - valheimServer:/home/steam/valheim
-            - /tmp:/tmp
-    #         #- odin-output:/home/steam/.odin
-
-
-    # valheim-server:
+    # valheim:
     #     # depends_on:
     #     #     - odin
-    #     image: lloesche/valheim-server
-    #     container_name: valheim-server
+    #     image: mbround18/valheim:latest
+    #     container_name: valheim
     #     restart: unless-stopped
     #     ports:
     #         - 2456:2456
@@ -547,22 +508,48 @@ services:
     #         - 4379:4379/udp
     #         - 4380:4380/udp
     #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
     #         - TZ=${TZ}
-    #         - SERVER_NAME=${VALHEIM_SV_NAME}
-    #         - WORLD_NAME=${VALHEIM_SV_WORLD}
-    #         - SERVER_PORT=${VALHEIM_SV_PORT}
-    #         - SERVER_PUBLIC=0
-    #         - SERVER_PASS=${VALHEIM_SV_PWD}
+    #         - NAME=${VALHEIM_SV_NAME}
+    #         - WORLD=${VALHEIM_SV_WORLD}
+    #         - PORT=${VALHEIM_SV_PORT}
+    #         - PUBLIC=${VALHEIM_SV_PUBLIC}
+    #         - PASSWORD=${VALHEIM_SV_PWD}
     #         - AUTO_UPDATE=0
-    #         - RESTART_CRON=
-    #         - BACKUPS=false
-    #         - VALHEIM_PLUS=true
-    #         - UPDATE_INTERVAL=14400
     #         #- AUTO_UPDATE_SCHEDULE="0 6 * * *"
     #     volumes:
-    #         - valheimServerSaves:/config
-    #         - valheimServerData:/opt/valheim
+    #         - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
+    #         - valheimServer:/home/steam/valheim
     #         - /tmp:/tmp
+    #         #- odin-output:/home/steam/.odin
+
+    valheim-plus:
+        # depends_on:
+        #     - odin
+        image: lloesche/valheim-server
+        container_name: valheim-plus
+        restart: unless-stopped
+        cap_add:
+            - sys_nice
+        ports:
+            - "2456-2457:2456-2457/udp"
+        environment:
+            - TZ=${TZ}
+            - SERVER_NAME=${VALHEIM_SV_NAME}
+            - SERVER_PORT=${VALHEIM_SV_PORT}
+            - WORLD_NAME=allin
+            - SERVER_PUBLIC=0
+            - SERVER_PASS=${VALHEIM_SV_PWD}
+            - UPDATE_CRON=
+            - RESTART_CRON=
+            - BACKUPS=true
+            - VALHEIM_PLUS=true
+            - UPDATE_INTERVAL=14400
+        volumes:
+            - valheimPlusSaves:/config
+            - valheimPlusData:/opt/valheim
+            - /tmp:/tmp
     #enregion Games
 #endregion Containers
 
@@ -726,11 +713,11 @@ volumes:
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
 
-    valheimServerSaves:
+    valheimPlusSaves:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim-server/config/
-    valheimServerData:
+    valheimPlusData:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim-server/data/
