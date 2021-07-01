@@ -524,32 +524,32 @@ services:
     #         - /tmp:/tmp
     #         #- odin-output:/home/steam/.odin
 
-    valheim-plus:
-        # depends_on:
-        #     - odin
-        image: lloesche/valheim-server
-        container_name: valheim-plus
-        restart: unless-stopped
-        cap_add:
-            - sys_nice
-        ports:
-            - "2456-2457:2456-2457/udp"
-        environment:
-            - TZ=${TZ}
-            - SERVER_NAME=${VALHEIM_SV_NAME}
-            - SERVER_PORT=${VALHEIM_SV_PORT}
-            - WORLD_NAME=allin
-            - SERVER_PUBLIC=0
-            - SERVER_PASS=${VALHEIM_SV_PWD}
-            - UPDATE_CRON=
-            - RESTART_CRON=
-            - BACKUPS=true
-            - VALHEIM_PLUS=true
-            - UPDATE_INTERVAL=14400
-        volumes:
-            - valheimPlusSaves:/config
-            - valheimPlusData:/opt/valheim
-            - /tmp:/tmp
+    # valheim-plus:
+    #     # depends_on:
+    #     #     - odin
+    #     image: lloesche/valheim-server
+    #     container_name: valheim-plus
+    #     restart: unless-stopped
+    #     cap_add:
+    #         - sys_nice
+    #     ports:
+    #         - "2456-2457:2456-2457/udp"
+    #     environment:
+    #         - TZ=${TZ}
+    #         - SERVER_NAME=${VALHEIM_SV_NAME}
+    #         - SERVER_PORT=${VALHEIM_SV_PORT}
+    #         - WORLD_NAME=allin
+    #         - SERVER_PUBLIC=0
+    #         - SERVER_PASS=${VALHEIM_SV_PWD}
+    #         - UPDATE_CRON=
+    #         - RESTART_CRON=
+    #         - BACKUPS=true
+    #         - VALHEIM_PLUS=true
+    #         - UPDATE_INTERVAL=14400
+    #     volumes:
+    #         - valheimPlusSaves:/config
+    #         - valheimPlusData:/opt/valheim
+    #         - /tmp:/tmp
     #enregion Games
 #endregion Containers
 
