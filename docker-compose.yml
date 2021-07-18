@@ -208,41 +208,41 @@ services:
             - "traefik.http.routers.radarr.service=radarr"
 
     #region Folks
-    sonarr:
-        image: ghcr.io/linuxserver/sonarr
-        container_name: sonarr-folks
-        environment:
-            - PUID=${PGID}
-            - PGID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configFolksSonarr:/config
-            - alldata:/data
-        restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8081"
-            - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
-            - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
-
-    # medusa-folks:
-    #     image: ghcr.io/linuxserver/medusa
-    #     container_name: medusa-folks
+    # sonarr:
+    #     image: ghcr.io/linuxserver/sonarr
+    #     container_name: sonarr-folks
     #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
+    #         - PUID=${PGID}
+    #         - PGID=${PUID}
     #         - TZ=${TZ}
     #     volumes:
-    #         - configFolksMedusa:/config
+    #         - configFolksSonarr:/config
     #         - alldata:/data
     #     restart: unless-stopped
     #     labels:
     #         - "traefik.enable=true"
-    #         - "traefik.http.services.medusa-folks.loadbalancer.server.port=8081"
-    #         - "traefik.http.routers.medusa-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
-    #         - "traefik.http.routers.medusa-folks.service=medusa-folks"
+    #         - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8989"
+    #         - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
+    #         - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
+
+    medusa-folks:
+        image: ghcr.io/linuxserver/medusa
+        container_name: medusa-folks
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configFolksMedusa:/config
+            - alldata:/data
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.medusa-folks.loadbalancer.server.port=8081"
+            - "traefik.http.routers.medusa-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
+            - "traefik.http.routers.medusa-folks.service=medusa-folks"
 
     lidarr:
         image: linuxserver/lidarr
