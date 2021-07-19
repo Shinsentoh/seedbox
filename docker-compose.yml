@@ -82,21 +82,37 @@ services:
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
 
-    ombi:
-        image: ghcr.io/linuxserver/ombi:v4.0.731-ls20
-        container_name: ombi
+    # ombi:
+    #     image: ghcr.io/linuxserver/ombi:v4.0.731-ls20
+    #     container_name: ombi
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configOmbi:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.ombi.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.ombi.service=ombi"
+    #         - "traefik.http.services.ombi.loadbalancer.server.port=3579"
+
+    overseerr:
+        image: ghcr.io/linuxserver/overseerr
+        container_name: overseerr
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
         volumes:
-            - configOmbi:/config
+            - configOverSeer:/config
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.ombi.rule=Host(`${OMBI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.ombi.service=ombi"
-            - "traefik.http.services.ombi.loadbalancer.server.port=3579"
+            - "traefik.http.routers.overseerr.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.overseerr.service=overseerr"
+            - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
     #endregion
 
     #region Downloader
@@ -477,7 +493,6 @@ services:
             - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.tautulli.service=tautulli"
 
-
     doublecommander:
         image: ghcr.io/linuxserver/doublecommander
         container_name: doublecommander
@@ -694,6 +709,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/doubleCommander
+    configOverSeerr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/overseerr
     #endregion Config
     backups:
         driver: local-persist
