@@ -106,7 +106,7 @@ services:
             - PUID=${PUID}
             - TZ=${TZ}
         volumes:
-            - configOverSeer:/config
+            - configOverSeerr:/config
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
