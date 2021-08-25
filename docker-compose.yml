@@ -584,6 +584,22 @@ services:
     #         - valheimPlusSaves:/config
     #         - valheimPlusData:/opt/valheim
     #         - /tmp:/tmp
+
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        hostname: 'satisfactory'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - STEAMUSER=${STEAM_USERNAME}
+            - STEAMPWD=${STEAM_PASSWORD}
+            - STEAMCODE=${STEAM_GUARD_CODE}
+            - MAXBACKUPS=10
+        ports:
+            - '7777:7777/udp'
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
+
     #enregion Games
 #endregion Containers
 
@@ -767,5 +783,9 @@ volumes:
     #     driver: local-persist
     #     driver_opts:
     #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/odin/
+    satisfactory:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
     #enregion games
 #endregion Volumes

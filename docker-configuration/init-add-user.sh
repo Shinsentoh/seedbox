@@ -10,6 +10,7 @@ username=$MEDIA_USER
 PATH_TORRENTS=$BASE_PATH/$TORRENT_DIR_NAME
 PATH_MEDIA=$BASE_PATH/$MEDIA_DIR_NAME
 PATH_CONFIG=$BASE_PATH/$CONFIG_DIR_NAME
+PATH_WATCH_DIR=$PATH_TORRENTS/$WATCH_DIR_NAME
 SCRIPT_DIR=$(pwd)
 
 if ! id "$username" &>/dev/null; then
@@ -45,6 +46,13 @@ sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 
 TMP_NETDATA_DOCKER_PGID=$(grep docker /etc/group | cut -d ':' -f 3)
 sed -i -e "s/NETDATA_DOCKER_PGID=[[:digit:]]*/NETDATA_DOCKER_PGID=$TMP_NETDATA_DOCKER_PGID/g" .env
+
+cp ./script.d/magnet2torrent.sh  $PATH_TORRENTS/
+sed -i -e "s/watchdir=#ROOT_WATCH_DIR#/watchdir=$PATH_WATCH_DIR/g" $PATH_TORRENTS/magnet2torrent.sh
+chmod +x $PATH_TORRENTS/magnet2torrent.sh
+
+# add magnet2torrent to cron
+(crontab -l; echo "1 * * * * $PATH_TORRENTS/magnet2torrent.sh >/dev/null 2>&1") | sort -u | crontab -
 
 /usr/sbin/adduser $username docker
 
