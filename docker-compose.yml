@@ -595,7 +595,7 @@ services:
             - STEAMCODE=${STEAM_GUARD_CODE}
             - MAXBACKUPS=10
         ports:
-            - '7777:7777/udp'
+            - '7797:7777/udp'
         volumes:
             - satisfactory:/config
         restart: unless-stopped
