@@ -585,21 +585,42 @@ services:
     #         - valheimPlusData:/opt/valheim
     #         - /tmp:/tmp
 
-    satisfactory-server:
-        container_name: 'satisfactory-server'
-        hostname: 'satisfactory'
-        image: 'wolveix/satisfactory-server:latest'
-        environment:
-            - STEAMUSER=${STEAM_USERNAME}
-            - STEAMPWD=${STEAM_PASSWORD}
-            - STEAMCODE=${STEAM_GUARD_CODE}
-            - MAXBACKUPS=10
-        ports:
-            - '7777:7777/udp'
-        volumes:
-            - satisfactory:/config
-        restart: unless-stopped
+    # satisfactory-server:
+    #     container_name: 'satisfactory-server'
+    #     hostname: 'satisfactory'
+    #     image: 'wolveix/satisfactory-server:latest'
+    #     environment:
+    #         - STEAMUSER=${STEAM_USERNAME}
+    #         - STEAMPWD=${STEAM_PASSWORD}
+    #         - STEAMCODE=${STEAM_GUARD_CODE}
+    #         - MAXBACKUPS=10
+    #     ports:
+    #         - '7777:7777/udp'
+    #     volumes:
+    #         - satisfactory:/config
+    #     restart: unless-stopped
 
+    subsistence:
+        image:             rpufky/steam:latest
+        restart:           unless-stopped
+        stop_grace_period: 1m
+        container_name:    subsistence
+        ports:
+            - '27015:27015'
+            - '27015:27015/udp'
+            - '7777:7777/udp'
+            - '7778:7778/udp'
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - UPDATE_OS=1
+            - UPDATE_STEAM=1
+            - UPDATE_SERVER=1
+            - PLATFORM=windows
+            - STEAM_APP_ID=1362640
+            - TZ=${TZ}
+        volumes:
+            - subsistence:/data
     #enregion Games
 #endregion Containers
 
@@ -607,7 +628,7 @@ services:
 networks:
   default:
     external:
-      name: "traefik-network"
+        name: "traefik-network"
 #endregion Networks
 
 #region Volumes
@@ -787,5 +808,9 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
+    subsistence:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/subsistence/
     #enregion games
 #endregion Volumes
