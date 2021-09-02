@@ -585,20 +585,20 @@ services:
     #         - valheimPlusData:/opt/valheim
     #         - /tmp:/tmp
 
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     hostname: 'satisfactory'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - STEAMUSER=${STEAM_USERNAME}
-    #         - STEAMPWD=${STEAM_PASSWORD}
-    #         - STEAMCODE=${STEAM_GUARD_CODE}
-    #         - MAXBACKUPS=10
-    #     ports:
-    #         - '7777:7777/udp'
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        hostname: 'satisfactory'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - STEAMUSER=${STEAM_USERNAME}
+            - STEAMPWD=${STEAM_PASSWORD}
+            - STEAMCODE=${STEAM_GUARD_CODE}
+            - MAXBACKUPS=10
+        ports:
+            - '7777:7777/udp'
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
 
     subsistence:
         image:             rpufky/steam:latest
