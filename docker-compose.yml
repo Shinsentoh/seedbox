@@ -82,22 +82,6 @@ services:
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
             - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
 
-    # ombi:
-    #     image: ghcr.io/linuxserver/ombi:v4.0.731-ls20
-    #     container_name: ombi
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - configOmbi:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.ombi.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.ombi.service=ombi"
-    #         - "traefik.http.services.ombi.loadbalancer.server.port=3579"
-
     overseerr:
         image: ghcr.io/linuxserver/overseerr
         container_name: overseerr
@@ -204,6 +188,25 @@ services:
             - "traefik.http.routers.medusa.middlewares=common-auth@file"
             - "traefik.http.routers.medusa.service=medusa"
 
+    sonarr:
+        image: ghcr.io/linuxserver/sonarr
+        container_name: sonarr
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configSonarr:/config
+            - alldata:/data
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+            - "traefik.http.routers.sonarr.rule=Host(`${SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.sonarr.middlewares=common-auth@file"
+            - "traefik.http.routers.sonarr.service=sonarr"
+
     radarr:
         image: linuxserver/radarr
         container_name: radarr
@@ -224,23 +227,24 @@ services:
             - "traefik.http.routers.radarr.service=radarr"
 
     #region Folks
-    # sonarr:
-    #     image: ghcr.io/linuxserver/sonarr
-    #     container_name: sonarr-folks
-    #     environment:
-    #         - PUID=${PGID}
-    #         - PGID=${PUID}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - configFolksSonarr:/config
-    #         - alldata:/data
-    #     restart: unless-stopped
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8989"
-    #         - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
-    #         - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
+    sonarr-folks:
+        image: ghcr.io/linuxserver/sonarr
+        container_name: sonarr-folks
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configFolksSonarr:/config
+            - alldata:/data
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8989"
+            - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
+            - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
 
     medusa-folks:
         image: ghcr.io/linuxserver/medusa
@@ -666,6 +670,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/medusa
+    configSonarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr
     configFolksMedusa:
         driver: local-persist
         driver_opts:
@@ -678,10 +686,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
-    # configFolksRadarr:
-    #     driver: local-persist
-    #     driver_opts:
-    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/radarr
     configJackett:
         driver: local-persist
         driver_opts:
