@@ -27,6 +27,7 @@ services:
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
             - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+            - "label=com.centurylinklabs.watchtower.enable=false"
     #endregion
 
     #region Streaming/Reader
@@ -515,6 +516,13 @@ services:
             - "traefik.http.routers.doublecommander.middlewares=common-auth@file"
             - "traefik.http.routers.doublecommander.service=doublecommander"
 
+    watchtower:
+        container_name: watchtower
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        command: --interval 30
+
     #endregion Administration
 
     #region Games
@@ -561,6 +569,8 @@ services:
     #         - valheimServer:/home/steam/valheim
     #         - /tmp:/tmp
     #         #- odin-output:/home/steam/.odin
+    #     labels:
+    #         - "label=com.centurylinklabs.watchtower.enable=false"
 
     # valheim-plus:
     #     # depends_on:
@@ -588,6 +598,8 @@ services:
     #         - valheimPlusSaves:/config
     #         - valheimPlusData:/opt/valheim
     #         - /tmp:/tmp
+    #     labels:
+    #         - "label=com.centurylinklabs.watchtower.enable=false"
 
     satisfactory-server:
         container_name: 'satisfactory-server'
@@ -603,6 +615,8 @@ services:
         volumes:
             - satisfactory:/config
         restart: unless-stopped
+        labels:
+            - "label=com.centurylinklabs.watchtower.enable=false"
 
     subsistence:
         image:             rpufky/steam:latest
@@ -625,6 +639,8 @@ services:
             - TZ=${TZ}
         volumes:
             - subsistence:/data
+        labels:
+            - "label=com.centurylinklabs.watchtower.enable=false"
     #enregion Games
 #endregion Containers
 
