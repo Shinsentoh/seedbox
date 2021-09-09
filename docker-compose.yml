@@ -375,7 +375,9 @@ services:
         security_opt:
             - apparmor:unconfined
         environment:
-            - PGID=${NETDATA_DOCKER_PGID}
+            - NETDATA_UID=${PUID}
+            - NETDATA_GID=${PGID}
+            - NETDATA_USER=seedbox
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
@@ -618,29 +620,29 @@ services:
         labels:
             - "label=com.centurylinklabs.watchtower.enable=false"
 
-    subsistence:
-        image:             rpufky/steam:latest
-        restart:           unless-stopped
-        stop_grace_period: 1m
-        container_name:    subsistence
-        ports:
-            - '27015:27015'
-            - '27015:27015/udp'
-            - '7777:7777/udp'
-            - '7778:7778/udp'
-        environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - UPDATE_OS=1
-            - UPDATE_STEAM=1
-            - UPDATE_SERVER=1
-            - PLATFORM=windows
-            - STEAM_APP_ID=1362640
-            - TZ=${TZ}
-        volumes:
-            - subsistence:/data
-        labels:
-            - "label=com.centurylinklabs.watchtower.enable=false"
+    # subsistence:
+    #     image:             rpufky/steam:latest
+    #     restart:           unless-stopped
+    #     stop_grace_period: 1m
+    #     container_name:    subsistence
+    #     ports:
+    #         - '27015:27015'
+    #         - '27015:27015/udp'
+    #         - '7777:7777/udp'
+    #         - '7778:7778/udp'
+    #     environment:
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - UPDATE_OS=1
+    #         - UPDATE_STEAM=1
+    #         - UPDATE_SERVER=1
+    #         - PLATFORM=windows
+    #         - STEAM_APP_ID=1362640
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - subsistence:/data
+    #     labels:
+    #         - "label=com.centurylinklabs.watchtower.enable=false"
     #enregion Games
 #endregion Containers
 
