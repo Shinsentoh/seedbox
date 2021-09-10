@@ -567,6 +567,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
+    test:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application Support/Plex Media Server/Tata/
     configRutorrent:
         driver: local-persist
         driver_opts:
