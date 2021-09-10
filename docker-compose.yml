@@ -542,6 +542,7 @@ networks:
 
 #region Volumes
 volumes:
+    # WARNING: if path in driver_opts contains space, let them be, do not add '\'
     alldata:
         driver: local-persist
         driver_opts:
@@ -566,11 +567,7 @@ volumes:
     configPlexLogs:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
-    test:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application Support/Plex Media Server/Tata/
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application Support/Plex Media Server/Logs/
     configRutorrent:
         driver: local-persist
         driver_opts:
