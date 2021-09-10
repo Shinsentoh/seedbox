@@ -377,7 +377,7 @@ services:
         environment:
             - NETDATA_UID=${PUID}
             - NETDATA_GID=${PGID}
-            - NETDATA_USER=seedbox
+            - NETDATA_USER=${MEDIA_USER}
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
