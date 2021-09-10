@@ -16,6 +16,8 @@ if [ ! id "$ADD_USER" &>/dev/null ] ; then
         if [ "$ADD_ALIASES_TO_USER_SHELL" = true ] ; then
             # copy aliases into the user bashrc to have them for later
             cat fresh-server-configuration/aliases.txt >> /home/$USER/.bashrc
+            cat fresh-server-configuration/docker-aliases.txt >> /home/$USER/.bashrc
+            cat fresh-server-configuration/docker-aliases.txt >> /root/.bashrc
         fi
     fi
 fi
