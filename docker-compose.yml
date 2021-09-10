@@ -27,7 +27,7 @@ services:
             - "traefik.http.routers.traefik.service=api@internal"
             - "traefik.http.routers.traefik.middlewares=common-auth@file"
             - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-            - "label=com.centurylinklabs.watchtower.enable=false"
+            - "com.centurylinklabs.watchtower.enable=false"
     #endregion
 
     #region Streaming/Reader
@@ -171,23 +171,23 @@ services:
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
 
-    medusa:
-        image: ghcr.io/linuxserver/medusa
-        container_name: medusa
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configMedusa:/config
-            - alldata:/data
-        restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.medusa.loadbalancer.server.port=8081"
-            - "traefik.http.routers.medusa.rule=Host(`${MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.medusa.middlewares=common-auth@file"
-            - "traefik.http.routers.medusa.service=medusa"
+    # medusa:
+    #     image: ghcr.io/linuxserver/medusa
+    #     container_name: medusa
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configMedusa:/config
+    #         - alldata:/data
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.medusa.loadbalancer.server.port=8081"
+    #         - "traefik.http.routers.medusa.rule=Host(`${MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.medusa.middlewares=common-auth@file"
+    #         - "traefik.http.routers.medusa.service=medusa"
 
     sonarr:
         image: ghcr.io/linuxserver/sonarr
@@ -410,6 +410,7 @@ services:
             - "traefik.http.routers.duplicati.rule=Host(`${DUPLICATI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
             - "traefik.http.routers.duplicati.service=duplicati"
+            - "com.centurylinklabs.watchtower.enable=false"
 
     shellinabox:
         image: sspreitzer/shellinabox:latest
@@ -459,6 +460,8 @@ services:
             - "${FTP_PORT}:22"
         restart: unless-stopped
         command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
+        labels:
+            - "com.centurylinklabs.watchtower.enable=false"
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
@@ -482,6 +485,7 @@ services:
             - "traefik.http.routers.openvpn-http.service=openvpn-http"
             - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
             - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
+            - "com.centurylinklabs.watchtower.enable=false"
 
     tautulli:
         image: linuxserver/tautulli
@@ -517,6 +521,7 @@ services:
             - "traefik.http.routers.doublecommander.rule=Host(`file.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.doublecommander.middlewares=common-auth@file"
             - "traefik.http.routers.doublecommander.service=doublecommander"
+            - "com.centurylinklabs.watchtower.enable=false"
 
     watchtower:
         container_name: watchtower

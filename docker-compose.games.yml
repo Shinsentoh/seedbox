@@ -1,6 +1,6 @@
 ﻿version: "3.7"
 
-services:
+# services:
     # odin:
     #     image: mbround18/valheim-odin:latest
     #     container_name: odin
@@ -45,7 +45,7 @@ services:
     #         - /tmp:/tmp
     #         #- odin-output:/home/steam/.odin
     #     labels:
-    #         - "label=com.centurylinklabs.watchtower.enable=false"
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # valheim-plus:
     #     # depends_on:
@@ -74,7 +74,7 @@ services:
     #         - valheimPlusData:/opt/valheim
     #         - /tmp:/tmp
     #     labels:
-    #         - "label=com.centurylinklabs.watchtower.enable=false"
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # satisfactory-server:
     #     container_name: 'satisfactory-server'
@@ -91,7 +91,7 @@ services:
     #         - satisfactory:/config
     #     restart: unless-stopped
     #     labels:
-    #         - "label=com.centurylinklabs.watchtower.enable=false"
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # subsistence:
     #     image:             rpufky/steam:latest
@@ -115,7 +115,7 @@ services:
     #     volumes:
     #         - subsistence:/data
     #     labels:
-    #         - "label=com.centurylinklabs.watchtower.enable=false"
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
     valheimSaves:
