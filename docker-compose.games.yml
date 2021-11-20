@@ -87,7 +87,7 @@ services:
             - PUID=${PUID}
             - SKIPUPDATE=false
         ports:
-            - '7797:7777/udp'
+            - '7777:7777/udp'
             - '15000:15000/udp'
             - '15777:15777/udp'
         volumes:
