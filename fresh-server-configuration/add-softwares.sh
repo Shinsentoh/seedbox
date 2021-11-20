@@ -6,5 +6,5 @@ fi
 
 source fresh-server-configuration/.serverEnv
 
-apt-get install curl net-tools sudo software-properties-common &> ./logfile-seedbox-docker.log
+apt-get install curl net-tools sudo software-properties-common unzip wget &> ./logfile-seedbox-docker.log
 

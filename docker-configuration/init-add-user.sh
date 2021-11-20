@@ -28,7 +28,22 @@ mkdir -p $PATH_MEDIA/$MEDIA_TREE
 # config folder
 mkdir -p $PATH_CONFIG/$CONFIG_TREE
 # tautulli needs access to the plex logs
-mkdir -p $PATH_CONFIG/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/
+PLEX_FOLDER=$PATH_CONFIG/plex/Library/Application\ Support/Plex\ Media\ Server
+mkdir -p "$PLEX_FOLDER"/Logs/
+# plex
+mkdir -p "$PLEX_FOLDER"/Scanners/Series/
+mkdir -p "$PLEX_FOLDER"/Plug-ins/
+# plex anime agent
+wget -O "$PLEX_FOLDER"/Scanners/Series/Absolute\ Series\ Scanner.py https://raw.githubusercontent.com/ZeroQI/Absolute-Series-Scanner/master/Scanners/Series/Absolute%20Series%20Scanner.py
+wget -O "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip https://github.com/ZeroQI/Hama.bundle/archive/refs/heads/master.zip
+unzip "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/
+mv "$PLEX_FOLDER"/Plug-ins/Hama.bundle-master "$PLEX_FOLDER"/Plug-ins/Hama.bundle
+rm -rf "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip
+# plex subtitle plugin
+wget -O "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip https://github.com/pannal/Sub-Zero.bundle/archive/refs/heads/master.zip
+unzip "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/
+mv "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle-master "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle
+rm -rf "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip
 # traefik configuration
 mkdir -p $PATH_CONFIG/traefik/behaviour
 cp -R ./traefik/* $PATH_CONFIG/traefik/behaviour

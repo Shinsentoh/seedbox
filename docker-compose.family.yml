@@ -1,0 +1,66 @@
+﻿version: "3.7"
+
+# services:
+    # ubooquity:
+    #     image: ghcr.io/linuxserver/ubooquity
+    #     container_name: ubooquity
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #         - MAXMEM=2048
+    #     volumes:
+    #         - configUbooquity:/config
+    #         - books:/books
+    #         - comics:/comics
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         # router reader - Web UI
+    #         - "traefik.http.services.reader.loadbalancer.server.port=2202"
+    #         - "traefik.http.routers.reader.rule=Host(`${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.reader.service=reader"
+    #         - "traefik.http.routers.reader.middlewares=common-auth@file, readerToAdmin"
+    #         - "traefik.http.middlewares.readerToAdmin.redirectregex.regex=^https?://${UBOOQUITY_READER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin[/]?$$"
+    #         - "traefik.http.middlewares.readerToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
+    #         # router ubooquity - Admin UI
+    #         - "traefik.http.services.ubooquity.loadbalancer.server.port=2203"
+    #         - "traefik.http.routers.ubooquity.rule=Host(`${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.ubooquity.service=ubooquity"
+    #         - "traefik.http.routers.ubooquity.middlewares=common-auth@file, redirectToAdmin"
+    #         - "traefik.http.middlewares.redirectToAdmin.redirectregex.regex=^https?://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}[/]?$$"
+    #         - "traefik.http.middlewares.redirectToAdmin.redirectregex.replacement=https://${UBOOQUITY_ADMIN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}/admin"
+
+    # mylar:
+    #     image: ghcr.io/linuxserver/mylar3
+    #     container_name: mylar
+    #     volumes:
+    #         - configMylar:/config
+    #         - comics:/comics
+    #         - torrents:/downloads
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.mylar.loadbalancer.server.port=8090"
+    #         - "traefik.http.routers.mylar.rule=Host(`${MYLAR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.mylar.middlewares=common-auth@file"
+    #         - "traefik.http.routers.mylar.service=mylar"
+
+#volumes:
+    # configMylar:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/mylarr
+    # configUbooquity:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/ubooquity
+    # comics:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books/comics
+    #enregion games

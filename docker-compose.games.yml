@@ -1,6 +1,6 @@
 ﻿version: "3.7"
 
-# services:
+services:
     # odin:
     #     image: mbround18/valheim-odin:latest
     #     container_name: odin
@@ -76,22 +76,25 @@
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     hostname: 'satisfactory'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - STEAMUSER=${STEAM_USERNAME}
-    #         - STEAMPWD=${STEAM_PASSWORD}
-    #         - STEAMCODE=${STEAM_GUARD_CODE}
-    #         - MAXBACKUPS=10
-    #     ports:
-    #         - '7797:7777/udp'
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        hostname: 'satisfactory'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - MAXPLAYERS=8
+            - MAXBACKUPS=10
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - SKIPUPDATE=false
+        ports:
+            - '7797:7777/udp'
+            - '15000:15000/udp'
+            - '15777:15777/udp'
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
 
     # subsistence:
     #     image:             rpufky/steam:latest
@@ -126,7 +129,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
-
     valheimPlusSaves:
         driver: local-persist
         driver_opts:
