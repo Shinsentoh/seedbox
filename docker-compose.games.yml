@@ -82,14 +82,14 @@ services:
         image: 'wolveix/satisfactory-server:latest'
         environment:
             - MAXPLAYERS=8
-            - MAXBACKUPS=10
             - PGID=${PGID}
             - PUID=${PUID}
             - SKIPUPDATE=false
+            - STEAMBETA=false
         ports:
-            - '7777:7777/udp'
-            - '15000:15000/udp'
-            - '15777:15777/udp'
+            - 7797:7777/udp
+            - 15000:15000/udp
+            - 15777:15777/udp
         volumes:
             - satisfactory:/config
         restart: unless-stopped
