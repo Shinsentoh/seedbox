@@ -72,7 +72,7 @@ services:
 
     #region Downloader
     rutorrent:
-        image: mondedie/rutorrent:latest@sha256:6b59c42a40d0e34d18ce922ae1c930e9776821aeafb9ee6f58f372d1c6c6cb56
+        image: mondedie/rutorrent:latest
         container_name: rutorrent
         environment:
             - GID=${PGID}
