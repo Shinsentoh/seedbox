@@ -1,6 +1,6 @@
 ﻿version: "3.7"
 
-#services:
+services:
     # odin:
     #     image: mbround18/valheim-odin:latest
     #     container_name: odin
@@ -76,50 +76,26 @@
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     hostname: 'satisfactory'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - MAXPLAYERS=8
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - SKIPUPDATE=false
-    #         - STEAMBETA=false
-    #         - SERVERIP=0.0.0.0
-    #     ports:
-    #         - 7797:7777/udp
-    #         - 15000:15000/udp
-    #         - 15777:15777/udp
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
-
-    # subsistence:
-    #     image:             rpufky/steam:latest
-    #     restart:           unless-stopped
-    #     stop_grace_period: 1m
-    #     container_name:    subsistence
-    #     ports:
-    #         - '27015:27015'
-    #         - '27015:27015/udp'
-    #         - '7777:7777/udp'
-    #         - '7778:7778/udp'
-    #     environment:
-    #         - PUID=${PUID}
-    #         - PGID=${PGID}
-    #         - UPDATE_OS=1
-    #         - UPDATE_STEAM=1
-    #         - UPDATE_SERVER=1
-    #         - PLATFORM=windows
-    #         - STEAM_APP_ID=1362640
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - subsistence:/data
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        hostname: 'satisfactory'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - MAXPLAYERS=8
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - SKIPUPDATE=false
+            - STEAMBETA=false
+            - SERVERIP=0.0.0.0
+        ports:
+            - 7797:7777/udp
+            - 15000:15000/udp
+            - 15777:15777/udp
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
     valheimSaves:
@@ -146,8 +122,4 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
-    subsistence:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/subsistence/
     #enregion games
