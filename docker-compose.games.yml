@@ -110,6 +110,7 @@ services:
             ENABLE_RCON: "true"
             RCON_PASSWORD: "meoo"
             RCON_PORT: 28016
+            ONLINE_MODE: "FALSE"
         tty: true
         stdin_open: true
         restart: unless-stopped
