@@ -76,26 +76,47 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    satisfactory-server:
-        container_name: 'satisfactory-server'
-        hostname: 'satisfactory'
-        image: 'wolveix/satisfactory-server:latest'
-        environment:
-            - MAXPLAYERS=8
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - SKIPUPDATE=false
-            - STEAMBETA=true
-            - SERVERIP=0.0.0.0
-        ports:
-            - 7777:7777/udp
-            - 15000:15000/udp
-            - 15777:15777/udp
-        volumes:
-            - satisfactory:/config
-        restart: unless-stopped
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # satisfactory-server:
+    #     container_name: 'satisfactory-server'
+    #     hostname: 'satisfactory'
+    #     image: 'wolveix/satisfactory-server:latest'
+    #     environment:
+    #         - MAXPLAYERS=8
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - SKIPUPDATE=false
+    #         - STEAMBETA=true
+    #         - SERVERIP=0.0.0.0
+    #     ports:
+    #         - 7777:7777/udp
+    #         - 15000:15000/udp
+    #         - 15777:15777/udp
+    #     volumes:
+    #         - satisfactory:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
+
+    mc:
+        image: itzg/minecraft-server
+    ports:
+        - 25565:25565
+    environment:
+        - EULA="TRUE"
+        - TZ=${TZ}
+        - PGID=${PGID}
+        - PUID=${PUID}
+        - ENABLE_RCON="true"
+        - RCON_PASSWORD="meoo"
+        - RCON_PORT=28016
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    volumes:
+        # attach a directory relative to the directory containing this compose file
+        - minecraftServer:/data
+    labels:
+        - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
     valheimSaves:
@@ -122,4 +143,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
+    minecraftServer:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-server/
     #enregion games
