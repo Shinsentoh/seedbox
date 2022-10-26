@@ -98,17 +98,18 @@ services:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
     mc:
+        container_name: 'minecraft-server'
         image: itzg/minecraft-server
         ports:
             - 25565:25565/udp
         environment:
-            - EULA="TRUE"
-            - TZ=${TZ}
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - ENABLE_RCON="true"
-            - RCON_PASSWORD="meoo"
-            - RCON_PORT=28016
+            EULA: "TRUE"
+            TZ: ${TZ}
+            PGID: ${PGID}
+            PUID: ${PUID}
+            ENABLE_RCON: "true"
+            RCON_PASSWORD: "meoo"
+            RCON_PORT: 28016
         tty: true
         stdin_open: true
         restart: unless-stopped
