@@ -127,6 +127,8 @@ services:
     rcon:
         container_name: 'rcon'
         image: itzg/rcon
+        environment:
+            RWA_PASSWORD: "minecraft"
         ports:
             - 4326:4326
             - 4327:4327
