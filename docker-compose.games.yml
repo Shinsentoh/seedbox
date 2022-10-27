@@ -127,10 +127,6 @@ services:
     rcon:
         container_name: 'rcon'
         image: itzg/rcon
-        environment:
-            RWA_USERNAME: "bibibox"
-            RWA_PASSWORD: "minecraft"
-            RWA_ADMIN: "true"
         ports:
             - 4326:4326
             - 4327:4327
