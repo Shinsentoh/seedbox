@@ -126,6 +126,7 @@ services:
             - "com.centurylinklabs.watchtower1.enable=false"
 
     rcon:
+        container_name: 'rcon'
         image: itzg/rcon
         environment:
             RWA_USERNAME: bibi
@@ -139,6 +140,8 @@ services:
             - 4326:4326
             - 4327:4327
         restart: unless-stopped
+        volumes:
+            - rcon:/opt/rcon-web-admin/db
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.rcon.loadbalancer.server.port=4326"
@@ -175,4 +178,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-server/
+    rcon:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rcon/
     #enregion games
