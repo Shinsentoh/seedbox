@@ -125,6 +125,20 @@ services:
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 
+    rcon:
+        image: itzg/rcon
+        environment:
+            RWA_USERNAME: bibi
+            RWA_PASSWORD: azerty1234
+            RWA_ADMIN: "TRUE"
+            # is referring to the hostname of 'mc' compose service above
+            RWA_RCON_HOST: mc
+            # needs to match the password configured for the container, which is 'minecraft' by default
+            RWA_RCON_PASSWORD: meoo
+        ports:
+            - 4326:4326
+            - 4327:4327
+
 volumes:
     valheimSaves:
         driver: local-persist
