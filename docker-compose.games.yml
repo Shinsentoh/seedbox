@@ -130,7 +130,7 @@ services:
         environment:
             RWA_USERNAME: bibi
             RWA_PASSWORD: azerty1234
-            RWA_ADMIN: "TRUE"
+            RWA_ADMIN: "true"
             # is referring to the hostname of 'mc' compose service above
             RWA_RCON_HOST: mc
             # needs to match the password configured for the container, which is 'minecraft' by default
@@ -138,6 +138,13 @@ services:
         ports:
             - 4326:4326
             - 4327:4327
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.rcon.loadbalancer.server.port=4326"
+            - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rcon.middlewares=common-auth@file"
+            - "traefik.http.routers.rcon.service=rcon"
 
 volumes:
     valheimSaves:
