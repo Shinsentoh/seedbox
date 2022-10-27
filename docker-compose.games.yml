@@ -108,12 +108,11 @@ services:
             PGID: ${PGID}
             PUID: ${PUID}
             ENABLE_RCON: "true"
-            RCON_PASSWORD: "meoo"
+            RCON_PASSWORD: "azerty1234"
             RCON_PORT: 28016
             ONLINE_MODE: "false"
             PVP: "false"
             OPS: "bibi"
-            SERVER_NAME: "Bibibox.ga"
             ENABLE_AUTOPAUSE: "true"
             MAX_TICK_TIME: -1
         tty: true
@@ -129,25 +128,25 @@ services:
         container_name: 'rcon'
         image: itzg/rcon
         environment:
-            RWA_USERNAME: bibi
-            RWA_PASSWORD: azerty1234
+            RWA_USERNAME: "bibi"
+            RWA_PASSWORD: "azerty1234"
             RWA_ADMIN: "true"
             # is referring to the hostname of 'mc' compose service above
             RWA_RCON_HOST: mc
             # needs to match the password configured for the container, which is 'minecraft' by default
-            RWA_RCON_PASSWORD: meoo
+            RWA_RCON_PASSWORD: "azerty1234"
         ports:
             - 4326:4326
             - 4327:4327
         restart: unless-stopped
         volumes:
             - rcon:/opt/rcon-web-admin/db
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.rcon.loadbalancer.server.port=4326"
-            - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.rcon.middlewares=common-auth@file"
-            - "traefik.http.routers.rcon.service=rcon"
+        # labels:
+        #     - "traefik.enable=true"
+        #     - "traefik.http.services.rcon.loadbalancer.server.port=4326"
+        #     - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+        #     - "traefik.http.routers.rcon.middlewares=common-auth@file"
+        #     - "traefik.http.routers.rcon.service=rcon"
 
 volumes:
     valheimSaves:
