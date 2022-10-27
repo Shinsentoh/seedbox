@@ -103,14 +103,19 @@ services:
         ports:
             - 25565:25565
         environment:
-            EULA: "TRUE"
+            EULA: "true"
             TZ: ${TZ}
             PGID: ${PGID}
             PUID: ${PUID}
             ENABLE_RCON: "true"
             RCON_PASSWORD: "meoo"
             RCON_PORT: 28016
-            ONLINE_MODE: "FALSE"
+            ONLINE_MODE: "false"
+            PVP: "false"
+            OPS: "bibi"
+            SERVER_NAME: "Bibibox.ga"
+            ENABLE_AUTOPAUSE: "true"
+            MAX_TICK_TIME: -1
         tty: true
         stdin_open: true
         restart: unless-stopped
