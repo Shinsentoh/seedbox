@@ -105,8 +105,8 @@ services:
         environment:
             EULA: "true"
             TZ: ${TZ}
-            PGID: ${PGID}
-            PUID: ${PUID}
+            GID: ${PGID}
+            UID: ${PUID}
             ENABLE_RCON: "true"
             RCON_PASSWORD: "azerty1234"
             RCON_PORT: 28016
