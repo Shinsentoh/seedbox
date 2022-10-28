@@ -132,6 +132,11 @@ services:
     rcon:
         container_name: 'rcon'
         image: itzg/rcon
+        depends_on:
+            - mc
+        ports:
+            - 4326:4326
+            - 4327:4327
         environment:
             RWA_USERNAME: admin
             RWA_PASSWORD: admin
@@ -145,11 +150,11 @@ services:
         volumes:
             - rconDirectory:/opt/rcon-web-admin/db
         labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.rcon.loadbalancer.server.port=4326"
-            - "traefik.http.services.rcon.loadbalancer.server.scheme=https"
-            - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.rcon.service=rcon"
+            # - "traefik.enable=true"
+            # - "traefik.http.services.rcon.loadbalancer.server.port=4326"
+            # - "traefik.http.services.rcon.loadbalancer.server.scheme=https"
+            # - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+            # - "traefik.http.routers.rcon.service=rcon"
             - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
