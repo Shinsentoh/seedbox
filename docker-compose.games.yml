@@ -154,23 +154,18 @@ services:
         volumes:
             - rconDirectory:/opt/rcon-web-admin/db
         labels:
-            - traefik.enable="true"
-            - traefik.http.services.rcon-web.loadbalancer.server.port="4326"
-            - traefik.http.services.rcon-ws.loadbalancer.server.port="4327"
-            - traefik.http.middlewares.rcon-https-redirect.redirectscheme.scheme="https"
+            - "traefik.enable=true"
+            - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
+            - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
 
-            - traefik.http.routers.rcon-web.rule="Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            - traefik.http.routers.rcon-web.service="rcon-web"
-            - traefik.http.routers.rcon-web.entrypoints="https"
-            - traefik.http.routers.rcon-web.tls="true"
+            - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rcon-web.service=rcon-web"
 
-            - traefik.http.routers.rcon-ws.rule="Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
-            - traefik.http.routers.rcon-ws.service="rcon-ws"
-            - traefik.http.routers.rcon-ws.entrypoints="https"
-            - traefik.http.routers.rcon-ws.tls="true"
+            - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
+            - "traefik.http.routers.rcon-ws.service=rcon-ws"
 
             # watchtower
-            - com.centurylinklabs.watchtower1.enable=false
+            - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
     valheimSaves:
