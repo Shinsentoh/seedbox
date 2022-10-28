@@ -280,7 +280,7 @@ services:
     nextcloud:
         depends_on:
             - nextcloud-db
-        image: linuxserver/nextcloud
+        image: lscr.io/linuxserver/nextcloud:latest
         container_name: nextcloud
         restart: always
         environment:
