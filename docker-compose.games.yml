@@ -138,6 +138,7 @@ services:
             - 4326:4326
             - 4327:4327
         environment:
+            RWA_ENV: "true"
             RWA_USERNAME: admin
             RWA_PASSWORD: admin
             RWA_ADMIN: "TRUE"
@@ -146,16 +147,26 @@ services:
             RWA_RCON_PORT: 28456
             # needs to match the password configured for the container, which is 'minecraft' by default
             RWA_RCON_PASSWORD: "minecraft"
+            RWA_WEB_RCON: "true"
+            RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
+            RWA_WEBSCOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
         restart: unless-stopped
         volumes:
             - rconDirectory:/opt/rcon-web-admin/db
         labels:
-            # - "traefik.enable=true"
-            # - "traefik.http.services.rcon.loadbalancer.server.port=4326"
-            # - "traefik.http.services.rcon.loadbalancer.server.scheme=https"
-            # - "traefik.http.routers.rcon.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            # - "traefik.http.routers.rcon.service=rcon"
-            - "com.centurylinklabs.watchtower1.enable=false"
+            - traefik.enable=true
+            - traefik.http.services.rcon-web.loadbalancer.server.port=4326
+            - traefik.http.services.rcon-ws.loadbalancer.server.port=4326
+            # rcon-web
+            - traefik.http.routers.rcon-web.entryPoints=https
+            - traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)
+            - traefik.http.routers.rcon-web.service=rcon-web"
+            # rcon-ws
+            - traefik.http.routers.rcon-ws.entryPoints=https
+            - traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)
+            - traefik.http.routers.rcon-ws.service=rcon-ws
+            # watchtower
+            - com.centurylinklabs.watchtower1.enable=false
 
 volumes:
     valheimSaves:
