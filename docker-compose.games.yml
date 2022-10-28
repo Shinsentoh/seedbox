@@ -135,16 +135,16 @@ services:
         depends_on:
             - mc
         environment:
-            RWA_ENV: TRUE
+            RWA_ENV: "TRUE"
             RWA_USERNAME: "bibi"
             RWA_PASSWORD: "bibi"
-            RWA_ADMIN: TRUE
+            RWA_ADMIN: "TRUE"
             # is referring to the hostname of 'mc' compose service below
             RWA_RCON_HOST: mc
             RWA_RCON_PORT: 28456
             # needs to match the password configured for the container, which is 'minecraft' by default
             RWA_RCON_PASSWORD: "MyS3cr3tMinecraftPWD"
-            RWA_WEB_RCON: TRUE
+            RWA_WEB_RCON: "TRUE"
             RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
             RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
         restart: unless-stopped
