@@ -122,6 +122,7 @@ services:
             MOTD: "Minecraft Docker Server powered by Bibi"
             SNOOPER_ENABLED: "FALSE"
             SERVER_NAME: "Bibibox.ga"
+            MEMORY: "4G"
         restart: unless-stopped
         volumes:
             # attach a directory relative to the directory containing this compose file
