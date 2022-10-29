@@ -104,7 +104,7 @@ services:
             - 25565:25565
             - 28456:28456
         environment:
-            TZ: ${TZ}
+            # TZ: ${TZ}
             GID: ${PGID}
             UID: ${PUID}
             # rcon
