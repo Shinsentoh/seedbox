@@ -109,7 +109,7 @@ services:
             UID: ${PUID}
             # rcon
             ENABLE_RCON: "TRUE"
-            RCON_PASSWORD: "MyS3cr3tMinecraftPWD"
+            RCON_PASSWORD: "${MC_RCON_PWD}"
             RCON_PORT: 28456
             # minecraft settings
             EULA: "TRUE"
@@ -123,6 +123,9 @@ services:
             SNOOPER_ENABLED: "FALSE"
             SERVER_NAME: "Bibibox.ga"
             MEMORY: "4G"
+            WHITELIST_FILE: "/data/whitelist.json"
+            ENFORCE_WHITELISTl: "TRUE"
+
         restart: unless-stopped
         volumes:
             # attach a directory relative to the directory containing this compose file
@@ -138,13 +141,13 @@ services:
         environment:
             RWA_ENV: "TRUE"
             RWA_USERNAME: "bibi"
-            RWA_PASSWORD: "bibi"
+            RWA_PASSWORD: "${RCON_PWD}"
             RWA_ADMIN: "TRUE"
             # is referring to the hostname of 'mc' compose service below
             RWA_RCON_HOST: mc
             RWA_RCON_PORT: 28456
             # needs to match the password configured for the container, which is 'minecraft' by default
-            RWA_RCON_PASSWORD: "MyS3cr3tMinecraftPWD"
+            RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
             RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
             RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
         restart: unless-stopped
