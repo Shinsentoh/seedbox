@@ -126,6 +126,7 @@ services:
             MEMORY: "8G"
             WHITELIST_FILE: "/data/whitelist.json"
             ENFORCE_WHITELIST: "TRUE"
+            OVERRIDE_WHITELIST : "TRUE"
             # server type & world
             TYPE: "CURSEFORGE"
             CF_SERVER_MOD: "/modpacks/Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
