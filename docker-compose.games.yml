@@ -117,6 +117,7 @@ services:
             ONLINE_MODE: "FALSE"
             PVP: "FALSE"
             DIFFICULTY: "normal"
+            # administration
             OPS: "bibi"
             MAX_TICK_TIME: -1
             MOTD: "Minecraft Docker Server powered by Bibi"
@@ -124,12 +125,17 @@ services:
             SERVER_NAME: "Bibibox.ga"
             MEMORY: "4G"
             WHITELIST_FILE: "/data/whitelist.json"
-            ENFORCE_WHITELISTl: "TRUE"
-
+            ENFORCE_WHITELIST: "TRUE"
+            # server type & world
+            TYPE: "CURSEFORGE"
+            CF_SERVER_MOD: "Better+MC+FABRIC+Server+Pack+1.19.2+v12.5.zip"
+            SEED: "37021689"
+            LEVEL: "betterMC"
+            MAX_WORLD_SIZE: 5000
         restart: unless-stopped
         volumes:
             # attach a directory relative to the directory containing this compose file
-            - minecraftServer:/data
+            - mcServer:/data
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 
@@ -189,7 +195,7 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
-    minecraftServer:
+    mcServer:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-server/
