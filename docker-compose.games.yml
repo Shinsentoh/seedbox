@@ -1,6 +1,102 @@
 ﻿version: "3.7"
-
 services:
+
+    # satisfactory-server:
+    #     container_name: 'satisfactory-server'
+    #     hostname: 'satisfactory'
+    #     image: 'wolveix/satisfactory-server:latest'
+    #     environment:
+    #         - MAXPLAYERS=8
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - SKIPUPDATE=false
+    #         - STEAMBETA=true
+    #         - SERVERIP=0.0.0.0
+    #     ports:
+    #         - 7777:7777/udp
+    #         - 15000:15000/udp
+    #         - 15777:15777/udp
+    #     volumes:
+    #         - satisfactory:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
+
+    # mc:
+    #     container_name: 'minecraft-server'
+    #     image: itzg/minecraft-server
+    #     ports:
+    #         - 25565:25565
+    #         - 28456:28456
+    #     environment:
+    #         GID: ${PGID}
+    #         UID: ${PUID}
+    #         # rcon #
+    #         ENABLE_RCON: "TRUE"
+    #         RCON_PASSWORD: "${MC_RCON_PWD}"
+    #         RCON_PORT: 28456
+    #         # minecraft settings #
+    #         EULA: "TRUE"
+    #         ENABLE_AUTOPAUSE: "TRUE"
+    #         ONLINE_MODE: "FALSE"
+    #         PVP: "FALSE"
+    #         DIFFICULTY: "normal"
+    #         # administration #
+    #         OPS: "bibi"
+    #         MAX_TICK_TIME: -1
+    #         MOTD: "Minecraft Docker Server powered by Bibi"
+    #         SNOOPER_ENABLED: "FALSE"
+    #         SERVER_NAME: "Bibibox.ga"
+    #         MEMORY: "8G"
+    #         WHITELIST_FILE: "/data/extra/whitelist.json"
+    #         ENFORCE_WHITELIST: "TRUE"
+    #         OVERRIDE_WHITELIST : "TRUE"
+    #         # server type & world #
+    #         TYPE: "CURSEFORGE"
+    #         CF_SERVER_MOD: "/modpacks/Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
+    #         VERSION: 1.19.2
+    #         SEED: "37021689"
+    #         LEVEL: "betterMC"
+    #         MAX_WORLD_SIZE: 5000
+    #     restart: unless-stopped
+    #     volumes:
+    #         # attach a directory relative to the directory containing this compose file #
+    #         - mcServer:/data
+    #         - mcModPacks:/modpacks
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
+
+    # rcon:
+    #     container_name: 'rcon'
+    #     image: itzg/rcon
+    #     depends_on:
+    #         - mc
+    #     environment:
+    #         RWA_ENV: "TRUE"
+    #         RWA_USERNAME: "bibi"
+    #         RWA_PASSWORD: "${RCON_PWD}"
+    #         RWA_ADMIN: "TRUE"
+    #         # is referring to the hostname of 'mc' compose service below #
+    #         RWA_RCON_HOST: mc
+    #         RWA_RCON_PORT: 28456
+    #         # needs to match the password configured for the container, which is 'minecraft' by default #
+    #         RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
+    #         RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
+    #         RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
+    #     restart: unless-stopped
+    #     volumes:
+    #         - rconDirectory:/opt/rcon-web-admin/db
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
+    #         - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
+    #         - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.rcon-web.service=rcon-web"
+    #         - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
+    #         - "traefik.http.routers.rcon-ws.service=rcon-ws"
+    #         # watchtower #
+    #         - "com.centurylinklabs.watchtower1.enable=false"
+
     # odin:
     #     image: mbround18/valheim-odin:latest
     #     container_name: odin
@@ -47,130 +143,35 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    # valheim-plus:
-    #     # depends_on:
-    #     #     - odin
-    #     image: lloesche/valheim-server
-    #     container_name: valheim-plus
-    #     restart: unless-stopped
-    #     cap_add:
-    #         - sys_nice
-    #     ports:
-    #         - "2456-2457:2456-2457/udp"
-    #     environment:
-    #         - TZ=${TZ}
-    #         - SERVER_NAME=${VALHEIM_SV_NAME}
-    #         - SERVER_PORT=${VALHEIM_SV_PORT}
-    #         - WORLD_NAME=allin
-    #         - SERVER_PUBLIC=0
-    #         - SERVER_PASS=${VALHEIM_SV_PWD}
-    #         - UPDATE_CRON=
-    #         - RESTART_CRON=
-    #         - BACKUPS=true
-    #         - VALHEIM_PLUS=true
-    #         - UPDATE_INTERVAL=14400
-    #     volumes:
-    #         - valheimPlusSaves:/config
-    #         - valheimPlusData:/opt/valheim
-    #         - /tmp:/tmp
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
-
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     hostname: 'satisfactory'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - MAXPLAYERS=8
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - SKIPUPDATE=false
-    #         - STEAMBETA=true
-    #         - SERVERIP=0.0.0.0
-    #     ports:
-    #         - 7777:7777/udp
-    #         - 15000:15000/udp
-    #         - 15777:15777/udp
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
-
-    mc:
-        container_name: 'minecraft-server'
-        image: itzg/minecraft-server
+    valheim-plus:
+        image: lloesche/valheim-server
+        container_name: valheim-plus
+        restart: unless-stopped
+        cap_add:
+            - sys_nice
         ports:
-            - 25565:25565
-            - 28456:28456
+            - "2456-2457:2456-2457/udp"
         environment:
-            # TZ: ${TZ}
-            GID: ${PGID}
-            UID: ${PUID}
-            # rcon
-            ENABLE_RCON: "TRUE"
-            RCON_PASSWORD: "${MC_RCON_PWD}"
-            RCON_PORT: 28456
-            # minecraft settings
-            EULA: "TRUE"
-            ENABLE_AUTOPAUSE: "TRUE"
-            ONLINE_MODE: "FALSE"
-            PVP: "FALSE"
-            DIFFICULTY: "normal"
-            # administration
-            OPS: "bibi"
-            MAX_TICK_TIME: -1
-            MOTD: "Minecraft Docker Server powered by Bibi"
-            SNOOPER_ENABLED: "FALSE"
-            SERVER_NAME: "Bibibox.ga"
-            MEMORY: "8G"
-            WHITELIST_FILE: "/data/extra/whitelist.json"
-            ENFORCE_WHITELIST: "TRUE"
-            OVERRIDE_WHITELIST : "TRUE"
-            # server type & world
-            TYPE: "CURSEFORGE"
-            CF_SERVER_MOD: "/modpacks/Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
-            VERSION: 1.19.2
-            SEED: "37021689"
-            LEVEL: "betterMC"
-            MAX_WORLD_SIZE: 5000
-        restart: unless-stopped
+            PGID: "${PGID}"
+            PUID: "${PUID}"
+            TZ: "${TZ}"
+            SERVER_NAME: "${VALHEIM_SV_NAME}"
+            SERVER_PORT: "${VALHEIM_SV_PORT}"
+            WORLD_NAME: "NewVR"
+            SERVER_PUBLIC: 0
+            SERVER_PASS: "${VALHEIM_SV_PWD}"
+            UPDATE_IF_IDLE: "TRUE"
+            RESTART_CRON: ""
+            BACKUPS: "TRUE"
+            BACKUPS_MAX_COUNT: 3
+            BACKUPS_IF_IDLE: "FALSE"
+            VALHEIM_PLUS: "true"
+            UPDATE_INTERVAL: 14400
         volumes:
-            # attach a directory relative to the directory containing this compose file
-            - mcServer:/data
-            - mcModPacks:/modpacks
+            - valheimPlusSaves:/config
+            - valheimPlusData:/opt/valheim
+            - /tmp:/tmp
         labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
-
-    rcon:
-        container_name: 'rcon'
-        image: itzg/rcon
-        depends_on:
-            - mc
-        environment:
-            RWA_ENV: "TRUE"
-            RWA_USERNAME: "bibi"
-            RWA_PASSWORD: "${RCON_PWD}"
-            RWA_ADMIN: "TRUE"
-            # is referring to the hostname of 'mc' compose service below
-            RWA_RCON_HOST: mc
-            RWA_RCON_PORT: 28456
-            # needs to match the password configured for the container, which is 'minecraft' by default
-            RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
-            RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
-            RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
-        restart: unless-stopped
-        volumes:
-            - rconDirectory:/opt/rcon-web-admin/db
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
-            - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
-            - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.rcon-web.service=rcon-web"
-            - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
-            - "traefik.http.routers.rcon-ws.service=rcon-ws"
-            # watchtower
             - "com.centurylinklabs.watchtower1.enable=false"
 
 volumes:
@@ -210,4 +211,3 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rcon/
-    #enregion games
