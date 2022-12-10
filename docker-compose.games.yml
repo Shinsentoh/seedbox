@@ -128,7 +128,7 @@ services:
             ENFORCE_WHITELIST: "TRUE"
             # server type & world
             TYPE: "CURSEFORGE"
-            CF_SERVER_MOD: "Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
+            CF_SERVER_MOD: "/modpacks/Better+MC+FABRIC+Server+Pack+1.19.2+v12.5.zip"
             VERSION: 1.19.2
             SEED: "37021689"
             LEVEL: "betterMC"
@@ -137,6 +137,7 @@ services:
         volumes:
             # attach a directory relative to the directory containing this compose file
             - mcServer:/data
+            - mcModPacks:/modpacks
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 
@@ -200,6 +201,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-server/
+    mcModPacks:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-modpacks/
     rconDirectory:
         driver: local-persist
         driver_opts:
