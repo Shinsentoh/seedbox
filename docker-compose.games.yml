@@ -129,6 +129,7 @@ services:
             # server type & world
             TYPE: "CURSEFORGE"
             CF_SERVER_MOD: "Better MC FABRIC Server Pack 1.19.2 v12.5.zip"
+            VERSION: 1.19.2
             SEED: "37021689"
             LEVEL: "betterMC"
             MAX_WORLD_SIZE: 5000
