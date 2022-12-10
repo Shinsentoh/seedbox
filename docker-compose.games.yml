@@ -124,7 +124,7 @@ services:
             SNOOPER_ENABLED: "FALSE"
             SERVER_NAME: "Bibibox.ga"
             MEMORY: "8G"
-            WHITELIST_FILE: "/extra/whitelist.json"
+            WHITELIST_FILE: "/data/extra/whitelist.json"
             ENFORCE_WHITELIST: "TRUE"
             OVERRIDE_WHITELIST : "TRUE"
             # server type & world
