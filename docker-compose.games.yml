@@ -165,7 +165,7 @@ services:
             BACKUPS: "TRUE"
             BACKUPS_MAX_COUNT: 3
             BACKUPS_IF_IDLE: "FALSE"
-            VALHEIM_PLUS: "true"
+            VALHEIM_PLUS: "false"
             UPDATE_INTERVAL: 14400
         volumes:
             - valheimPlusSaves:/config
