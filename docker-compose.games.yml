@@ -123,12 +123,12 @@ services:
             MOTD: "Minecraft Docker Server powered by Bibi"
             SNOOPER_ENABLED: "FALSE"
             SERVER_NAME: "Bibibox.ga"
-            MEMORY: "4G"
+            MEMORY: "8G"
             WHITELIST_FILE: "/data/whitelist.json"
             ENFORCE_WHITELIST: "TRUE"
             # server type & world
             TYPE: "CURSEFORGE"
-            CF_SERVER_MOD: "/modpacks/Better+MC+FABRIC+Server+Pack+1.19.2+v12.5.zip"
+            CF_SERVER_MOD: "/modpacks/Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
             VERSION: 1.19.2
             SEED: "37021689"
             LEVEL: "betterMC"
