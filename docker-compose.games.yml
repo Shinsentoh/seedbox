@@ -180,10 +180,13 @@ services:
         restart: unless-stopped
         ports:
             - "25575:25575"
-            # - "27015:27015/udp"
-            - "7780:7777/udp"
+            - "27015:27015"
+            - "27015:27015/udp"
+            - "7777:7777"
+            - "7777:7777/udp"
         environment:
             SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+            RCON_PASSWORD: "${RCON_PWD}"
             ADDITIONAL_ARGS: "-noeac"
         volumes:
             - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
