@@ -175,7 +175,7 @@ services:
             - "com.centurylinklabs.watchtower1.enable=false"
 
     frozen-flame:
-        image: ragingdave/frozen-flame-docker
+        image: ghcr.io/ragingdave/frozen-flame-docker:main
         container_name: frozen-flame
         restart: unless-stopped
         ports:
