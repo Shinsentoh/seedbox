@@ -180,6 +180,8 @@ services:
         restart: unless-stopped
         ports:
             - "25575:25575"
+            # - "27015:27015/udp"
+            - "7780:7777/udp"
         environment:
             SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
         volumes:
