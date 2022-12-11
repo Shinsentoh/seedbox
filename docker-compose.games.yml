@@ -174,6 +174,20 @@ services:
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 
+    frozen-flame:
+        image: ragingdave/frozen-flame-docker
+        container_name: frozen-flame
+        restart: unless-stopped
+        ports:
+            - "25575:25575"
+        environment:
+            SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+        volumes:
+            - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
+
+
 volumes:
     valheimSaves:
         driver: local-persist
@@ -211,3 +225,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rcon/
+    frozenFlameServer:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/frozenFlame-server/
+
