@@ -184,6 +184,7 @@ services:
             - "7780:7777/udp"
         environment:
             SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+            ADDITIONAL_ARGS: "-noeac"
         volumes:
             - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
         labels:
