@@ -52,6 +52,8 @@ services:
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
             - "traefik.http.routers.plex.rule=Host(`${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.plex.service=plex"
+        depends_on:
+            - traefik
 
     overseerr:
         image: ghcr.io/linuxserver/overseerr
@@ -68,6 +70,8 @@ services:
             - "traefik.http.routers.overseerr.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.overseerr.service=overseerr"
             - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
+        depends_on:
+            - traefik
     #endregion
 
     #region Downloader
@@ -92,6 +96,8 @@ services:
             - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
             - "traefik.http.routers.rutorrent.service=rutorrent"
             - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
 
     # jdownloader:
     #     image: jlesage/jdownloader-2
@@ -119,6 +125,8 @@ services:
         environment:
             - CAPTCHA_SOLVER=hcaptcha-solver
         restart: unless-stopped
+        depends_on:
+            - traefik
 
     jackett:
         image: ghcr.io/linuxserver/jackett
@@ -178,6 +186,8 @@ services:
             - "traefik.http.routers.sonarr.rule=Host(`${SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.sonarr.middlewares=common-auth@file"
             - "traefik.http.routers.sonarr.service=sonarr"
+        depends_on:
+            - traefik
 
     radarr:
         image: linuxserver/radarr
@@ -197,6 +207,8 @@ services:
             - "traefik.http.routers.radarr.rule=Host(`${RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.radarr.middlewares=common-auth@file"
             - "traefik.http.routers.radarr.service=radarr"
+        depends_on:
+            - traefik
 
     #region Folks
     sonarr-folks:
@@ -217,6 +229,8 @@ services:
             - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
             - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
+        depends_on:
+            - traefik
 
     # medusa-folks:
     #     image: ghcr.io/linuxserver/medusa
@@ -253,6 +267,8 @@ services:
             - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.lidarr.middlewares=common-auth@file"
             - "traefik.http.routers.lidarr.service=lidarr"
+        depends_on:
+            - traefik
 
     #endregion Folks
 
@@ -275,6 +291,8 @@ services:
             - nextcloudDb:/config
         labels:
             - "traefik.enable=false"
+        depends_on:
+            - traefik
 
     # See init-setup-nextcloud.sh for first install
     nextcloud:
@@ -316,6 +334,8 @@ services:
             # - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+        depends_on:
+            - traefik
 
     netdata:
         image: netdata/netdata
@@ -343,6 +363,8 @@ services:
             - "traefik.http.routers.netdata.rule=Host(`${NETDATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.netdata.middlewares=common-auth@file"
             - "traefik.http.routers.netdata.service=netdata"
+        depends_on:
+            - traefik
 
     duplicati:
         image: linuxserver/duplicati
@@ -363,6 +385,8 @@ services:
             - "traefik.http.routers.duplicati.middlewares=common-auth@file"
             - "traefik.http.routers.duplicati.service=duplicati"
             - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
 
     shellinabox:
         image: sspreitzer/shellinabox:latest
@@ -384,6 +408,8 @@ services:
             - "traefik.http.routers.shellinabox.rule=Host(`${SHELLINABOX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
             - "traefik.http.routers.shellinabox.service=shellinabox"
+        depends_on:
+            - traefik
 
     organizr:
         image: organizr/organizr
@@ -401,6 +427,8 @@ services:
             - "traefik.http.routers.organizr.rule=Host(`${ORGANIZR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             # - "traefik.http.routers.organizr.middlewares=common-auth@file"
             - "traefik.http.routers.organizr.service=organizr"
+        depends_on:
+            - traefik
 
     sftp:
         image: netresearch/sftp
@@ -414,6 +442,8 @@ services:
         command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
         labels:
             - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
@@ -438,6 +468,8 @@ services:
             - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
             - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
             - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
 
     tautulli:
         image: linuxserver/tautulli
@@ -455,6 +487,8 @@ services:
             - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
             - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.tautulli.service=tautulli"
+        depends_on:
+            - traefik
 
     doublecommander:
         image: ghcr.io/linuxserver/doublecommander
@@ -474,13 +508,15 @@ services:
             - "traefik.http.routers.doublecommander.middlewares=common-auth@file"
             - "traefik.http.routers.doublecommander.service=doublecommander"
             - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
 
-    watchtower:
-        container_name: watchtower
-        image: containrrr/watchtower
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        command: --interval 30
+    # watchtower:
+    #     container_name: watchtower
+    #     image: containrrr/watchtower
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #     command: --interval 30
 
     #endregion Administration
 #endregion Containers
