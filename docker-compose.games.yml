@@ -97,49 +97,22 @@ services:
     #         # watchtower #
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    # odin:
-    #     image: mbround18/valheim-odin:latest
-    #     container_name: odin
-    #     restart: unless-stopped
-    #     volumes:
-    #         - odin-output:/data/odin/target/release
-    # valheim:
-    #     # depends_on:
-    #     #     - odin
-    #     image: mbround18/valheim:latest
-    #     container_name: valheim
+    # frozen-flame:
+    #     image: ghcr.io/ragingdave/frozen-flame-docker:main
+    #     container_name: frozen-flame
     #     restart: unless-stopped
     #     ports:
-    #         - 2456:2456
-    #         - 2457:2457
-    #         - 2458:2458
-    #         - 27000-27037:27000-27037
-    #         - 3478:3478
-    #         - 4379:4379
-    #         - 4380:4380
-    #         - 2456:2456/udp
-    #         - 2457:2457/udp
-    #         - 2458:2458/udp
-    #         - 27000-27037:27000-27037/udp
-    #         - 3478:3478/udp
-    #         - 4379:4379/udp
-    #         - 4380:4380/udp
+    #         - "25575:25575"
+    #         - "27015:27015"
+    #         - "27015:27015/udp"
+    #         - "7777:7777"
+    #         - "7777:7777/udp"
     #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #         - NAME=${VALHEIM_SV_NAME}
-    #         - WORLD=${VALHEIM_SV_WORLD}
-    #         - PORT=${VALHEIM_SV_PORT}
-    #         - PUBLIC=${VALHEIM_SV_PUBLIC}
-    #         - PASSWORD=${VALHEIM_SV_PWD}
-    #         - AUTO_UPDATE=0
-    #         #- AUTO_UPDATE_SCHEDULE="0 6 * * *"
+    #         SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+    #         RCON_PASSWORD: "${RCON_PWD}"
+    #         ADDITIONAL_ARGS: "-noeac"
     #     volumes:
-    #         - valheimSaves:/home/steam/.config/unity3d/IronGate/Valheim
-    #         - valheimServer:/home/steam/valheim
-    #         - /tmp:/tmp
-    #         #- odin-output:/home/steam/.odin
+    #         - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
@@ -170,25 +143,6 @@ services:
             - valheimPlusSaves:/config
             - valheimPlusData:/opt/valheim
             - /tmp:/tmp
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
-
-    frozen-flame:
-        image: ghcr.io/ragingdave/frozen-flame-docker:main
-        container_name: frozen-flame
-        restart: unless-stopped
-        ports:
-            - "25575:25575"
-            - "27015:27015"
-            - "27015:27015/udp"
-            - "7777:7777"
-            - "7777:7777/udp"
-        environment:
-            SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
-            RCON_PASSWORD: "${RCON_PWD}"
-            ADDITIONAL_ARGS: "-noeac"
-        volumes:
-            - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 

@@ -291,12 +291,11 @@ services:
             - nextcloudDb:/config
         labels:
             - "traefik.enable=false"
-        depends_on:
-            - traefik
 
     # See init-setup-nextcloud.sh for first install
     nextcloud:
         depends_on:
+            - traefik
             - nextcloud-db
         image: lscr.io/linuxserver/nextcloud:latest
         container_name: nextcloud
@@ -442,8 +441,6 @@ services:
         command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
         labels:
             - "com.centurylinklabs.watchtower.enable=false"
-        depends_on:
-            - traefik
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
