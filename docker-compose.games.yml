@@ -161,11 +161,11 @@ services:
             BEPINEX: "true"
             SERVER_PUBLIC: 0
             SERVER_PASS: "${VALHEIM_SV_PWD}"
-            UPDATE_IF_IDLE: "TRUE"
+            UPDATE_IF_IDLE: "true"
             RESTART_CRON: ""
             BACKUPS_MAX_COUNT: 3
             UPDATE_INTERVAL: 14400
-            VALHEIM_PLUS: "FALSE"
+            VALHEIM_PLUS: "false"
         volumes:
             - valheimPlusSaves:/config
             - valheimPlusData:/opt/valheim
