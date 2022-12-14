@@ -158,7 +158,7 @@ services:
             SERVER_NAME: "${VALHEIM_SV_NAME}"
             SERVER_PORT: "${VALHEIM_SV_PORT}"
             WORLD_NAME: "NewVR"
-            BEPINEX: true
+            BEPINEX: "true"
             SERVER_PUBLIC: 0
             SERVER_PASS: "${VALHEIM_SV_PWD}"
             UPDATE_IF_IDLE: "TRUE"
