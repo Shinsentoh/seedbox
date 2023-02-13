@@ -116,35 +116,35 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    valheim-plus:
-        image: lloesche/valheim-server
-        container_name: valheim-plus
-        restart: unless-stopped
-        cap_add:
-            - sys_nice
-        ports:
-            - "2456-2457:2456-2457/udp"
-        environment:
-            PGID: "${PGID}"
-            PUID: "${PUID}"
-            TZ: "${TZ}"
-            SERVER_NAME: "${VALHEIM_SV_NAME}"
-            SERVER_PORT: "${VALHEIM_SV_PORT}"
-            WORLD_NAME: "NewVR"
-            BEPINEX: "true"
-            SERVER_PUBLIC: 0
-            SERVER_PASS: "${VALHEIM_SV_PWD}"
-            UPDATE_IF_IDLE: "true"
-            RESTART_CRON: ""
-            BACKUPS_MAX_COUNT: 3
-            UPDATE_INTERVAL: 14400
-            VALHEIM_PLUS: "false"
-        volumes:
-            - valheimPlusSaves:/config
-            - valheimPlusData:/opt/valheim
-            - /tmp:/tmp
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # valheim-plus:
+    #     image: lloesche/valheim-server
+    #     container_name: valheim-plus
+    #     restart: unless-stopped
+    #     cap_add:
+    #         - sys_nice
+    #     ports:
+    #         - "2456-2457:2456-2457/udp"
+    #     environment:
+    #         PGID: "${PGID}"
+    #         PUID: "${PUID}"
+    #         TZ: "${TZ}"
+    #         SERVER_NAME: "${VALHEIM_SV_NAME}"
+    #         SERVER_PORT: "${VALHEIM_SV_PORT}"
+    #         WORLD_NAME: "NewVR"
+    #         BEPINEX: "true"
+    #         SERVER_PUBLIC: 0
+    #         SERVER_PASS: "${VALHEIM_SV_PWD}"
+    #         UPDATE_IF_IDLE: "true"
+    #         RESTART_CRON: ""
+    #         BACKUPS_MAX_COUNT: 3
+    #         UPDATE_INTERVAL: 14400
+    #         VALHEIM_PLUS: "false"
+    #     volumes:
+    #         - valheimPlusSaves:/config
+    #         - valheimPlusData:/opt/valheim
+    #         - /tmp:/tmp
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
 
 volumes:

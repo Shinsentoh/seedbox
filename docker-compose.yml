@@ -250,25 +250,25 @@ services:
     #         - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
     #         - "traefik.http.routers.medusa-folks.service=medusa-folks"
 
-    lidarr:
-        image: linuxserver/lidarr
-        container_name: lidarr
-        restart: always
-        volumes:
-            - configLidarr:/config
-            - alldata:/data
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
-            - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.lidarr.middlewares=common-auth@file"
-            - "traefik.http.routers.lidarr.service=lidarr"
-        depends_on:
-            - traefik
+    # lidarr:
+    #     image: linuxserver/lidarr
+    #     container_name: lidarr
+    #     restart: always
+    #     volumes:
+    #         - configLidarr:/config
+    #         - alldata:/data
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+    #         - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.lidarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.lidarr.service=lidarr"
+    #     depends_on:
+    #         - traefik
 
     #endregion Folks
 
@@ -468,45 +468,45 @@ services:
         depends_on:
             - traefik
 
-    tautulli:
-        image: linuxserver/tautulli
-        container_name: tautulli
-        restart: unless-stopped
-        volumes:
-            - configTautulli:/config
-            - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-            - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.tautulli.service=tautulli"
-        depends_on:
-            - traefik
+    # tautulli:
+    #     image: linuxserver/tautulli
+    #     container_name: tautulli
+    #     restart: unless-stopped
+    #     volumes:
+    #         - configTautulli:/config
+    #         - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+    #         - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.tautulli.service=tautulli"
+    #     depends_on:
+    #         - traefik
 
-    doublecommander:
-        image: ghcr.io/linuxserver/doublecommander
-        container_name: doublecommander
-        restart: unless-stopped
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configDoubleCommander:/config
-            - alldata:/data
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.doublecommander.loadbalancer.server.port=3000"
-            - "traefik.http.routers.doublecommander.rule=Host(`file.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.doublecommander.middlewares=common-auth@file"
-            - "traefik.http.routers.doublecommander.service=doublecommander"
-            - "com.centurylinklabs.watchtower.enable=false"
-        depends_on:
-            - traefik
+    # doublecommander:
+    #     image: ghcr.io/linuxserver/doublecommander
+    #     container_name: doublecommander
+    #     restart: unless-stopped
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configDoubleCommander:/config
+    #         - alldata:/data
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.doublecommander.loadbalancer.server.port=3000"
+    #         - "traefik.http.routers.doublecommander.rule=Host(`file.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.doublecommander.middlewares=common-auth@file"
+    #         - "traefik.http.routers.doublecommander.service=doublecommander"
+    #         - "com.centurylinklabs.watchtower.enable=false"
+    #     depends_on:
+    #         - traefik
 
     watchtower:
         container_name: watchtower

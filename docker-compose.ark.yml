@@ -1,0 +1,39 @@
+﻿version: "3.7"
+services:
+
+  ark-server:
+    restart: always
+    container_name: ark_server
+    image: hermsi/ark-server:latest
+    volumes:
+      - arkServer:/app
+      - arkServerBackups:/home/steam/ARK-Backups
+    environment:
+      - SESSION_NAME='Bibibox'
+      - SERVER_MAP='TheIsland'
+      - SERVER_PASSWORD="${ARK_SERVER_PASSWORD}"
+      - ADMIN_PASSWORD=${ARK_ADMIN_PASSWORD}
+      - MAX_PLAYERS=6
+      - UPDATE_ON_START=true
+      - BACKUP_ON_STOP=true
+      - ENABLE_CROSSPLAY=true
+      - GAME_MOD_IDS="731604991,756389708"
+    ports:
+      # Port for connections from ARK game client
+      - "7777:7777/udp"
+      # Raw UDP socket port (always Game client port +1)
+      - "7778:7778/udp"
+      # RCON management port
+      - "27020:27020/tcp"
+      # Steam's server-list port
+      - "27015:27015/udp"
+
+volumes:
+    arkServer:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ark/server/
+    arkServerBackups:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ark/backups/
