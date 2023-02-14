@@ -9,10 +9,10 @@ services:
       - arkServer:/app
       - arkServerBackups:/home/steam/ARK-Backups
     environment:
-      - SESSION_NAME='Bibibox'
+      - SESSION_NAME=Bibibox
       - SERVER_MAP='TheIsland'
       - SERVER_PASSWORD=
-      - ADMIN_PASSWORD=${ARK_ADMIN_PASSWORD}
+      - ADMIN_PASSWORD=
       - MAX_PLAYERS=6
       - UPDATE_ON_START=true
       - BACKUP_ON_STOP=true
