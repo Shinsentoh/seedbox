@@ -146,6 +146,10 @@
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
+networks:
+  default:
+    external:
+        name: "traefik-network"
 
 volumes:
     valheimSaves:
