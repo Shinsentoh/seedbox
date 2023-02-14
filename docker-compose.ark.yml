@@ -7,8 +7,8 @@ services:
     environment:
       - SESSIONNAME=Bibibox
       - SERVERMAP=TheIsland
-      - SERVERPASSWORD=
-      - ADMINPASSWORD=
+      - SERVERPASSWORD=qsdfg
+      - ADMINPASSWORD=adminArk1234
       - BACKUPONSTART=1
       - UPDATEONSTART=1
       - TZ=${TZ}
