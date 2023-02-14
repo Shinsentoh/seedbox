@@ -7,8 +7,8 @@ services:
     environment:
       - SESSIONNAME=Bibibox
       - SERVERMAP=TheIsland
-      - SERVERPASSWORD=qsdfg
-      - ADMINPASSWORD=adminArk1234
+      - SERVERPASSWORD=
+      - ADMINPASSWORD=
       - BACKUPONSTART=1
       - UPDATEONSTART=1
       - TZ=${TZ}
@@ -18,11 +18,14 @@ services:
     volumes:
       - arkServer:/ark
     ports:
+    - 7777:7777/udp
     - 7778:7778/udp
     # steam port
     - 7778:7778
+    - 7777:7777
     - 27015:27015/udp
     - 27015:27015
+    - 27020:27020
     # rcon port
     - 32330:32330
 
