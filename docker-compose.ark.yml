@@ -18,6 +18,8 @@ services:
       - BACKUP_ON_STOP=true
       - ENABLE_CROSSPLAY=true
       - GAME_MOD_IDS=731604991,756389708
+      - STEAM_USER=seedbox
+      - USER=seedbox
     ports:
       # Port for connections from ARK game client
       - "7777:7777/udp"
