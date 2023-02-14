@@ -11,7 +11,7 @@ services:
     environment:
       - SESSION_NAME='Bibibox'
       - SERVER_MAP='TheIsland'
-      - SERVER_PASSWORD="${ARK_SERVER_PASSWORD}"
+      - SERVER_PASSWORD=
       - ADMIN_PASSWORD=${ARK_ADMIN_PASSWORD}
       - MAX_PLAYERS=6
       - UPDATE_ON_START=true
