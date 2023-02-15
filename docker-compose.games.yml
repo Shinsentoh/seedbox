@@ -155,41 +155,41 @@ volumes:
     valheimSaves:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/saves/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/saves/
     valheimServer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/server/
     valheimPlusSaves:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim-server/config/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim-server/config/
     valheimPlusData:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim-server/data/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim-server/data/
     # odin-output:
     #     driver: local-persist
     #     driver_opts:
-    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/valheim/odin/
+    #         mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/odin/
     satisfactory:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/satisfactory-server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/satisfactory-server/
     mcServer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/minecraft-server/
     mcModPacks:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/minecraft-modpacks/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/minecraft-modpacks/
     rconDirectory:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rcon/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/rcon/
     frozenFlameServer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/frozenFlame-server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/frozenFlame-server/
 
