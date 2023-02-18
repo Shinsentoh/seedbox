@@ -152,14 +152,6 @@ networks:
         name: "traefik-network"
 
 volumes:
-    valheimSaves:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/saves/
-    valheimServer:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/server/
     valheimPlusSaves:
         driver: local-persist
         driver_opts:
@@ -168,10 +160,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim-server/data/
-    # odin-output:
-    #     driver: local-persist
-    #     driver_opts:
-    #         mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/valheim/odin/
     satisfactory:
         driver: local-persist
         driver_opts:

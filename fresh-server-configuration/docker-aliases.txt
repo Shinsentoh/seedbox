@@ -1,8 +1,0 @@
-﻿alias all-logs="docker ps -q | xargs -P 13 -L 1 docker logs --follow"
-alias dockerStopAll="docker stop $(docker ps -a -q)"
-alias dockerStartAll="docker start $(docker ps -a -q)"
-alias dockertruncate="sh -c 'truncate -s 0 /home/docker/containers/*/*-json.log'"
-
-function dockerup () { docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans }
-function dockerdown () { docker-compose $(find docker-compose.* | sed -e 's/^/-f /') down --remove-orphans }
-function dockerbash() { docker exec -it $1 /bin/sh }
