@@ -10,5 +10,3 @@ alias mkdir='mkdir -p'
 alias path='echo -e ${PATH//:/\\n}'
 alias top='xtitle Processes on $HOST && top'
 alias which='type -a'
-
-#alias restartru="sudo rm -Rf /home/seedbox/torrents/.session/*.lock & docker restart rutorrent"

@@ -4,7 +4,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source fresh-server-configuration/.serverEnv
+source ./fresh-server-configuration/.serverEnv
 
 if [ "$ADD_FIREWALL" = true ] ; then
     echo "[$0] Installing packages to manage the firewall (iptables)."
@@ -18,18 +18,18 @@ if [ "$ADD_FIREWALL" = true ] ; then
     #curl https://gist.githubusercontent.com/jirutka/3742890/raw/c9f6bdbfcf597578e562c92ea1e256a9ebcf3a2c/rules-both.iptables > basic-rules.iptables
     echo "[$0] Loading global rules to secure our server."
     # apply some basics rules
-    iptables-restore < fresh-server-configuration/basic-rules.iptables
+    iptables-restore < ./fresh-server-configuration/basic-rules.iptables
     echo "[$0] allowing all current listening ports into the firewall."
     # export all listening ports and protocol as iptables commands
-    ss -lntu | tail -n+3 | awk '{gsub(/.*:/,"",$5) ; print "iptables -A INPUT -p" $1 " --dport " $5 " -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT" }' | sort -u -k5n -k3 > fresh-server-configuration/input-rules.sh
-    chmod +x fresh-server-configuration/input-rules.sh
+    ss -lntu | tail -n+3 | awk '{gsub(/.*:/,"",$5) ; print "iptables -A INPUT -p" $1 " --dport " $5 " -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT" }' | sort -u -k5n -k3 > ./fresh-server-configuration/input-rules.sh
+    chmod +x ./fresh-server-configuration/input-rules.sh
     # run the commands to open those ports
     ./fresh-server-configuration/input-rules.sh
     ./fresh-server-configuration/other-input-rules.sh
     # save the whole configuration, so that it is restored on the each reboot
     netfilter-persistent save
     # clean temp files.
-    rm fresh-server-configuration/input-rules.sh
+    rm ./fresh-server-configuration/input-rules.sh
     echo "[$0] Done setting up the firewall."
     echo "DO NOT CLOSE or EXIT THIS SSH CONNECTION, before running the below test:"
     echo "Open another ssh connection to this server to make sure it is reachable through ssh with this new firewall configuration.".

@@ -5,7 +5,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source fresh-server-configuration/.serverEnv
+source ./fresh-server-configuration/.serverEnv
 
 if [ "$ADD_SFTP" = true ] ; then
     echo "[$0] Adding Sftp server using openssh-server ..."

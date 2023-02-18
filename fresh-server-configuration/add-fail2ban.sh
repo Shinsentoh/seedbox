@@ -4,7 +4,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-source fresh-server-configuration/.serverEnv
+source ./fresh-server-configuration/.serverEnv
 
 # if [ "$ADD_FAIL2BAN" = true ] ; then
 #     apt-get install fail2ban

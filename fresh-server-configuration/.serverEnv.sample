@@ -1,7 +1,7 @@
 # user to use instead of root, can use sudo
 ADD_USER=false
 USER=abc
-# will copy content of aliases.txt to the $USER's .bashrc
+# will copy content of aliases.sh to the $USER's .bashrc
 ADD_ALIASES_TO_USER_SHELL=false
 
 # sftp port (useful to upload a backup to be restored later)

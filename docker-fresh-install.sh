@@ -4,6 +4,8 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
+./fresh-server-configuration/docker-config.sh
+
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
 echo "[$0] Starting docker installation ..."
@@ -16,6 +18,10 @@ else
 fi
 
 echo "[$0] Starting docker-seedbox configuration ..."
+
+# copy docker aliases/functions to all users
+cat ./docker-configuration/docker-aliases.sh >> /etc/bash.bashrc
+
 # init .env file and treafik
 ./docker-configuration/init.sh
 

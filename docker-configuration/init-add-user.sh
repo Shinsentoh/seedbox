@@ -74,5 +74,11 @@ chmod +x $PATH_TORRENTS/magnet2torrent.sh
 
 /usr/sbin/adduser $username docker
 
+# add aliases specific to MEDIA_USER for all users
+echo 'alias fixru="sudo rm -Rf $PATH_TORRENTS/.session/*.lock & docker restart rutorrent"' >> /etc/bash.bashrc
+echo 'alias ..s="cd $BASE_PATH"' >> /etc/bash.bashrc
+echo 'alias ..sc="cd $PATH_CONFIG"' >> /etc/bash.bashrc
+echo 'alias ..st="cd $PATH_TORRENTS"' >> /etc/bash.bashrc
+
 echo "[$0] Done."
 exit 0

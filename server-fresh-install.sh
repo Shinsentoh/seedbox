@@ -8,8 +8,8 @@ echo "[$0] Done with server configuration."
 
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 
-if [[ ! -f fresh-server-configuration/.serverEnv ]]; then
-  cp fresh-server-configuration/.serverEnv.sample fresh-server-configuration/.serverEnv
+if [[ ! -f ./fresh-server-configuration/.serverEnv ]]; then
+  cp ./fresh-server-configuration/.serverEnv.sample ./fresh-server-configuration/.serverEnv
 fi
 
 if [[ ! "$EDITOR" = "nano" ]]; then
@@ -27,8 +27,8 @@ fi
 
 # editing .serverEnv file
 read -s -p "Press {Enter} to edit the .serverEnv file"
-"${EDITOR:-vi}" fresh-server-configuration/.serverEnv
-source fresh-server-configuration/.serverEnv
+"${EDITOR:-vi}" ./fresh-server-configuration/.serverEnv
+source ./fresh-server-configuration/.serverEnv
 
 # add needed softwares to run all the scripts
 ./fresh-server-configuration/add-softwares.sh
@@ -36,8 +36,6 @@ source fresh-server-configuration/.serverEnv
 ./fresh-server-configuration/add-user.sh
 # add sftp
 ./fresh-server-configuration/add-sftp.sh
-# can be run before the docker installation
-./fresh-server-configuration/docker-config.sh
 
 read -s -p "Press {Enter} to continue with docker installation and seedbox containers setup"
 
