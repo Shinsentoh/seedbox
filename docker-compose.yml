@@ -169,7 +169,7 @@ services:
     #         - "traefik.http.routers.medusa.service=medusa"
 
     sonarr:
-        image: ghcr.io/linuxserver/sonarr:3.0.9
+        image: ghcr.io/linuxserver/sonarr
         container_name: sonarr
         environment:
             - PUID=${PGID}
@@ -188,6 +188,8 @@ services:
             - "traefik.http.routers.sonarr.service=sonarr"
         depends_on:
             - traefik
+        security_opt:
+            - seccomp=unconfined
 
     radarr:
         image: linuxserver/radarr
@@ -212,7 +214,7 @@ services:
 
     #region Folks
     sonarr-folks:
-        image: ghcr.io/linuxserver/sonarr:3.0.9
+        image: ghcr.io/linuxserver/sonarr
         container_name: sonarr-folks
         environment:
             - PUID=${PGID}
@@ -231,6 +233,9 @@ services:
             - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
         depends_on:
             - traefik
+        security_opt:
+            - seccomp=unconfined
+
 
     # medusa-folks:
     #     image: ghcr.io/linuxserver/medusa
