@@ -188,6 +188,8 @@ services:
             - "traefik.http.routers.sonarr.service=sonarr"
         depends_on:
             - traefik
+        security_opt:
+            - seccomp=unconfined
 
     radarr:
         image: linuxserver/radarr
@@ -231,6 +233,9 @@ services:
             - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
         depends_on:
             - traefik
+        security_opt:
+            - seccomp=unconfined
+
 
     # medusa-folks:
     #     image: ghcr.io/linuxserver/medusa
