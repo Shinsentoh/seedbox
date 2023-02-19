@@ -169,7 +169,7 @@ services:
     #         - "traefik.http.routers.medusa.service=medusa"
 
     sonarr:
-        image: ghcr.io/linuxserver/sonarr
+        image: ghcr.io/linuxserver/sonarr:3.0.9
         container_name: sonarr
         environment:
             - PUID=${PGID}
@@ -212,7 +212,7 @@ services:
 
     #region Folks
     sonarr-folks:
-        image: ghcr.io/linuxserver/sonarr
+        image: ghcr.io/linuxserver/sonarr:3.0.9
         container_name: sonarr-folks
         environment:
             - PUID=${PGID}
