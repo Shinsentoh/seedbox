@@ -1,6 +1,6 @@
 version: "3.7"
 
-# services:
+services:
     # ubooquity:
     #     image: ghcr.io/linuxserver/ubooquity
     #     container_name: ubooquity
@@ -72,6 +72,7 @@ version: "3.7"
     #         - traefik
 
     #region Folks
+
     sonarr-folks:
         image: ghcr.io/linuxserver/sonarr
         container_name: sonarr-folks
@@ -96,6 +97,13 @@ version: "3.7"
             - seccomp=unconfined
 
     #endregion Folks
+
+#region Networks
+networks:
+  default:
+    name: traefik-network
+    external: true
+#endregion Networks
 
 volumes:
     configFolksSonarr:

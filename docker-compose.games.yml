@@ -146,11 +146,6 @@ version: "3.7"
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-networks:
-  default:
-    external:
-        name: "traefik-network"
-
 volumes:
     valheimPlusSaves:
         driver: local-persist
