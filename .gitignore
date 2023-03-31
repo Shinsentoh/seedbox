@@ -6,3 +6,4 @@ tunnel-options.sh
 .serverEnv
 traefik/http_auth
 backup/
+*.log
