@@ -329,18 +329,18 @@ services:
         depends_on:
             - traefik
 
-    # sftp:
-    #     image: netresearch/sftp
-    #     container_name: sftp
-    #     volumes:
-    #         - alldata:/home/${FTP_USER}/upload
-    #         - configSftp:/etc/ssh/
-    #     ports:
-    #         - "${FTP_PORT}:22"
-    #     restart: unless-stopped
-    #     command: '${FTP_COMMAND}'
-    #     labels:
-    #         - "com.centurylinklabs.watchtower.enable=false"
+    sftp:
+        image: netresearch/sftp
+        container_name: sftp
+        volumes:
+            - alldata:/home/${FTP_USER}/upload
+            - configSftp:/etc/ssh/
+        ports:
+            - "${FTP_PORT}:22"
+        restart: unless-stopped
+        command: "${FTP_USER}:${FTP_PASSWORD}:${PUID}:${PGID}"
+        labels:
+            - "com.centurylinklabs.watchtower.enable=false"
 
     openvpn:
         image: ghcr.io/linuxserver/openvpn-as
