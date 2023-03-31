@@ -99,25 +99,6 @@ services:
         depends_on:
             - traefik
 
-    # jdownloader:
-    #     image: jlesage/jdownloader-2
-    #     container_name: jdownloader
-    #     restart: unless-stopped
-    #     volumes:
-    #         - configJdownloader:/config
-    #         - media:/data
-    #     environment:
-    #         - USER_ID=${PUID}
-    #         - GROUP_ID=${PGID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.jdownloader.loadbalancer.server.port=5800"
-    #         - "traefik.http.routers.jdownloader.rule=Host(`${JDOWNLOADER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.jdownloader.middlewares=common-auth@file"
-    #         - "traefik.http.routers.jdownloader.service=jdownloader"
-    #endregion Downloader
-
     #region Media monitors
     flaresolverr:
         image: ghcr.io/flaresolverr/flaresolverr
@@ -149,24 +130,6 @@ services:
             - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
-
-    # medusa:
-    #     image: ghcr.io/linuxserver/medusa
-    #     container_name: medusa
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - configMedusa:/config
-    #         - alldata:/data
-    #     restart: unless-stopped
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.medusa.loadbalancer.server.port=8081"
-    #         - "traefik.http.routers.medusa.rule=Host(`${MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.medusa.middlewares=common-auth@file"
-    #         - "traefik.http.routers.medusa.service=medusa"
 
     sonarr:
         image: ghcr.io/linuxserver/sonarr
@@ -211,71 +174,6 @@ services:
             - "traefik.http.routers.radarr.service=radarr"
         depends_on:
             - traefik
-
-    #region Folks
-    sonarr-folks:
-        image: ghcr.io/linuxserver/sonarr
-        container_name: sonarr-folks
-        environment:
-            - PUID=${PGID}
-            - PGID=${PUID}
-            - TZ=${TZ}
-        volumes:
-            - configFolksSonarr:/config
-            - alldata:/data
-            - /etc/localtime:/etc/localtime:ro
-        restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8989"
-            - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
-            - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
-        depends_on:
-            - traefik
-        security_opt:
-            - seccomp=unconfined
-
-
-    # medusa-folks:
-    #     image: ghcr.io/linuxserver/medusa
-    #     container_name: medusa-folks
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - configFolksMedusa:/config
-    #         - alldata:/data
-    #     restart: unless-stopped
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.medusa-folks.loadbalancer.server.port=8081"
-    #         - "traefik.http.routers.medusa-folks.rule=Host(`${FOLKS_MEDUSA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.medusa-folks.middlewares=common-auth@file"
-    #         - "traefik.http.routers.medusa-folks.service=medusa-folks"
-
-    # lidarr:
-    #     image: linuxserver/lidarr
-    #     container_name: lidarr
-    #     restart: always
-    #     volumes:
-    #         - configLidarr:/config
-    #         - alldata:/data
-    #     environment:
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - TZ=${TZ}
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
-    #         - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.lidarr.middlewares=common-auth@file"
-    #         - "traefik.http.routers.lidarr.service=lidarr"
-    #     depends_on:
-    #         - traefik
-
-    #endregion Folks
 
     #endregion Media monitors
 
@@ -331,11 +229,9 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - /var/run/docker.sock:/var/run/docker.sock
             - configPortainer:/data
-        # command: --host=unix:///var/run/docker.sock
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            # - "traefik.http.routers.portainer.middlewares=common-auth@file"
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
         depends_on:
@@ -429,7 +325,6 @@ services:
             - "traefik.enable=true"
             - "traefik.http.services.organizr.loadbalancer.server.port=80"
             - "traefik.http.routers.organizr.rule=Host(`${ORGANIZR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            # - "traefik.http.routers.organizr.middlewares=common-auth@file"
             - "traefik.http.routers.organizr.service=organizr"
         depends_on:
             - traefik
@@ -564,22 +459,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rutorrent
-    configMedusa:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/medusa
     configSonarr:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr
-    configFolksMedusa:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/medusa
-    configFolksSonarr:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/sonarr
     configRadarr:
         driver: local-persist
         driver_opts:
@@ -588,18 +471,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/jackett
-    configLidarr:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/lidarr
     configTautulli:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/tautulli
-    configJdownloader:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/jdownloader
     nextcloudDb:
         driver: local-persist
         driver_opts:
@@ -632,10 +507,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/duplicati
-    configOmbi:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/ombi
     configDoubleCommander:
         driver: local-persist
         driver_opts:
@@ -666,10 +537,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies
-    books:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books
     #endregion Media
 
 #endregion Volumes

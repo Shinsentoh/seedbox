@@ -27,7 +27,7 @@ mkdir -p $PATH_TORRENTS/$TORRENTS_TREE
 # media folder
 mkdir -p $PATH_MEDIA/$MEDIA_TREE
 # games folder
-mkdir -p $PATH_GAMES
+mkdir -p $PATH_GAMES/$GAMES_TREE
 # config folder
 mkdir -p $PATH_CONFIG/$CONFIG_TREE
 # tautulli needs access to the plex logs
@@ -47,6 +47,7 @@ wget -O "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip https://github.com/pannal/Su
 unzip "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/
 mv "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle-master "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle
 rm -rf "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip
+
 # traefik configuration
 mkdir -p $PATH_CONFIG/traefik/behaviour
 cp -R ./traefik/* $PATH_CONFIG/traefik/behaviour

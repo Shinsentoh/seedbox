@@ -50,7 +50,62 @@
     #         - "traefik.http.routers.mylar.middlewares=common-auth@file"
     #         - "traefik.http.routers.mylar.service=mylar"
 
-#volumes:
+
+    # lidarr:
+    #     image: linuxserver/lidarr
+    #     container_name: lidarr
+    #     restart: always
+    #     volumes:
+    #         - configLidarr:/config
+    #         - alldata:/data
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+    #         - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.lidarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.lidarr.service=lidarr"
+    #     depends_on:
+    #         - traefik
+
+    #region Folks
+    sonarr-folks:
+        image: ghcr.io/linuxserver/sonarr
+        container_name: sonarr-folks
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configFolksSonarr:/config
+            - alldata:/data
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.sonarr-folks.loadbalancer.server.port=8989"
+            - "traefik.http.routers.sonarr-folks.rule=Host(`${FOLKS_SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.sonarr-folks.middlewares=common-auth@file"
+            - "traefik.http.routers.sonarr-folks.service=sonarr-folks"
+        depends_on:
+            - traefik
+        security_opt:
+            - seccomp=unconfined
+
+    #endregion Folks
+
+volumes:
+    configFolksSonarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/sonarr
+    # configLidarr:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/folks/lidarr
     # configMylar:
     #     driver: local-persist
     #     driver_opts:
@@ -63,4 +118,8 @@
     #     driver: local-persist
     #     driver_opts:
     #         mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books/comics
+    # books:
+    #     driver: local-persist
+    #     driver_opts:
+    #         mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/books
     #enregion games
