@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 # Loop through watch directory
 watchdir=#ROOT_WATCH_DIR#

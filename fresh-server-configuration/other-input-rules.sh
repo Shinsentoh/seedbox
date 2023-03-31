@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 # Steam
 iptables -A INPUT -p tcp --dport 27015:27030 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
