@@ -14,7 +14,7 @@ fi
 
 if [[ ! "$EDITOR" = "nano" ]]; then
   while true; do
-      read -p "Would you like to make nano your default editor ?" yn
+      read -p "Would you like to make nano your default editor ? [y/n]: " yn
       case $yn in
           [Yy]* ) apt-get install nano;
                   EDITOR=nano;

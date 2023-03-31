@@ -38,14 +38,14 @@ mkdir -p "$PLEX_FOLDER"/Logs/
 mkdir -p "$PLEX_FOLDER"/Scanners/Series/
 mkdir -p "$PLEX_FOLDER"/Plug-ins/
 # plex anime agent
-wget -O "$PLEX_FOLDER"/Scanners/Series/Absolute\ Series\ Scanner.py https://raw.githubusercontent.com/ZeroQI/Absolute-Series-Scanner/master/Scanners/Series/Absolute%20Series%20Scanner.py
-wget -O "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip https://github.com/ZeroQI/Hama.bundle/archive/refs/heads/master.zip
-unzip "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/
+wget -O "$PLEX_FOLDER"/Scanners/Series/Absolute\ Series\ Scanner.py https://raw.githubusercontent.com/ZeroQI/Absolute-Series-Scanner/master/Scanners/Series/Absolute%20Series%20Scanner.py &>> ./logfile-seedbox-docker.log
+wget -O "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip https://github.com/ZeroQI/Hama.bundle/archive/refs/heads/master.zip &>> ./logfile-seedbox-docker.log
+unzip "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/ &>> ./logfile-seedbox-docker.log
 mv "$PLEX_FOLDER"/Plug-ins/Hama.bundle-master "$PLEX_FOLDER"/Plug-ins/Hama.bundle
 rm -rf "$PLEX_FOLDER"/Plug-ins/Hama.bundle.zip
 # plex subtitle plugin
-wget -O "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip https://github.com/pannal/Sub-Zero.bundle/archive/refs/heads/master.zip
-unzip "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/
+wget -O "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip https://github.com/pannal/Sub-Zero.bundle/archive/refs/heads/master.zip &>> ./logfile-seedbox-docker.log
+unzip "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip -d "$PLEX_FOLDER"/Plug-ins/ &>> ./logfile-seedbox-docker.log
 mv "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle-master "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle
 rm -rf "$PLEX_FOLDER"/Plug-ins/Sub-Zero.bundle.zip
 
@@ -61,18 +61,18 @@ MEDIA_GID=$(id $username -g)
 MEDIA_UID=$(id $username -u)
 
 echo "[$0] Setting user UID and GID in the .env file for $username ..."
-sed -i -e "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
-sed -i -e "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
+sed -i "s/PGID=[[:digit:]]*/PGID=$MEDIA_GID/g" .env
+sed -i "s/PUID=[[:digit:]]*/PUID=$MEDIA_UID/g" .env
 
 TMP_NETDATA_DOCKER_PGID=$(grep docker /etc/group | cut -d ':' -f 3)
-sed -i -e "s/NETDATA_DOCKER_PGID=[[:digit:]]*/NETDATA_DOCKER_PGID=$TMP_NETDATA_DOCKER_PGID/g" .env
+sed -i "s/NETDATA_DOCKER_PGID=[[:digit:]]*/NETDATA_DOCKER_PGID=$TMP_NETDATA_DOCKER_PGID/g" .env
 
 cp ./script.d/magnet2torrent.sh  $PATH_TORRENTS/
-sed -i -e "s/watchdir=#ROOT_WATCH_DIR#/watchdir=$PATH_WATCH_DIR/g" $PATH_TORRENTS/magnet2torrent.sh
+sed -i "s/watchdir=#ROOT_WATCH_DIR#/watchdir=$PATH_WATCH_DIR/g" $PATH_TORRENTS/magnet2torrent.sh
 chmod +x $PATH_TORRENTS/magnet2torrent.sh
 
 # add magnet2torrent to cron
-(crontab -l; echo "1 * * * * $PATH_TORRENTS/magnet2torrent.sh >/dev/null 2>&1") | sort -u | crontab -
+(crontab -u $username -l; echo "1 * * * * $PATH_TORRENTS/magnet2torrent.sh >/dev/null 2>&1") | sort -u | crontab -
 
 /usr/sbin/adduser $username docker
 
