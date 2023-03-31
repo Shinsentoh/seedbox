@@ -23,13 +23,14 @@ echo "[$0] Creating directories for $username ..."
 # backup folder
 mkdir -p $BASE_PATH/$BACKUP_DIR_NAME
 # torrents folder
-mkdir -p $PATH_TORRENTS/$TORRENTS_TREE
+#eval => https://stackoverflow.com/questions/33740201/creating-multiple-directories-based-on-value-of-variable
+eval mkdir -p $PATH_TORRENTS/$TORRENTS_TREE
 # media folder
-mkdir -p $PATH_MEDIA/$MEDIA_TREE
+eval mkdir -p $PATH_MEDIA/$MEDIA_TREE
 # games folder
-mkdir -p $PATH_GAMES/$GAMES_TREE
+eval mkdir -p $PATH_GAMES/$GAMES_TREE
 # config folder
-mkdir -p $PATH_CONFIG/$CONFIG_TREE
+eval mkdir -p $PATH_CONFIG/$CONFIG_TREE
 # tautulli needs access to the plex logs
 PLEX_FOLDER=$PATH_CONFIG/plex/Library/Application\ Support/Plex\ Media\ Server
 mkdir -p "$PLEX_FOLDER"/Logs/
