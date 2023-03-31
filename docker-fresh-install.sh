@@ -22,6 +22,8 @@ echo "[$0] Starting docker-seedbox configuration ..."
 # copy docker aliases/functions to all users
 cat ./docker-configuration/docker-aliases.sh >> /etc/bash.bashrc
 
+source /etc/bash.bashrc
+
 # init .env file and treafik
 ./docker-configuration/init.sh
 
