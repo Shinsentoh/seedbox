@@ -101,3 +101,6 @@ See https://hub.docker.com/r/linuxserver/plex.
 All data is saved in the docker volumes `config` or `torrents` and `media`.
 These volumes are mapped to the `config` and `torrents` folders located on the host in `$BASE_PATH` directory which is a variable you can change in the .env file and the docker-compose.yml file.
 Thanks to the **local-persist** Docker plugin, the data located in these volumes is persistent, meaning that volumes are not deleted, even when using the ```docker-compose down``` command. It would be a shame to loose everything by running a simple docker command ;-)
+
+## todo
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).

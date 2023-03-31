@@ -10,10 +10,14 @@ fi
 if ! command -v docker &> /dev/null; then
     echo "[$0] Adding the GPG key for the official Docker repository to your system ..."
     linux_os_name=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
-    curl -fsSL https://download.docker.com/linux/$linux_os_name/gpg | apt-key add -
+    mkdir -m 0755 -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/$linux_os_name/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg &> ./logfile-seedbox-docker.log
 
     echo "[$0] Adding the Docker repository to APT sources ..."
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$linux_os_name $(lsb_release -cs) stable"
+    echo \
+    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$linux_os_name \
+    "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+    tee /etc/apt/sources.list.d/docker.list &> ./logfile-seedbox-docker.log
 
     echo "[$0] updating the package database with the Docker packages from the newly added repo ..."
     apt-get update &> ./logfile-seedbox-docker.log
@@ -22,7 +26,7 @@ if ! command -v docker &> /dev/null; then
     apt-cache policy docker-ce &> ./logfile-seedbox-docker.log
 
     echo "[$0] Installing Docker ..."
-    apt-get install -y docker-ce &> ./logfile-seedbox-docker.log
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> ./logfile-seedbox-docker.log
 
     ANY_SERVICE_STATUS="$(isRunningService docker)"
     if [ $ANY_SERVICE_STATUS -ne 0 ]; then
