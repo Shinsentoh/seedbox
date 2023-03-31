@@ -54,6 +54,17 @@ chmod +x server-fresh-install.sh
 ```
 That's it
 
+## change ubuntu username
+[enable root through ssh](https://access.redhat.com/documentation/fr-fr/red_hat_enterprise_linux/6/html/v2v_guide/preparation_before_the_p2v_migration-enable_root_login_over_ssh)
+
+connect as root then:
+```shell
+usermod -l newUsername ubuntu
+groupmod -n newUsername ubuntu
+```
+disable root through ssh
+
+
 ## Installation on an existing server
 
 If git is not installed :
