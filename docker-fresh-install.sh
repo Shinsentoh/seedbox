@@ -34,6 +34,4 @@ docker network create traefik-network 2>&1 || true
 
 ./docker-configuration/after-setup-nextcloud.sh
 
-# todo: use cron to update ? OR is it handled by watchtower
-
 echo "[$0] Done with docker-seedbox configuration."
