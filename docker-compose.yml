@@ -373,16 +373,16 @@ services:
         container_name: tautulli
         restart: unless-stopped
         volumes:
-            - configtautulli:/config
-            - configplexlogs:/logs:ro # inside of tautulli, bind to logs via "/logs/plex media server/logs"
+            - configTautulli:/config
+            - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
         environment:
-            - pgid=${pgid}
-            - puid=${puid}
-            - tz=${tz}
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-            - "traefik.http.routers.tautulli.rule=host(`${tautulli_sub_domain}.${traefik_domain}`)"
+            - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.tautulli.service=tautulli"
         depends_on:
             - traefik
