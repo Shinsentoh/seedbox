@@ -86,7 +86,7 @@ services:
 
     #region Downloader
     rutorrent:
-        image: mondedie/rutorrent:2022.02.08
+        image: mondedie/rutorrent
         container_name: rutorrent
         environment:
             - GID=${PGID}
