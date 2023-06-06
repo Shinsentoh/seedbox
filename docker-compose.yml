@@ -56,7 +56,7 @@ services:
             - TZ=${TZ}
             - VERSION=docker
             - PLEX_CLAIM=claim-79WzwTKf-8BUQzL33zR2
-            - 'ADVERTISE_IP=http://5.135.137.221:32400,https://${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}'
+            - ADVERTISE_IP=https://plex.bibibox.re:443
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
