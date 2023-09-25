@@ -86,6 +86,7 @@ services:
 
     #region Downloader
     rutorrent:
+        # works: Digest:sha256:4b4c8cd24e944b4e5fdd6129e9f6f00c3757901547c363d4d32e3fa646cdcde6
         image: mondedie/rutorrent
         container_name: rutorrent
         environment:
