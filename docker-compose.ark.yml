@@ -1,33 +1,33 @@
 version: "3.7"
-services:
+# services:
 
-  ark:
-    container_name: ark
-    image: motey/arkserver
-    environment:
-      - SESSIONNAME=Bibibox
-      - SERVERMAP=TheIsland
-      - SERVERPASSWORD=qsdfg
-      - ADMINPASSWORD=adminArk1234
-      - BACKUPONSTART=1
-      - UPDATEONSTART=1
-      - TZ=${TZ}
-      - NBPLAYERS=6
-      - GID=${PGID}
-      - UID=${PUID}
-    volumes:
-      - arkServer:/ark
-    ports:
-    - 7777:7777/udp
-    - 7778:7778/udp
-    # steam port
-    - 7778:7778
-    - 7777:7777
-    - 27015:27015/udp
-    - 27015:27015
-    - 27020:27020
-    # rcon port
-    - 32330:32330
+#   ark:
+#     container_name: ark
+#     image: motey/arkserver
+#     environment:
+#       - SESSIONNAME=Bibibox
+#       - SERVERMAP=TheIsland
+#       - SERVERPASSWORD=qsdfg
+#       - ADMINPASSWORD=adminArk1234
+#       - BACKUPONSTART=1
+#       - UPDATEONSTART=1
+#       - TZ=${TZ}
+#       - NBPLAYERS=6
+#       - GID=${PGID}
+#       - UID=${PUID}
+#     volumes:
+#       - arkServer:/ark
+#     ports:
+#     - 7777:7777/udp
+#     - 7778:7778/udp
+#     # steam port
+#     - 7778:7778
+#     - 7777:7777
+#     - 27015:27015/udp
+#     - 27015:27015
+#     - 27020:27020
+#     # rcon port
+#     - 32330:32330
 
 volumes:
     arkServer:
