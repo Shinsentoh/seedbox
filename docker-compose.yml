@@ -110,6 +110,31 @@ services:
         depends_on:
             - traefik
 
+    qbittorrent:
+        image: ghcr.io/hotio/qbittorrent
+        container_name: qbittorrent
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - WEBUI_PORT=8080
+        volumes:
+            - configQbit:/config
+            - torrents:/data
+        ports:
+            - 6881:6881
+            - 6881:6881/udp
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.rutorrent.loadbalancer.server.port=8080"
+            - "traefik.http.routers.rutorrent.rule=Host(`bit.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rutorrent.middlewares=common-auth@file"
+            - "traefik.http.routers.rutorrent.service=rutorrent"
+            - "com.centurylinklabs.watchtower.enable=false"
+        depends_on:
+            - traefik
+
     #region Media monitors
     flaresolverr:
         image: ghcr.io/flaresolverr/flaresolverr
@@ -142,6 +167,43 @@ services:
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
 
+    prowlarr:
+        image: lscr.io/linuxserver/prowlarr
+        container_name: prowlarr
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configProwlarr:/config
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+            - "traefik.http.routers.prowlarr.rule=Host(`indexer.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.prowlarr.middlewares=common-auth@file"
+            - "traefik.http.routers.prowlarr.service=prowlarr"
+        depends_on:
+            - traefik
+
+    notifiarr:
+        container_name: notifiarr
+        hostname: notifiarr
+        image: golift/notifiarr
+        restart: unless-stopped
+        volumes:
+            - configNotifiarr:/config
+            - /var/run/utmp:/var/run/utmp
+            - /etc/machine-id:/etc/machine-id
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.notifiarr.loadbalancer.server.port=5454"
+            - "traefik.http.routers.notifiarr.rule=Host(`notif.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.notifiarr.middlewares=common-auth@file"
+            - "traefik.http.routers.notifiarr.service=notifiarr"
+        depends_on:
+            - traefik
+
     sonarr:
         image: ghcr.io/linuxserver/sonarr
         container_name: sonarr
@@ -160,6 +222,29 @@ services:
             - "traefik.http.routers.sonarr.rule=Host(`${SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.sonarr.middlewares=common-auth@file"
             - "traefik.http.routers.sonarr.service=sonarr"
+        depends_on:
+            - traefik
+        security_opt:
+            - seccomp=unconfined
+
+    sonarr-anime:
+        image: ghcr.io/linuxserver/sonarr
+        container_name: sonarr-anime
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configSonarrAnime:/config
+            - alldata:/data
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.sonarr-anime.loadbalancer.server.port=8989"
+            - "traefik.http.routers.sonarr-anime.rule=Host(`anime.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.sonarr-anime.middlewares=common-auth@file"
+            - "traefik.http.routers.sonarr-anime.service=sonarr-anime"
         depends_on:
             - traefik
         security_opt:
@@ -470,14 +555,30 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/rutorrent
+    configQbit:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/qbit
     configSonarr:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr
+    configSonarrAnime:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr-animes
     configRadarr:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
+    configProwlarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/prowlarr
+    configNotifiarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/notifiarr
     configJackett:
         driver: local-persist
         driver_opts:
