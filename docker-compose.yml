@@ -167,6 +167,25 @@ services:
             - "traefik.http.routers.jackett.middlewares=common-auth@file"
             - "traefik.http.routers.jackett.service=jackett"
 
+    bazarr:
+        image: lscr.io/linuxserver/bazarr:latest
+        container_name: bazarr
+        environment:
+            - PUID=${PGID}
+            - PGID=${PUID}
+            - TZ=${TZ}
+        volumes:
+            - configBazarr
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+            - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.bazarr.middlewares=common-auth@file"
+            - "traefik.http.routers.bazarr.service=bazarr"
+        depends_on:
+            - traefik
+
     prowlarr:
         image: lscr.io/linuxserver/prowlarr
         container_name: prowlarr
@@ -188,7 +207,6 @@ services:
 
     notifiarr:
         container_name: notifiarr
-        hostname: notifiarr
         image: golift/notifiarr
         restart: unless-stopped
         volumes:
@@ -228,7 +246,7 @@ services:
             - seccomp=unconfined
 
     sonarr-anime:
-        image: ghcr.io/linuxserver/sonarr
+        image: ghcr.io/linuxserver/sonarr:4.0.0-develop
         container_name: sonarr-anime
         environment:
             - PUID=${PGID}
@@ -337,7 +355,6 @@ services:
         image: netdata/netdata
         container_name: netdata
         restart: unless-stopped
-        hostname: ${NETDATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}
         cap_add:
             - SYS_PTRACE
         security_opt:
@@ -571,6 +588,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
+    configBazarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/bazarr
     configProwlarr:
         driver: local-persist
         driver_opts:

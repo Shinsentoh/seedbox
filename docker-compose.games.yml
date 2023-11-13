@@ -3,7 +3,6 @@ services:
 
     # satisfactory-server:
     #     container_name: 'satisfactory-server'
-    #     hostname: 'satisfactory'
     #     image: 'wolveix/satisfactory-server:latest'
     #     environment:
     #         - MAXPLAYERS=8
@@ -97,24 +96,24 @@ services:
     #         # watchtower #
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    frozen-flame:
-        image: ghcr.io/ragingdave/frozen-flame-docker:main
-        container_name: frozen-flame
-        restart: unless-stopped
-        ports:
-            - "25575:25575"
-            - "27015:27015"
-            - "27015:27015/udp"
-            - "7777:7777"
-            - "7777:7777/udp"
-        environment:
-            SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
-            RCON_PASSWORD: "${RCON_PWD}"
-            ADDITIONAL_ARGS: "-noeac"
-        volumes:
-            - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # frozen-flame:
+    #     image: ghcr.io/ragingdave/frozen-flame-docker:main
+    #     container_name: frozen-flame
+    #     restart: unless-stopped
+    #     ports:
+    #         - "25575:25575"
+    #         - "27015:27015"
+    #         - "27015:27015/udp"
+    #         - "7777:7777"
+    #         - "7777:7777/udp"
+    #     environment:
+    #         SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+    #         RCON_PASSWORD: "${RCON_PWD}"
+    #         ADDITIONAL_ARGS: "-noeac"
+    #     volumes:
+    #         - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # valheim-plus:
     #     image: lloesche/valheim-server
@@ -146,6 +145,26 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
+    icarus:
+        image: mornedhels/icarus-server:dev
+        container_name: icarus
+        restart: unless-stopped
+        environment:
+            - "SERVER_NAME=Bibibox Icarus Server"
+            - SERVER_PASSWORD=qsdfg
+            - SERVER_ADMIN_PASSWORD=${RCON_PWD}
+            - SERVER_PORT=17777
+            - SERVER_QUERYPORT=27015
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - CLEANUP_EXCLUDES=Housing
+            - STEAM_API_KEY=2BE6A513FDBF1983D4A17BEB3CDEDFCD
+        ports:
+            - "17777:17777/udp"
+            - "27015:27015/udp"
+        volumes:
+            - ./config:/home/icarus/drive_c/icarus
+
 volumes:
     valheimPlusSaves:
         driver: local-persist
@@ -175,4 +194,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/frozenFlame-server/
+    icarus:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/icarus-server/
 
