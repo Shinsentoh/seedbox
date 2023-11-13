@@ -163,7 +163,8 @@ services:
             - "17777:17777/udp"
             - "27015:27015/udp"
         volumes:
-            - icarus:/home/icarus/drive_c/icarus
+            - icarusConfig:/home/icarus/drive_c/icarus
+            - icarusServer:/opt/icarus
 
 volumes:
     valheimPlusSaves:
@@ -194,8 +195,12 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/frozenFlame-server/
-    icarus:
+    icarusServer:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/icarus-server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/icarus-server/data
+    icarusConfig:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/icarus-server/config
 
