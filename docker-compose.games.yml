@@ -163,7 +163,7 @@ services:
             - "17777:17777/udp"
             - "27015:27015/udp"
         volumes:
-            - ./config:/home/icarus/drive_c/icarus
+            - icarus:/home/icarus/drive_c/icarus
 
 volumes:
     valheimPlusSaves:

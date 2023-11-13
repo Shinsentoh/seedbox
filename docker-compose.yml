@@ -175,7 +175,7 @@ services:
             - PGID=${PUID}
             - TZ=${TZ}
         volumes:
-            - configBazarr
+            - configBazarr:/config
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
