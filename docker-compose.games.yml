@@ -145,26 +145,45 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    icarus:
-        image: mornedhels/icarus-server:dev
-        container_name: icarus
+    # icarus:
+    #     image: mornedhels/icarus-server:dev
+    #     container_name: icarus
+    #     restart: unless-stopped
+    #     environment:
+    #         - "SERVER_NAME=Bibibox Icarus Server"
+    #         - SERVER_PASSWORD=qsdfg
+    #         - SERVER_ADMIN_PASSWORD=${RCON_PWD}
+    #         - SERVER_PORT=17777
+    #         - SERVER_QUERYPORT=27015
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - CLEANUP_EXCLUDES=Housing
+    #         - STEAM_API_KEY=2BE6A513FDBF1983D4A17BEB3CDEDFCD
+    #     ports:
+    #         - "17777:17777/udp"
+    #         - "27015:27015/udp"
+    #     volumes:
+    #         - icarusConfig:/home/icarus/drive_c/icarus
+    #         - icarusServer:/opt/icarus
+
+    palworld:
+        image: thijsvanloef/palworld-server-docker:latest
         restart: unless-stopped
-        environment:
-            - "SERVER_NAME=Bibibox Icarus Server"
-            - SERVER_PASSWORD=qsdfg
-            - SERVER_ADMIN_PASSWORD=${RCON_PWD}
-            - SERVER_PORT=17777
-            - SERVER_QUERYPORT=27015
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - CLEANUP_EXCLUDES=Housing
-            - STEAM_API_KEY=2BE6A513FDBF1983D4A17BEB3CDEDFCD
+        container_name: palworld-server
         ports:
-            - "17777:17777/udp"
-            - "27015:27015/udp"
+            - 8211:8211/udp
+            - 27015:27015/udp
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - PORT=8211
+            - PLAYERS=10
+            - MULTITHREADING=true
+            - RCON_ENABLED=true
+            - RCON_PORT=25575
+            - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
         volumes:
-            - icarusConfig:/home/icarus/drive_c/icarus
-            - icarusServer:/opt/icarus
+            - palworldConfig:/palworld/
 
 volumes:
     valheimPlusSaves:
@@ -203,4 +222,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/icarus-server/config
+    palworldConfig:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/palworld/
 

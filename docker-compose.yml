@@ -455,31 +455,54 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower.enable=false"
 
-    openvpn:
-        image: ghcr.io/linuxserver/openvpn-as
-        container_name: openvpn
+    # openvpn:
+    #     image: ghcr.io/linuxserver/openvpn-as
+    #     container_name: openvpn
+    #     cap_add:
+    #         - NET_ADMIN
+    #     environment:
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configOpenVPN:/config
+    #     restart: unless-stopped
+    #     ports:
+    #         - 9443:9443
+    #         - 1194:1194/udp
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
+    #         - "traefik.http.routers.openvpn-http.service=openvpn-http"
+    #         - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
+    #         - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
+    #         - "com.centurylinklabs.watchtower.enable=false"
+    #     depends_on:
+    #         - traefik
+
+    wireguard:
+        image: linuxserver/wireguard:latest
+        container_name: wireguard
+        restart: unless-stopped
         cap_add:
             - NET_ADMIN
+            - SYS_MODULE
         environment:
             - PUID=${PUID}
             - PGID=${PGID}
             - TZ=${TZ}
+            - "SERVERURL=${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}"
+            - SERVERPORT=51820
+            - "PEERS=bibi,maman,boucher,horvath,family,friends"
+            - PEERDNS=auto
         volumes:
-            - configOpenVPN:/config
-        restart: unless-stopped
+            - configWireguard:/config
+            - /lib/modules:/lib/modules
         ports:
-            - 9443:9443
-            - 1194:1194/udp
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
-            - "traefik.http.routers.openvpn-http.service=openvpn-http"
-            - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
-            - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
-            - "com.centurylinklabs.watchtower.enable=false"
-        depends_on:
-            - traefik
+            - 51820:51820/udp
+        sysctls:
+            - net.ipv4.conf.all.src_valid_mark=1
 
     tautulli:
         image: linuxserver/tautulli
@@ -632,6 +655,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/openVPN
+    configWireguard:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/wireguard
     configSftp:
         driver: local-persist
         driver_opts:
