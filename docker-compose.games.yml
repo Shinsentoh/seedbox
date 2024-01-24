@@ -166,6 +166,22 @@ services:
     #         - icarusConfig:/home/icarus/drive_c/icarus
     #         - icarusServer:/opt/icarus
 
+    olivetin:
+        image: jamesread/olivetin
+        container_name: olivetin
+        restart: unless-stopped
+        volumes:
+            - olivetinConfig:/config
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /usr/bin/docker:/usr/bin/docker
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.olivetin.loadbalancer.server.port=1337"
+            - "traefik.http.routers.olivetin.rule=Host(`actions.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.olivetin.service=olivetin"
+        depends_on:
+            - traefik
+
     palworld:
         image: thijsvanloef/palworld-server-docker:latest
         restart: unless-stopped
@@ -227,4 +243,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/palworld/
+    olivetinConfig:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/olivetin/
 
