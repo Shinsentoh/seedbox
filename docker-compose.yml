@@ -495,7 +495,8 @@ services:
             - "SERVERURL=${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}"
             - SERVERPORT=51820
             - "PEERS=bibi,maman,boucher,horvath,family,friends"
-            - PEERDNS=auto
+            - PEERDNS=8.8.8.8
+            - INTERNAL_SUBNET=10.13.13.0
         volumes:
             - configWireguard:/config
             - /lib/modules:/lib/modules
