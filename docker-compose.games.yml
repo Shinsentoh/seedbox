@@ -158,7 +158,7 @@ services:
     #         - PGID=${PGID}
     #         - PUID=${PUID}
     #         - CLEANUP_EXCLUDES=Housing
-    #         - STEAM_API_KEY=2BE6A513FDBF1983D4A17BEB3CDEDFCD
+    #         - STEAM_API_KEY=${STEAM_API_KEY}
     #     ports:
     #         - "17777:17777/udp"
     #         - "27015:27015/udp"
@@ -182,25 +182,43 @@ services:
         depends_on:
             - traefik
 
-    palworld:
-        image: thijsvanloef/palworld-server-docker:latest
+    # palworld:
+    #     image: thijsvanloef/palworld-server-docker:latest
+    #     restart: unless-stopped
+    #     container_name: palworld
+    #     ports:
+    #         - 8211:8211/udp
+    #         - 27015:27015/udp
+    #     environment:
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - PORT=8211
+    #         - SERVER_NAME=Bibibox
+    #         - PLAYERS=10
+    #         - MULTITHREADING=true
+    #         - RCON_ENABLED=true
+    #         - RCON_PORT=25575
+    #         - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
+    #     volumes:
+    #         - palworldConfig:/palworld/
+
+    enshrouded:
+        image: mornedhels/enshrouded-server:latest
+        container_name: enshrouded
+        hostname: enshrouded
         restart: unless-stopped
-        container_name: palworld
+        stop_grace_period: 90s
         ports:
-            - 8211:8211/udp
-            - 27015:27015/udp
-        environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - PORT=8211
-            - SERVER_NAME=Bibibox
-            - PLAYERS=10
-            - MULTITHREADING=true
-            - RCON_ENABLED=true
-            - RCON_PORT=25575
-            - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
+        - "15636-15637:15636-15637/udp"
         volumes:
-            - palworldConfig:/palworld/
+        - enshroudedConfig:/opt/enshrouded
+        environment:
+        - SERVER_NAME=Bibibox
+        - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
+        - UPDATE_CRON=*/30 * * * *
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - STEAM_API_KEY=${STEAM_API_KEY}
 
 volumes:
     valheimPlusSaves:
@@ -247,4 +265,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/olivetin/
+    enshroudedConfig:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/enshrouded/
 
