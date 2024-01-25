@@ -170,6 +170,7 @@ services:
         image: jamesread/olivetin
         container_name: olivetin
         restart: unless-stopped
+        user: root
         volumes:
             - olivetinConfig:/config
             - /var/run/docker.sock:/var/run/docker.sock
