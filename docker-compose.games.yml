@@ -182,25 +182,25 @@ services:
         depends_on:
             - traefik
 
-    # palworld:
-    #     image: thijsvanloef/palworld-server-docker:latest
-    #     restart: unless-stopped
-    #     container_name: palworld
-    #     ports:
-    #         - 8211:8211/udp
-    #         - 27015:27015/udp
-    #     environment:
-    #         - PUID=${PUID}
-    #         - PGID=${PGID}
-    #         - PORT=8211
-    #         - SERVER_NAME=Bibibox
-    #         - PLAYERS=10
-    #         - MULTITHREADING=true
-    #         - RCON_ENABLED=true
-    #         - RCON_PORT=25575
-    #         - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
-    #     volumes:
-    #         - palworldConfig:/palworld/
+    palworld:
+        image: thijsvanloef/palworld-server-docker:latest
+        restart: unless-stopped
+        container_name: palworld
+        ports:
+            - 8211:8211/udp
+            - 27015:27015/udp
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - PORT=8211
+            - SERVER_NAME=Bibibox
+            - PLAYERS=10
+            - MULTITHREADING=true
+            - RCON_ENABLED=true
+            - RCON_PORT=25575
+            - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
+        volumes:
+            - palworldConfig:/palworld/
 
     enshrouded:
         image: mornedhels/enshrouded-server:latest
