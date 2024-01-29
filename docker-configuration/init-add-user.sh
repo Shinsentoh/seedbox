@@ -82,5 +82,8 @@ echo "alias ..s=\"cd $BASE_PATH\"" >> /etc/bash.bashrc
 echo "alias ..sc=\"cd $PATH_CONFIG\"" >> /etc/bash.bashrc
 echo "alias ..st=\"cd $PATH_TORRENTS\"" >> /etc/bash.bashrc
 
+echo "IP=$(hostname -I | cut -f1 -d' ')" >> /etc/bash.bashrc
+echo "export DOCKER_HOST_IP=$IP" >> /etc/bash.bashrc
+
 echo "[$0] Done."
 exit 0

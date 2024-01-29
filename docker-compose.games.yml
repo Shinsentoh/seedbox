@@ -214,11 +214,14 @@ services:
         volumes:
         - enshroudedConfig:/opt/enshrouded
         environment:
+        - BACKUP_CRON=*/15 * * * *
+        - BACKUP_MAX_COUNT=2
         - SERVER_NAME=Bibibox
         - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
         - UPDATE_CRON=*/30 * * * *
         - PUID=${PUID}
         - PGID=${PGID}
+        - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
         - STEAM_API_KEY=${STEAM_API_KEY}
 
 volumes:
