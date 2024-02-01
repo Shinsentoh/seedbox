@@ -200,6 +200,8 @@ services:
             - RCON_ENABLED=true
             - RCON_PORT=25575
             - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
+            - COMMUNITY=false
+            - SERVER_PASSWORD=${GAMES_JOIN_PASSWORD}
         volumes:
             - palworldConfig:/palworld/
 
