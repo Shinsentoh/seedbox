@@ -568,8 +568,7 @@ services:
             - configAdGuard:/opt/adguardhome
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.adguardhome.loadbalancer.server.scheme=https"
-            - "traefik.http.services.adguardhome.loadbalancer.server.port=443"
+            - "traefik.http.services.adguardhome.loadbalancer.server.port=80"
             - "traefik.http.routers.adguardhome.rule=Host(`dns.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.adguardhome.middlewares=common-auth@file"
             - "traefik.http.routers.adguardhome.service=adguardhome"
