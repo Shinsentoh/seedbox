@@ -553,7 +553,7 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         command: --interval 30
-        
+
     # AdGuard Home - DNS AdBlocking
     adguardhome:
         image: adguard/adguardhome
@@ -567,7 +567,7 @@ services:
             - 853:853/tcp
             - 3000:3000/tcp
         volumes:
-            - confAdguard:/opt/adguardhome
+            - configAdGuard:/opt/adguardhome
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.adguardhome.loadbalancer.server.scheme=https"
@@ -722,4 +722,8 @@ volumes:
             mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies
     #endregion Media
 
+    configAdGuard:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/adguard
 #endregion Volumes
