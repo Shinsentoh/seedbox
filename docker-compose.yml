@@ -562,8 +562,6 @@ services:
         ports:
             - 53:53/udp
             - 67:67/udp
-            - 68:68/tcp
-            - 68:68/udp
             - 853:853/tcp
             - 3000:3000/tcp
         volumes:
