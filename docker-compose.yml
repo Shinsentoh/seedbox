@@ -355,8 +355,10 @@ services:
         image: netdata/netdata
         container_name: netdata
         restart: unless-stopped
+        pid: host
         cap_add:
             - SYS_PTRACE
+            - SYS_ADMIN
         security_opt:
             - apparmor:unconfined
         environment:
@@ -366,9 +368,11 @@ services:
         volumes:
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
+            - /etc/localtime:/etc/localtime:ro
             - /proc:/host/proc:ro
             - /sys:/host/sys:ro
             - /etc/os-release:/host/etc/os-release:ro
+            - /var/log:/host/var/log:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
         labels:
             - "traefik.enable=true"
@@ -554,6 +558,25 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
         command: --interval 30
 
+    # # AdGuard Home - DNS AdBlocking
+    # adguardhome:
+    #     image: adguard/adguardhome
+    #     container_name: adguardhome
+    #     restart: unless-stopped
+    #     ports:
+    #         - 53:53/udp
+    #         - 67:67/udp
+    #         - 853:853/tcp
+    #         - 3000:3000/tcp
+    #     volumes:
+    #         - configAdGuard:/opt/adguardhome
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.adguardhome.loadbalancer.server.port=80"
+    #         - "traefik.http.routers.adguardhome.rule=Host(`dns.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.adguardhome.middlewares=common-auth@file"
+    #         - "traefik.http.routers.adguardhome.service=adguardhome"
+    #         - "com.centurylinklabs.watchtower.enable=false"
     #endregion Administration
 #endregion Containers
 
@@ -700,4 +723,8 @@ volumes:
             mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies
     #endregion Media
 
+    configAdGuard:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/adguard
 #endregion Volumes
