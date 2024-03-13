@@ -232,6 +232,7 @@ services:
         environment:
             - WORLD_INDEX=0
             - WORLD_NAME=Bibibox Server
+            - GAME_ID=4pHuSJPCjSXNUPk5gjPN6PpTgWqK
             - DATA_PATH=/home/steam/core-keeper-data
             - MAX_PLAYERS=10
         volumes:
