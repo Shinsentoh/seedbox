@@ -226,15 +226,17 @@ services:
             - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
             - STEAM_API_KEY=${STEAM_API_KEY}
 
-    corekeeper:
-        image: quay.io/tedtramonte/core-keeper-server:latest
-        container_name: corekeeper
+    core-keeper:
+        image: escaping/core-keeper-dedicated
+        container_name: core-keeper
         environment:
+            - WORLD_INDEX=0
             - WORLD_NAME=Bibibox Server
-            - GAME_ID=q3ZDSKe7S4EVMjKnPTSsgW6355sSS
-            - MAX_PLAYERS=8
+            - DATA_PATH=/home/steam/core-keeper-data
+            - MAX_PLAYERS=10
         volumes:
-            - coreKeeperData:/data
+            - coreKeeperApp:/home/steam/core-keeper-dedicated
+            - coreKeeperData:/home/steam/core-keeper-data
         restart: always
         stop_grace_period: 2m
 
