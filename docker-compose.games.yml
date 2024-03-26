@@ -235,6 +235,7 @@ services:
             - GAME_ID=4pHuSJPCjSXNUPk5gjPN6PpTgWqK
             - DATA_PATH=/home/steam/core-keeper-data
             - MAX_PLAYERS=10
+            - USER=${MEDIA_USER}
         volumes:
             - coreKeeperApp:/home/steam/core-keeper-dedicated
             - coreKeeperData:/home/steam/core-keeper-data
