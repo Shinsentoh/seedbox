@@ -1,25 +1,26 @@
 version: "3.7"
 services:
 
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - MAXPLAYERS=8
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - SKIPUPDATE=false
-    #         - STEAMBETA=true
-    #         - SERVERIP=0.0.0.0
-    #     ports:
-    #         - 7777:7777/udp
-    #         - 15000:15000/udp
-    #         - 15777:15777/udp
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - AUTOPAUSE=true
+            - MAXPLAYERS=8
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - SKIPUPDATE=false
+            - STEAMBETA=true
+            - SERVERIP=0.0.0.0
+        ports:
+            - 7777:7777/udp
+            - 15000:15000/udp
+            - 15777:15777/udp
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
 
     # mc:
     #     container_name: 'minecraft-server'
@@ -183,64 +184,64 @@ services:
         depends_on:
             - traefik
 
-    palworld:
-        image: thijsvanloef/palworld-server-docker:latest
-        restart: unless-stopped
-        container_name: palworld
-        ports:
-            - 8211:8211/udp
-            - 27015:27015/udp
-        environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - PORT=8211
-            - SERVER_NAME=Bibibox
-            - PLAYERS=10
-            - MULTITHREADING=true
-            - RCON_ENABLED=true
-            - RCON_PORT=25575
-            - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
-            - COMMUNITY=false
-            - SERVER_PASSWORD=${GAMES_JOIN_PASSWORD}
-        volumes:
-            - palworldConfig:/palworld/
+    # palworld:
+    #     image: thijsvanloef/palworld-server-docker:latest
+    #     restart: unless-stopped
+    #     container_name: palworld
+    #     ports:
+    #         - 8211:8211/udp
+    #         - 27015:27015/udp
+    #     environment:
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - PORT=8211
+    #         - SERVER_NAME=Bibibox
+    #         - PLAYERS=10
+    #         - MULTITHREADING=true
+    #         - RCON_ENABLED=true
+    #         - RCON_PORT=25575
+    #         - ADMIN_PASSWORD=${GAMES_ADMIN_PASSWORD}
+    #         - COMMUNITY=false
+    #         - SERVER_PASSWORD=${GAMES_JOIN_PASSWORD}
+    #     volumes:
+    #         - palworldConfig:/palworld/
 
-    enshrouded:
-        image: mornedhels/enshrouded-server:latest
-        container_name: enshrouded
-        hostname: enshrouded
-        restart: unless-stopped
-        stop_grace_period: 90s
-        ports:
-            - "15636-15637:15636-15637/udp"
-        volumes:
-            - enshroudedConfig:/opt/enshrouded
-        environment:
-            - BACKUP_CRON=*/15 * * * *
-            - BACKUP_MAX_COUNT=2
-            - SERVER_NAME=Bibibox
-            - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
-            - UPDATE_CRON=*/30 * * * *
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
-            - STEAM_API_KEY=${STEAM_API_KEY}
+    # enshrouded:
+    #     image: mornedhels/enshrouded-server:latest
+    #     container_name: enshrouded
+    #     hostname: enshrouded
+    #     restart: unless-stopped
+    #     stop_grace_period: 90s
+    #     ports:
+    #         - "15636-15637:15636-15637/udp"
+    #     volumes:
+    #         - enshroudedConfig:/opt/enshrouded
+    #     environment:
+    #         - BACKUP_CRON=*/15 * * * *
+    #         - BACKUP_MAX_COUNT=2
+    #         - SERVER_NAME=Bibibox
+    #         - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
+    #         - UPDATE_CRON=*/30 * * * *
+    #         - PUID=${PUID}
+    #         - PGID=${PGID}
+    #         - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
+    #         - STEAM_API_KEY=${STEAM_API_KEY}
 
-    core-keeper:
-        image: escaping/core-keeper-dedicated
-        container_name: core-keeper
-        environment:
-            - WORLD_INDEX=0
-            - WORLD_NAME=Bibibox Server
-            - GAME_ID=4pHuSJPCjSXNUPk5gjPN6PpTgWqK
-            - DATA_PATH=/home/steam/core-keeper-data
-            - MAX_PLAYERS=10
-            - USER=${MEDIA_USER}
-        volumes:
-            - coreKeeperApp:/home/steam/core-keeper-dedicated
-            - coreKeeperData:/home/steam/core-keeper-data
-        restart: always
-        stop_grace_period: 2m
+    # core-keeper:
+    #     image: escaping/core-keeper-dedicated
+    #     container_name: core-keeper
+    #     environment:
+    #         - WORLD_INDEX=0
+    #         - WORLD_NAME=Bibibox Server
+    #         - GAME_ID=4pHuSJPCjSXNUPk5gjPN6PpTgWqK
+    #         - DATA_PATH=/home/steam/core-keeper-data
+    #         - MAX_PLAYERS=10
+    #         - USER=${MEDIA_USER}
+    #     volumes:
+    #         - coreKeeperApp:/home/steam/core-keeper-dedicated
+    #         - coreKeeperData:/home/steam/core-keeper-data
+    #     restart: always
+    #     stop_grace_period: 2m
 
 volumes:
     valheimPlusSaves:
