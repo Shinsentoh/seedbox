@@ -6,12 +6,13 @@ services:
         image: 'wolveix/satisfactory-server:latest'
         environment:
             - AUTOPAUSE=true
-            - MAXPLAYERS=8
+            - MAXPLAYERS=6
             - PGID=${PGID}
             - PUID=${PUID}
             - SKIPUPDATE=false
-            - STEAMBETA=true
+            - STEAMBETA=false
             - SERVERIP=0.0.0.0
+            - MAXTICKRATE=104857600
         ports:
             - 7777:7777/udp
             - 15000:15000/udp
