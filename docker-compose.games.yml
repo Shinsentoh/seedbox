@@ -23,6 +23,21 @@ services:
         labels:
             - "com.centurylinklabs.watchtower1.enable=false"
 
+    vintagestory:
+        image: ich777/vintagestory:latest
+        container_name: vintagestory
+        environment:
+            - GAME_PARAMS=
+            - GID=${PGID}
+            - UID=${PUID}
+        restart: always
+        ports:
+            - 42420:42420/tcp
+        volumes:
+            - vintageStoryConfig:/vintagestory
+        stdin_open: true
+        tty: true
+
     # mc:
     #     container_name: 'minecraft-server'
     #     image: itzg/minecraft-server
@@ -301,3 +316,7 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/coreKeeper/app
+    vintageStoryConfig:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/vintageStory
