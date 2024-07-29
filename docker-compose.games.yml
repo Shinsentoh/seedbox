@@ -1,42 +1,42 @@
 version: "3.7"
 services:
 
-    satisfactory-server:
-        container_name: 'satisfactory-server'
-        image: 'wolveix/satisfactory-server:latest'
-        environment:
-            - AUTOPAUSE=true
-            - MAXPLAYERS=6
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - SKIPUPDATE=false
-            - STEAMBETA=false
-            - SERVERIP=0.0.0.0
-            - MAXTICKRATE=104857600
-        ports:
-            - 7777:7777/udp
-            - 15000:15000/udp
-            - 15777:15777/udp
-        volumes:
-            - satisfactory:/config
-        restart: unless-stopped
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # satisfactory-server:
+    #     container_name: 'satisfactory-server'
+    #     image: 'wolveix/satisfactory-server:latest'
+    #     environment:
+    #         - AUTOPAUSE=true
+    #         - MAXPLAYERS=6
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - SKIPUPDATE=false
+    #         - STEAMBETA=false
+    #         - SERVERIP=0.0.0.0
+    #         - MAXTICKRATE=104857600
+    #     ports:
+    #         - 7777:7777/udp
+    #         - 15000:15000/udp
+    #         - 15777:15777/udp
+    #     volumes:
+    #         - satisfactory:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    vintagestory:
-        image: ich777/vintagestory:latest
-        container_name: vintagestory
-        environment:
-            - GAME_PARAMS=
-            - GID=${PGID}
-            - UID=${PUID}
-        restart: always
-        ports:
-            - 42420:42420/tcp
-        volumes:
-            - vintageStoryConfig:/vintagestory
-        stdin_open: true
-        tty: true
+    # vintagestory:
+    #     image: ich777/vintagestory:latest
+    #     container_name: vintagestory
+    #     environment:
+    #         - GAME_PARAMS=
+    #         - GID=${PGID}
+    #         - UID=${PUID}
+    #     restart: always
+    #     ports:
+    #         - 42420:42420/tcp
+    #     volumes:
+    #         - vintageStoryConfig:/vintagestory
+    #     stdin_open: true
+    #     tty: true
 
     mc:
         container_name: 'minecraft-server'
