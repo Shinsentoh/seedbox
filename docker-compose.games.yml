@@ -38,80 +38,83 @@ services:
         stdin_open: true
         tty: true
 
-    # mc:
-    #     container_name: 'minecraft-server'
-    #     image: itzg/minecraft-server
-    #     ports:
-    #         - 25565:25565
-    #         - 28456:28456
-    #     environment:
-    #         GID: ${PGID}
-    #         UID: ${PUID}
-    #         # rcon #
-    #         ENABLE_RCON: "TRUE"
-    #         RCON_PASSWORD: "${MC_RCON_PWD}"
-    #         RCON_PORT: 28456
-    #         # minecraft settings #
-    #         EULA: "TRUE"
-    #         ENABLE_AUTOPAUSE: "TRUE"
-    #         ONLINE_MODE: "FALSE"
-    #         PVP: "FALSE"
-    #         DIFFICULTY: "normal"
-    #         # administration #
-    #         OPS: "bibi"
-    #         MAX_TICK_TIME: -1
-    #         MOTD: "Minecraft Docker Server powered by Bibi"
-    #         SNOOPER_ENABLED: "FALSE"
-    #         SERVER_NAME: "Bibibox.ga"
-    #         MEMORY: "8G"
-    #         WHITELIST_FILE: "/data/extra/whitelist.json"
-    #         ENFORCE_WHITELIST: "TRUE"
-    #         OVERRIDE_WHITELIST : "TRUE"
-    #         # server type & world #
-    #         TYPE: "CURSEFORGE"
-    #         CF_SERVER_MOD: "/modpacks/Better_MC_FABRIC_Server_Pack_1.19.2_v12.5.zip"
-    #         VERSION: 1.19.2
-    #         SEED: "37021689"
-    #         LEVEL: "betterMC"
-    #         MAX_WORLD_SIZE: 5000
-    #     restart: unless-stopped
-    #     volumes:
-    #         # attach a directory relative to the directory containing this compose file #
-    #         - mcServer:/data
-    #         - mcModPacks:/modpacks
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    mc:
+        container_name: 'minecraft-server'
+        image: itzg/minecraft-server
+        ports:
+            - 25565:25565
+            - 28456:28456
+        environment:
+            GID: ${PGID}
+            UID: ${PUID}
+            TZ: "${TZ}"
+            # rcon #
+            ENABLE_RCON: "TRUE"
+            RCON_PASSWORD: "${MC_RCON_PWD}"
+            RCON_PORT: 28456
+            # minecraft settings #
+            EULA: "TRUE"
+            ENABLE_AUTOPAUSE: "TRUE"
+            ONLINE_MODE: "FALSE"
+            PVP: "FALSE"
+            DIFFICULTY: "normal"
+            # administration #
+            OPS: "bibi"
+            MAX_TICK_TIME: -1
+            MOTD: "Minecraft Docker Server powered by Bibi"
+            SNOOPER_ENABLED: "FALSE"
+            SERVER_NAME: "${TRAEFIK_DOMAIN}"
+            MEMORY: "8G"
+            WHITELIST_FILE: "/data/extra/whitelist.json"
+            ENFORCE_WHITELIST: "TRUE"
+            OVERRIDE_WHITELIST : "TRUE"
+            # server type & world #
+            TYPE: "FABRIC"
+            # CF_SLUG: "bm-exosphere"
+            VERSION: 1.21
+            # SEED: "37021689"
+            LEVEL: "vanilla_structures"
+            MAX_WORLD_SIZE: 5000
+            # CF_API_KEY: ${CF_API_KEY}
+        restart: unless-stopped
+        volumes:
+            # attach a directory relative to the directory containing this compose file #
+            - mcServer:/data
+            - mcModPacks:/modpacks
+            - mcMods:/mods
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
 
-    # rcon:
-    #     container_name: 'rcon'
-    #     image: itzg/rcon
-    #     depends_on:
-    #         - mc
-    #     environment:
-    #         RWA_ENV: "TRUE"
-    #         RWA_USERNAME: "bibi"
-    #         RWA_PASSWORD: "${RCON_PWD}"
-    #         RWA_ADMIN: "TRUE"
-    #         # is referring to the hostname of 'mc' compose service below #
-    #         RWA_RCON_HOST: mc
-    #         RWA_RCON_PORT: 28456
-    #         # needs to match the password configured for the container, which is 'minecraft' by default #
-    #         RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
-    #         RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
-    #         RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
-    #     restart: unless-stopped
-    #     volumes:
-    #         - rconDirectory:/opt/rcon-web-admin/db
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
-    #         - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
-    #         - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.rcon-web.service=rcon-web"
-    #         - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
-    #         - "traefik.http.routers.rcon-ws.service=rcon-ws"
-    #         # watchtower #
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    rcon:
+        container_name: 'rcon'
+        image: itzg/rcon
+        depends_on:
+            - mc
+        environment:
+            RWA_ENV: "TRUE"
+            RWA_USERNAME: "bibi"
+            RWA_PASSWORD: "${RCON_PWD}"
+            RWA_ADMIN: "TRUE"
+            # is referring to the hostname of 'mc' compose service below #
+            RWA_RCON_HOST: mc
+            RWA_RCON_PORT: 28456
+            # needs to match the password configured for the container, which is 'minecraft' by default #
+            RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
+            RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
+            RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
+        restart: unless-stopped
+        volumes:
+            - rconDirectory:/opt/rcon-web-admin/db
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
+            - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
+            - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.rcon-web.service=rcon-web"
+            - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
+            - "traefik.http.routers.rcon-ws.service=rcon-ws"
+            # watchtower #
+            - "com.centurylinklabs.watchtower1.enable=false"
 
     # frozen-flame:
     #     image: ghcr.io/ragingdave/frozen-flame-docker:main
@@ -280,6 +283,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/minecraft-modpacks/
+    mcMods:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/minecraft-mods/
     rconDirectory:
         driver: local-persist
         driver_opts:
