@@ -70,6 +70,8 @@ services:
             OVERRIDE_WHITELIST : "TRUE"
             # server type & world #
             TYPE: "FABRIC"
+            FABRIC_LAUNCHER_VERSION: 0.16.0
+            FABRIC_LOADER_VERSION: 1.0.1
             # CF_SLUG: "bm-exosphere"
             VERSION: 1.21
             # SEED: "37021689"
