@@ -278,7 +278,7 @@ volumes:
     satisfactory:
         driver: local-persist
         driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/satisfactory-server/
+            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/satisfactory/
     mcServer:
         driver: local-persist
         driver_opts:
