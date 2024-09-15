@@ -1,27 +1,28 @@
 version: "3.7"
 services:
 
-    # satisfactory-server:
-    #     container_name: 'satisfactory-server'
-    #     image: 'wolveix/satisfactory-server:latest'
-    #     environment:
-    #         - AUTOPAUSE=true
-    #         - MAXPLAYERS=6
-    #         - PGID=${PGID}
-    #         - PUID=${PUID}
-    #         - SKIPUPDATE=false
-    #         - STEAMBETA=false
-    #         - SERVERIP=0.0.0.0
-    #         - MAXTICKRATE=104857600
-    #     ports:
-    #         - 7777:7777/udp
-    #         - 15000:15000/udp
-    #         - 15777:15777/udp
-    #     volumes:
-    #         - satisfactory:/config
-    #     restart: unless-stopped
-    #     labels:
-    #         - "com.centurylinklabs.watchtower1.enable=false"
+    satisfactory-server:
+        container_name: 'satisfactory'
+        image: 'wolveix/satisfactory-server:latest'
+        environment:
+            - AUTOPAUSE=true
+            - MAXPLAYERS=6
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - SKIPUPDATE=false
+            - STEAMBETA=false
+            - SERVERIP=0.0.0.0
+            - MAXTICKRATE=104857600
+            - AUTOSAVENUM=3
+            - TIMEOUT=60
+        ports:
+            - 7777:7777/udp
+            - 7777:7777/tcp
+        volumes:
+            - satisfactory:/config
+        restart: unless-stopped
+        labels:
+            - "com.centurylinklabs.watchtower1.enable=false"
 
     # vintagestory:
     #     image: ich777/vintagestory:latest
@@ -38,86 +39,86 @@ services:
     #     stdin_open: true
     #     tty: true
 
-    mc:
-        container_name: 'minecraft-server'
-        image: itzg/minecraft-server
-        ports:
-            - 25565:25565
-            - 28456:28456
-        environment:
-            GID: ${PGID}
-            UID: ${PUID}
-            TZ: "${TZ}"
-            # rcon #
-            ENABLE_RCON: "TRUE"
-            RCON_PASSWORD: "${MC_RCON_PWD}"
-            RCON_PORT: 28456
-            # minecraft settings #
-            EULA: "TRUE"
-            ENABLE_AUTOPAUSE: "TRUE"
-            ONLINE_MODE: "FALSE"
-            PVP: "FALSE"
-            DIFFICULTY: "normal"
-            # administration #
-            OPS: "bibi"
-            MAX_TICK_TIME: -1
-            MOTD: "Minecraft Docker Server powered by Bibi"
-            SNOOPER_ENABLED: "FALSE"
-            SERVER_NAME: "${TRAEFIK_DOMAIN}"
-            INIT_MEMORY: "4G"
-            MAX_MEMORY: "16G"
-            WHITELIST_FILE: "/data/extra/whitelist.json"
-            ENFORCE_WHITELIST: "TRUE"
-            OVERRIDE_WHITELIST : "TRUE"
-            # server type & world #
-            TYPE: "FABRIC"
-            FABRIC_LAUNCHER_VERSION: 1.0.1
-            FABRIC_LOADER_VERSION: 0.16.0
-            # CF_SLUG: "bm-exosphere"
-            VERSION: 1.21
-            # SEED: "37021689"
-            LEVEL: "vanilla_structures"
-            MAX_WORLD_SIZE: 5000
-            # CF_API_KEY: ${CF_API_KEY}
-        restart: unless-stopped
-        volumes:
-            # attach a directory relative to the directory containing this compose file #
-            - mcServer:/data
-            - mcModPacks:/modpacks
-            - mcMods:/mods
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # mc:
+    #     container_name: 'minecraft-server'
+    #     image: itzg/minecraft-server
+    #     ports:
+    #         - 25565:25565
+    #         - 28456:28456
+    #     environment:
+    #         GID: ${PGID}
+    #         UID: ${PUID}
+    #         TZ: "${TZ}"
+    #         # rcon #
+    #         ENABLE_RCON: "TRUE"
+    #         RCON_PASSWORD: "${MC_RCON_PWD}"
+    #         RCON_PORT: 28456
+    #         # minecraft settings #
+    #         EULA: "TRUE"
+    #         ENABLE_AUTOPAUSE: "TRUE"
+    #         ONLINE_MODE: "FALSE"
+    #         PVP: "FALSE"
+    #         DIFFICULTY: "normal"
+    #         # administration #
+    #         OPS: "bibi"
+    #         MAX_TICK_TIME: -1
+    #         MOTD: "Minecraft Docker Server powered by Bibi"
+    #         SNOOPER_ENABLED: "FALSE"
+    #         SERVER_NAME: "${TRAEFIK_DOMAIN}"
+    #         INIT_MEMORY: "4G"
+    #         MAX_MEMORY: "16G"
+    #         WHITELIST_FILE: "/data/extra/whitelist.json"
+    #         ENFORCE_WHITELIST: "TRUE"
+    #         OVERRIDE_WHITELIST : "TRUE"
+    #         # server type & world #
+    #         TYPE: "FABRIC"
+    #         FABRIC_LAUNCHER_VERSION: 1.0.1
+    #         FABRIC_LOADER_VERSION: 0.16.0
+    #         # CF_SLUG: "bm-exosphere"
+    #         VERSION: 1.21
+    #         # SEED: "37021689"
+    #         LEVEL: "vanilla_structures"
+    #         MAX_WORLD_SIZE: 5000
+    #         # CF_API_KEY: ${CF_API_KEY}
+    #     restart: unless-stopped
+    #     volumes:
+    #         # attach a directory relative to the directory containing this compose file #
+    #         - mcServer:/data
+    #         - mcModPacks:/modpacks
+    #         - mcMods:/mods
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    rcon:
-        container_name: 'rcon'
-        image: itzg/rcon
-        depends_on:
-            - mc
-        environment:
-            RWA_ENV: "TRUE"
-            RWA_USERNAME: "bibi"
-            RWA_PASSWORD: "${RCON_PWD}"
-            RWA_ADMIN: "TRUE"
-            # is referring to the hostname of 'mc' compose service below #
-            RWA_RCON_HOST: mc
-            RWA_RCON_PORT: 28456
-            # needs to match the password configured for the container, which is 'minecraft' by default #
-            RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
-            RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
-            RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
-        restart: unless-stopped
-        volumes:
-            - rconDirectory:/opt/rcon-web-admin/db
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
-            - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
-            - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.rcon-web.service=rcon-web"
-            - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
-            - "traefik.http.routers.rcon-ws.service=rcon-ws"
-            # watchtower #
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # rcon:
+    #     container_name: 'rcon'
+    #     image: itzg/rcon
+    #     depends_on:
+    #         - mc
+    #     environment:
+    #         RWA_ENV: "TRUE"
+    #         RWA_USERNAME: "bibi"
+    #         RWA_PASSWORD: "${RCON_PWD}"
+    #         RWA_ADMIN: "TRUE"
+    #         # is referring to the hostname of 'mc' compose service below #
+    #         RWA_RCON_HOST: mc
+    #         RWA_RCON_PORT: 28456
+    #         # needs to match the password configured for the container, which is 'minecraft' by default #
+    #         RWA_RCON_PASSWORD: "${MC_RCON_PWD}"
+    #         RWA_WEBSOCKET_URL_SSL: "wss://rcon.${TRAEFIK_DOMAIN}/ws"
+    #         RWA_WEBSOCKET_URL: "ws://rcon.${TRAEFIK_DOMAIN}/ws"
+    #     restart: unless-stopped
+    #     volumes:
+    #         - rconDirectory:/opt/rcon-web-admin/db
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.rcon-web.loadbalancer.server.port=4326"
+    #         - "traefik.http.services.rcon-ws.loadbalancer.server.port=4327"
+    #         - "traefik.http.routers.rcon-web.rule=Host(`rcon.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.rcon-web.service=rcon-web"
+    #         - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
+    #         - "traefik.http.routers.rcon-ws.service=rcon-ws"
+    #         # watchtower #
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # frozen-flame:
     #     image: ghcr.io/ragingdave/frozen-flame-docker:main
