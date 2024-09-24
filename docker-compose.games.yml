@@ -16,13 +16,13 @@ services:
             - DISABLESEASONALEVENTS=false #disable the FICSMAS event (you miserable bastard)
             - MAXOBJECTS=2162688          #set the object limit for your server
             - MAXPLAYERS=6                #set the player limit for your server
-            - MAXTICKRATE=60              #set the maximum sim tick rate for your server
+            - MAXTICKRATE=30              #set the maximum sim tick rate for your server
             - NETWORKQUALITY=3            #set the network quality/bandwidth for your server
-            - SERVERIP=0.0.0.0        #set the game's ip (usually not needed)
+            - SERVERIP=0.0.0.0            #set the game's ip (usually not needed)
             - SKIPUPDATE=false            #avoid updating the game on container start/restart
             - STEAMBETA=false             #set experimental game version
             - TIMEOUT=300                 #set client timeout (in seconds)
-            #- SERVERSTREAMING=true
+            - #SERVERSTREAMING=true
         ports:
             - 7777:7777/udp
             - 7777:7777/tcp
