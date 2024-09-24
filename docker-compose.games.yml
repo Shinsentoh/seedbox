@@ -22,7 +22,7 @@ services:
             - SKIPUPDATE=false            #avoid updating the game on container start/restart
             - STEAMBETA=false             #set experimental game version
             - TIMEOUT=300                 #set client timeout (in seconds)
-            - #SERVERSTREAMING=true
+            #- SERVERSTREAMING=true
         ports:
             - 7777:7777/udp
             - 7777:7777/tcp
