@@ -237,26 +237,26 @@ services:
     #     volumes:
     #         - palworldConfig:/palworld/
 
-    # enshrouded:
-    #     image: mornedhels/enshrouded-server:latest
-    #     container_name: enshrouded
-    #     hostname: enshrouded
-    #     restart: unless-stopped
-    #     stop_grace_period: 90s
-    #     ports:
-    #         - "15636-15637:15636-15637/udp"
-    #     volumes:
-    #         - enshroudedConfig:/opt/enshrouded
-    #     environment:
-    #         - BACKUP_CRON=*/15 * * * *
-    #         - BACKUP_MAX_COUNT=2
-    #         - SERVER_NAME=Bibibox
-    #         - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
-    #         - UPDATE_CRON=*/30 * * * *
-    #         - PUID=${PUID}
-    #         - PGID=${PGID}
-    #         - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
-    #         - STEAM_API_KEY=${STEAM_API_KEY}
+    enshrouded:
+        image: mornedhels/enshrouded-server:latest
+        container_name: enshrouded
+        hostname: enshrouded
+        restart: unless-stopped
+        stop_grace_period: 90s
+        ports:
+            - "15636-15637:15636-15637/udp"
+        volumes:
+            - enshroudedConfig:/opt/enshrouded
+        environment:
+            - BACKUP_CRON=*/15 * * * *
+            - BACKUP_MAX_COUNT=2
+            - SERVER_NAME=Bibibox
+            - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
+            - UPDATE_CRON=*/30 * * * *
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
+            - STEAM_API_KEY=${STEAM_API_KEY}
 
     # core-keeper:
     #     image: escaping/core-keeper-dedicated
