@@ -251,7 +251,7 @@ services:
             - BACKUP_CRON=*/15 * * * *
             - BACKUP_MAX_COUNT=2
             - SERVER_NAME=Bibibox
-            - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
+            # - SERVER_PASSWORD=${ENSHROUDED_SERVER_PASSWORD}
             - UPDATE_CRON=*/30 * * * *
             - PUID=${PUID}
             - PGID=${PGID}
