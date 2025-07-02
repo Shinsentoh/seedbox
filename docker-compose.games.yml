@@ -257,6 +257,7 @@ services:
             - PGID=${PGID}
             - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
             - STEAM_API_KEY=${STEAM_API_KEY}
+            - SERVER_SLOT_COUNT=4
 
     # core-keeper:
     #     image: escaping/core-keeper-dedicated
