@@ -1,36 +1,36 @@
 version: "3.7"
 services:
 
-    satisfactory-server:
-        container_name: 'satisfactory'
-        image: 'wolveix/satisfactory-server:latest'
-        environment:
-            - PGID=${PGID}                #set the group ID of the user the server will run as
-            - PUID=${PUID}                #set the user ID of the user the server will run as
-            - AUTOPAUSE=true              #pause game when no player is connected
-            - AUTOSAVEINTERVAL=1800       #autosave interval in seconds 1800 == 30 minutes
-            - AUTOSAVENUM=5               #number of rotating autosave files
-            - AUTOSAVEONDISCONNECT=true   #autosave when last player disconnects
-            - CRASHREPORT=false           #automatic crash reporting
-            - DEBUG=false                 #for debugging the server
-            - DISABLESEASONALEVENTS=false #disable the FICSMAS event (you miserable bastard)
-            - MAXOBJECTS=2162688          #set the object limit for your server
-            - MAXPLAYERS=6                #set the player limit for your server
-            - MAXTICKRATE=30              #set the maximum sim tick rate for your server
-            - NETWORKQUALITY=3            #set the network quality/bandwidth for your server
-            - SERVERIP=0.0.0.0            #set the game's ip (usually not needed)
-            - SKIPUPDATE=false            #avoid updating the game on container start/restart
-            - STEAMBETA=false             #set experimental game version
-            - TIMEOUT=300                 #set client timeout (in seconds)
-            #- SERVERSTREAMING=true
-        ports:
-            - 7777:7777/udp
-            - 7777:7777/tcp
-        volumes:
-            - satisfactory:/config
-        restart: unless-stopped
-        labels:
-            - "com.centurylinklabs.watchtower1.enable=false"
+    # satisfactory-server:
+    #     container_name: 'satisfactory'
+    #     image: 'wolveix/satisfactory-server:latest'
+    #     environment:
+    #         - PGID=${PGID}                #set the group ID of the user the server will run as
+    #         - PUID=${PUID}                #set the user ID of the user the server will run as
+    #         - AUTOPAUSE=true              #pause game when no player is connected
+    #         - AUTOSAVEINTERVAL=1800       #autosave interval in seconds 1800 == 30 minutes
+    #         - AUTOSAVENUM=5               #number of rotating autosave files
+    #         - AUTOSAVEONDISCONNECT=true   #autosave when last player disconnects
+    #         - CRASHREPORT=false           #automatic crash reporting
+    #         - DEBUG=false                 #for debugging the server
+    #         - DISABLESEASONALEVENTS=false #disable the FICSMAS event (you miserable bastard)
+    #         - MAXOBJECTS=2162688          #set the object limit for your server
+    #         - MAXPLAYERS=6                #set the player limit for your server
+    #         - MAXTICKRATE=30              #set the maximum sim tick rate for your server
+    #         - NETWORKQUALITY=3            #set the network quality/bandwidth for your server
+    #         - SERVERIP=0.0.0.0            #set the game's ip (usually not needed)
+    #         - SKIPUPDATE=false            #avoid updating the game on container start/restart
+    #         - STEAMBETA=false             #set experimental game version
+    #         - TIMEOUT=300                 #set client timeout (in seconds)
+    #         #- SERVERSTREAMING=true
+    #     ports:
+    #         - 7777:7777/udp
+    #         - 7777:7777/tcp
+    #     volumes:
+    #         - satisfactory:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # vintagestory:
     #     image: ich777/vintagestory:latest
