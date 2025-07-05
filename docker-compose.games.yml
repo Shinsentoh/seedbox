@@ -258,6 +258,8 @@ services:
             - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
             - STEAM_API_KEY=${STEAM_API_KEY}
             - SERVER_SLOT_COUNT=4
+            - RESTART_CRON=* 3 * * *
+            - RESTART_CHECK_PLAYERS=true
 
     # core-keeper:
     #     image: escaping/core-keeper-dedicated
