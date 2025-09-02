@@ -9,7 +9,6 @@ services:
         restart: always
         command:
             - "--certificatesresolvers.leresolver.acme.email=${ACME_MAIL}"
-            - "--pilot.token=${PILOT_TOKEN}"
         ports:
             - "80:80"
             - "443:443"
