@@ -83,7 +83,7 @@ services:
     #         - traefik
 
     seerr:
-        image: ghcr.io/seerr/seerr:develop
+        image: seerr/seerr:develop
         init: true
         container_name: seerr
         environment:
