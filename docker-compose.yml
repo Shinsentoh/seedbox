@@ -64,15 +64,36 @@ services:
         depends_on:
             - traefik
 
-    overseerr:
-        image: ghcr.io/linuxserver/overseerr
-        container_name: overseerr
+    # overseerr:
+    #     image: ghcr.io/linuxserver/overseerr
+    #     container_name: overseerr
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configOverSeerr:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.overseerr.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.overseerr.service=overseerr"
+    #         - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
+    #     depends_on:
+    #         - traefik
+
+    seerr:
+        image: ghcr.io/seerr/seerr:develop
+        init: true
+        container_name: seerr
         environment:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
+        ports:
+            - 5055:5055
         volumes:
-            - configOverSeerr:/config
+            - configSeerr:/app/config
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
@@ -135,36 +156,36 @@ services:
     #         - traefik
 
     #region Media monitors
-    flaresolverr:
-        image: ghcr.io/flaresolverr/flaresolverr
-        container_name: flaresolverr
-        environment:
-            - CAPTCHA_SOLVER=hcaptcha-solver
-        restart: unless-stopped
-        depends_on:
-            - traefik
+    # flaresolverr:
+    #     image: ghcr.io/flaresolverr/flaresolverr
+    #     container_name: flaresolverr
+    #     environment:
+    #         - CAPTCHA_SOLVER=hcaptcha-solver
+    #     restart: unless-stopped
+    #     depends_on:
+    #         - traefik
 
-    jackett:
-        image: ghcr.io/linuxserver/jackett
-        container_name: jackett
-        depends_on:
-            - flaresolverr
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-            - AUTO_UPDATE=false
-            - RUN_OPTS='-FlareSolverrURL="http://flaresolverr:8191"'
-        volumes:
-            - configJackett:/config
-            - /etc/localtime:/etc/localtime:ro
-        restart: unless-stopped
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.jackett.loadbalancer.server.port=9117"
-            - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.jackett.middlewares=common-auth@file"
-            - "traefik.http.routers.jackett.service=jackett"
+    # jackett:
+    #     image: ghcr.io/linuxserver/jackett
+    #     container_name: jackett
+    #     depends_on:
+    #         - flaresolverr
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #         - AUTO_UPDATE=false
+    #         - RUN_OPTS='-FlareSolverrURL="http://flaresolverr:8191"'
+    #     volumes:
+    #         - configJackett:/config
+    #         - /etc/localtime:/etc/localtime:ro
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+    #         - "traefik.http.routers.jackett.rule=Host(`${JACKETT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.jackett.middlewares=common-auth@file"
+    #         - "traefik.http.routers.jackett.service=jackett"
 
     bazarr:
         image: lscr.io/linuxserver/bazarr:latest
@@ -204,22 +225,22 @@ services:
         depends_on:
             - traefik
 
-    notifiarr:
-        container_name: notifiarr
-        image: golift/notifiarr
-        restart: unless-stopped
-        volumes:
-            - configNotifiarr:/config
-            - /var/run/utmp:/var/run/utmp
-            - /etc/machine-id:/etc/machine-id
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.notifiarr.loadbalancer.server.port=5454"
-            - "traefik.http.routers.notifiarr.rule=Host(`notif.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.notifiarr.middlewares=common-auth@file"
-            - "traefik.http.routers.notifiarr.service=notifiarr"
-        depends_on:
-            - traefik
+    # notifiarr:
+    #     container_name: notifiarr
+    #     image: golift/notifiarr
+    #     restart: unless-stopped
+    #     volumes:
+    #         - configNotifiarr:/config
+    #         - /var/run/utmp:/var/run/utmp
+    #         - /etc/machine-id:/etc/machine-id
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.notifiarr.loadbalancer.server.port=5454"
+    #         - "traefik.http.routers.notifiarr.rule=Host(`notif.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.notifiarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.notifiarr.service=notifiarr"
+    #     depends_on:
+    #         - traefik
 
     sonarr:
         image: ghcr.io/linuxserver/sonarr
@@ -478,32 +499,6 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower.enable=false"
 
-    # openvpn:
-    #     image: ghcr.io/linuxserver/openvpn-as
-    #     container_name: openvpn
-    #     cap_add:
-    #         - NET_ADMIN
-    #     environment:
-    #         - PUID=${PUID}
-    #         - PGID=${PGID}
-    #         - TZ=${TZ}
-    #     volumes:
-    #         - configOpenVPN:/config
-    #     restart: unless-stopped
-    #     ports:
-    #         - 9443:9443
-    #         - 1194:1194/udp
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.openvpn-http.rule=Host(`${OPENVPN_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-    #         - "traefik.http.routers.openvpn-http.middlewares=common-auth@file"
-    #         - "traefik.http.routers.openvpn-http.service=openvpn-http"
-    #         - "traefik.http.services.openvpn-http.loadbalancer.server.port=943"
-    #         - "traefik.http.services.openvpn-http.loadbalancer.server.scheme=https"
-    #         - "com.centurylinklabs.watchtower.enable=false"
-    #     depends_on:
-    #         - traefik
-
     wireguard:
         image: linuxserver/wireguard:latest
         container_name: wireguard
@@ -528,24 +523,24 @@ services:
         sysctls:
             - net.ipv4.conf.all.src_valid_mark=1
 
-    tautulli:
-        image: linuxserver/tautulli
-        container_name: tautulli
-        restart: unless-stopped
-        volumes:
-            - configTautulli:/config
-            - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
-        environment:
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - TZ=${TZ}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-            - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.tautulli.service=tautulli"
-        depends_on:
-            - traefik
+    # tautulli:
+    #     image: linuxserver/tautulli
+    #     container_name: tautulli
+    #     restart: unless-stopped
+    #     volumes:
+    #         - configTautulli:/config
+    #         - configPlexLogs:/logs:ro # Inside of tautulli, bind to logs via "/logs/Plex Media Server/Logs"
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+    #         - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.tautulli.service=tautulli"
+    #     depends_on:
+    #         - traefik
 
     # doublecommander:
     #     image: ghcr.io/linuxserver/doublecommander
@@ -718,6 +713,10 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/overseerr
+    configSeerr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/seerr
     #endregion Config
     backups:
         driver: local-persist

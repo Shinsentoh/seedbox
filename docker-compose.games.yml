@@ -139,7 +139,7 @@ services:
     #         - "7777:7777"
     #         - "7777:7777/udp"
     #     environment:
-    #         SERVER_NAME: "Bibibox.ga: FrozenFlame dedicated server"
+    #         SERVER_NAME: "Bibibox.re: FrozenFlame dedicated server"
     #         RCON_PASSWORD: "${RCON_PWD}"
     #         ADDITIONAL_ARGS: "-noeac"
     #     volumes:
@@ -255,8 +255,8 @@ services:
             - UPDATE_CRON=*/30 * * * *
             - PUID=${PUID}
             - PGID=${PGID}
-            - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
-            - STEAM_API_KEY=${STEAM_API_KEY}
+            # - STEAM_API_PUBLIC_IP=${DOCKER_HOST_IP}
+            # - STEAM_API_KEY=${STEAM_API_KEY}
             - SERVER_SLOT_COUNT=4
             - RESTART_CRON=* 3 * * *
             - RESTART_CHECK_PLAYERS=true
