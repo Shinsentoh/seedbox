@@ -32,21 +32,6 @@ services:
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
-    # vintagestory:
-    #     image: ich777/vintagestory:latest
-    #     container_name: vintagestory
-    #     environment:
-    #         - GAME_PARAMS=
-    #         - GID=${PGID}
-    #         - UID=${PUID}
-    #     restart: always
-    #     ports:
-    #         - 42420:42420/tcp
-    #     volumes:
-    #         - vintageStoryConfig:/vintagestory
-    #     stdin_open: true
-    #     tty: true
-
     # mc:
     #     container_name: 'minecraft-server'
     #     image: itzg/minecraft-server
@@ -126,25 +111,6 @@ services:
     #         - "traefik.http.routers.rcon-ws.rule=Host(`rcon.${TRAEFIK_DOMAIN}`) && Path(`/ws`)"
     #         - "traefik.http.routers.rcon-ws.service=rcon-ws"
     #         # watchtower #
-    #         - "com.centurylinklabs.watchtower1.enable=false"
-
-    # frozen-flame:
-    #     image: ghcr.io/ragingdave/frozen-flame-docker:main
-    #     container_name: frozen-flame
-    #     restart: unless-stopped
-    #     ports:
-    #         - "25575:25575"
-    #         - "27015:27015"
-    #         - "27015:27015/udp"
-    #         - "7777:7777"
-    #         - "7777:7777/udp"
-    #     environment:
-    #         SERVER_NAME: "Bibibox.re: FrozenFlame dedicated server"
-    #         RCON_PASSWORD: "${RCON_PWD}"
-    #         ADDITIONAL_ARGS: "-noeac"
-    #     volumes:
-    #         - frozenFlameServer:/home/steam/frozen-flame-dedicated/FrozenFlame/Saved
-    #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
 
     # valheim-plus:
@@ -306,10 +272,6 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/rcon/
-    frozenFlameServer:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/frozenFlame-server/
     icarusServer:
         driver: local-persist
         driver_opts:
@@ -338,7 +300,3 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/coreKeeper/app
-    vintageStoryConfig:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${GAMES_DIR_NAME}/vintageStory
