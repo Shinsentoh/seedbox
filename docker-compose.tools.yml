@@ -2,9 +2,11 @@ version: "3.7"
 services:
 
     ast:
-        build: https://github.com/mAlfosea/altered-sealed-tool
+        build: https://github.com/mAlfosea/altered-sealed-tool#main
         container_name: ast
         restart: unless-stopped
+        environment:
+            - NODE_ENV=production
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.ast.loadbalancer.server.port=3000"
