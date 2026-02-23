@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+
+    ast:
+        build: https://github.com/mAlfosea/altered-sealed-tool
+        container_name: ast
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.ast.loadbalancer.server.port=1337"
+            - "traefik.http.routers.ast.rule=Host(`altered.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.ast.service=ast"
+        depends_on:
+            - traefik
