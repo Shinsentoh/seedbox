@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
     ast:
-        build: https://github.com/mAlfosea/altered-sealed-tool#main
+        build: https://github.com/mAlfosea/altered-sealed-tool.git
         container_name: ast
         restart: unless-stopped
         environment:
