@@ -2,7 +2,7 @@ version: "3.7"
 services:
     cnv-arena-client:
         build:
-            context: ../truc_test
+            context: ../tactic_tcg_betatest
             dockerfile: Dockerfile.client
         container_name: cnv-arena-client
         restart: unless-stopped
@@ -20,7 +20,7 @@ services:
 
     cnv-arena-server:
         build:
-            context: ../truc_test
+            context: ../tactic_tcg_betatest
             dockerfile: Dockerfile.server
         container_name: cnv-arena-server
         restart: unless-stopped
