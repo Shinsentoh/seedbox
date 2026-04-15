@@ -15,6 +15,7 @@ services:
             - "traefik.http.services.cnv-arena-client.loadbalancer.server.port=80"
             - "traefik.http.routers.cnv-arena-client.rule=Host(`canvas-arena.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.cnv-arena-client.service=cnv-arena-client"
+            - "traefik.http.routers.cnv-arena-client.middlewares=security-headers@file,cnv-auth@file"
         depends_on:
             - traefik
             - cnv-arena-server

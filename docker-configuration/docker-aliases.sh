@@ -63,7 +63,7 @@ function dcr-fn {
 }
 
 function dcu-fn {
-	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans
+	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans $1
 }
 
 function dcd-fn {

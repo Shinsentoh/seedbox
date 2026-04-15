@@ -1,5 +1,8 @@
 http:
   middlewares:
+    cnv-auth:
+      basicAuth:
+        usersFile: "/etc/traefik/http_auth_cnv"
     common-auth:
       basicAuth:
         usersFile: "/etc/traefik/http_auth"
