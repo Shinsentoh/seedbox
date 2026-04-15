@@ -2,7 +2,7 @@ version: "3.7"
 services:
     cnv-arena-client:
         build:
-            context: https://github.com/CNV-canvas/tactic_tcg_betatest.git
+            context: ../truc_test
             dockerfile: Dockerfile.client
         container_name: cnv-arena-client
         restart: unless-stopped
@@ -20,7 +20,7 @@ services:
 
     cnv-arena-server:
         build:
-            context: https://github.com/CNV-canvas/tactic_tcg_betatest.git
+            context: ../truc_test
             dockerfile: Dockerfile.server
         container_name: cnv-arena-server
         restart: unless-stopped
