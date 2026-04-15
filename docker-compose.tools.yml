@@ -1,16 +1,30 @@
 version: "3.7"
 services:
-
-    ast:
-        build: https://github.com/mAlfosea/altered-sealed-tool.git#fix/deploy_docker
-        container_name: ast
+    cnv-arena-client:
+        build:
+            context: https://github.com/CNV-canvas/tactic_tcg_betatest.git
+            dockerfile: Dockerfile.client
+        container_name: cnv-arena-client
         restart: unless-stopped
         environment:
             - NODE_ENV=production
+            - VITE_SERVER_URL=cnv-arena-server:3001
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.ast.loadbalancer.server.port=3000"
-            - "traefik.http.routers.ast.rule=Host(`altered.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.ast.service=ast"
+            - "traefik.http.services.cnv-arena-client.loadbalancer.server.port=80"
+            - "traefik.http.routers.cnv-arena-client.rule=Host(`canvas-arena.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.cnv-arena-client.service=cnv-arena-client"
+        depends_on:
+            - traefik
+            - cnv-arena-server
+
+    cnv-arena-server:
+        build:
+            context: https://github.com/CNV-canvas/tactic_tcg_betatest.git
+            dockerfile: Dockerfile.server
+        container_name: cnv-arena-server
+        restart: unless-stopped
+        environment:
+            - NODE_ENV=production
         depends_on:
             - traefik

@@ -84,6 +84,10 @@ function dc-fn {
   docker-compose $*
 }
 
+function dcb-fn {
+	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') build --no-cache $1
+}
+
 alias dc=dc-fn
 alias dcu=dcu-fn
 alias dcd=dcd-fn
@@ -96,3 +100,4 @@ alias dpsa="docker ps -a"
 alias drmdi=drmdi-fn
 alias drun=drun-fn
 alias dsp="docker system prune --all"
+alias dcb=dcb-fn
