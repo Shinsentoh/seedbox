@@ -1,4 +1,6 @@
 version: "3.7"
+
+name: games
 services:
 
     # satisfactory-server:
@@ -112,6 +114,8 @@ services:
     #         - "traefik.http.routers.rcon-ws.service=rcon-ws"
     #         # watchtower #
     #         - "com.centurylinklabs.watchtower1.enable=false"
+    #         networks:
+    #         - traefik-network
 
     # valheim-plus:
     #     image: lloesche/valheim-server
@@ -178,6 +182,8 @@ services:
             - "traefik.http.services.olivetin.loadbalancer.server.port=1337"
             - "traefik.http.routers.olivetin.rule=Host(`actions.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.olivetin.service=olivetin"
+        networks:
+            - traefik-network
         depends_on:
             - traefik
 
@@ -242,6 +248,16 @@ services:
     #         - coreKeeperData:/home/steam/core-keeper-data
     #     restart: always
     #     stop_grace_period: 2m
+
+#region Networks
+networks:
+  default:
+    name: games-private
+    internal: true
+
+  traefik-network:
+    external: true
+#endregion Networks
 
 volumes:
     valheimPlusSaves:

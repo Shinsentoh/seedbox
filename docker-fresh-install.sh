@@ -4,6 +4,8 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
+INSTALL_DIR=$(pwd)
+
 ./fresh-server-configuration/docker-config.sh
 
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
@@ -21,6 +23,7 @@ echo "[$0] Starting docker-seedbox configuration ..."
 
 # copy docker aliases/functions to all users
 cat ./docker-configuration/docker-aliases.sh >> /etc/bash.bashrc
+sed -i "s|{{INSTALL_DIR}}|$INSTALL_DIR|g" /etc/bash.bashrc
 
 source /etc/bash.bashrc
 

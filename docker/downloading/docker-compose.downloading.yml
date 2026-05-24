@@ -1,0 +1,311 @@
+version: "3.7"
+
+name: downloading
+services:
+#region Containers
+
+    #region Arr stack
+
+    seerr:
+        image: seerr/seerr:develop
+        init: true
+        container_name: seerr
+        environment:
+            # - PGID=${PGID}
+            # - PUID=${PUID}
+            - TZ=${TZ}
+        ports:
+            - 5055:5055
+        volumes:
+            - configSeerr:/app/config
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.seerr.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.seerr.service=seerr"
+            - "traefik.http.services.seerr.loadbalancer.server.port=5055"
+        depends_on:
+            - traefik
+
+    # bazarr:
+    #     image: lscr.io/linuxserver/bazarr
+    #     container_name: bazarr
+    #     environment:
+    #         - PUID=${PGID}
+    #         - PGID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configBazarr:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+    #         - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.bazarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.bazarr.service=bazarr"
+    #     depends_on:
+    #         - traefik
+
+    # prowlarr:
+    #     image: lscr.io/linuxserver/prowlarr
+    #     container_name: prowlarr
+    #     environment:
+    #         - PUID=${PGID}
+    #         - PGID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configProwlarr:/config
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+    #         - "traefik.http.routers.prowlarr.rule=Host(`${INDEXER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.prowlarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.prowlarr.service=prowlarr"
+    #     depends_on:
+    #         - traefik
+
+    # notifiarr:
+    #     container_name: notifiarr
+    #     image: golift/notifiarr
+    #     restart: unless-stopped
+    #     volumes:
+    #         - configNotifiarr:/config
+    #         - /var/run/utmp:/var/run/utmp
+    #         - /etc/machine-id:/etc/machine-id
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.notifiarr.loadbalancer.server.port=5454"
+    #         - "traefik.http.routers.notifiarr.rule=Host(`notif.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.notifiarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.notifiarr.service=notifiarr"
+    #     depends_on:
+    #         - traefik
+
+    # sonarr:
+    #     image: ghcr.io/linuxserver/sonarr
+    #     container_name: sonarr
+    #     environment:
+    #         - PUID=${PGID}
+    #         - PGID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configSonarr:/config
+    #         - alldata:/data
+    #         - /etc/localtime:/etc/localtime:ro
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+    #         - "traefik.http.routers.sonarr.rule=Host(`${SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.sonarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.sonarr.service=sonarr"
+    #     depends_on:
+    #         - traefik
+    #     security_opt:
+    #         - seccomp=unconfined
+
+    # sonarr-anime:
+    #     image: ghcr.io/linuxserver/sonarr
+    #     container_name: sonarr-anime
+    #     environment:
+    #         - PUID=${PGID}
+    #         - PGID=${PUID}
+    #         - TZ=${TZ}
+    #     volumes:
+    #         - configSonarrAnime:/config
+    #         - alldata:/data
+    #         - /etc/localtime:/etc/localtime:ro
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.sonarr-anime.loadbalancer.server.port=8989"
+    #         - "traefik.http.routers.sonarr-anime.rule=Host(`${SONARR_ANIME_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.sonarr-anime.middlewares=common-auth@file"
+    #         - "traefik.http.routers.sonarr-anime.service=sonarr-anime"
+    #     depends_on:
+    #         - traefik
+    #     security_opt:
+    #         - seccomp=unconfined
+
+    # radarr:
+    #     image: linuxserver/radarr
+    #     container_name: radarr
+    #     restart: always
+    #     volumes:
+    #         - configRadarr:/config
+    #         - alldata:/data
+    #         - /etc/localtime:/etc/localtime:ro
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+    #         - "traefik.http.routers.radarr.rule=Host(`${RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.radarr.middlewares=common-auth@file"
+    #         - "traefik.http.routers.radarr.service=radarr"
+    #     depends_on:
+    #         - traefik
+
+    #endregion
+
+    #region Downloader
+
+    # gluetun:
+    #     image: qmcgaw/gluetun
+    #     container_name: gluetun
+    #     cap_add:
+    #         - NET_ADMIN
+    #     devices:
+    #         - /dev/net/tun:/dev/net/tun
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #         - VPN_SERVICE_PROVIDER=protonVPN
+    #         - VPN_TYPE=wireguard
+    #         - WIREGUARD_PUBLIC_KEY={WIREGUARD_PUBLIC_KEY}
+    #         - WIREGUARD_PRIVATE_KEY=key
+    #         - WIREGUARD_PRESHARED_KEY=key
+    #         - WIREGUARD_ADDRESSES=ip
+    #     ports:
+    #         - 8080:8080 # qbittorrent WebUI port
+    #         - 6881:6881 # qbittorrent torrent port
+    #     volumes:
+    #         - configGluetun:/gluetun
+    #     healthcheck:
+    #         test: ping -c 1 www.google.com || exit 1
+    #         interval: 20s
+    #         timeout: 10s
+    #         retries: 5
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.gluetun.loadbalancer.server.port=8080"
+    #         - "traefik.http.routers.gluetun.rule=Host(`${BIT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.gluetun.middlewares=common-auth@file"
+    #         - "traefik.http.routers.gluetun.service=gluetun"
+    #         - "com.centurylinklabs.gluetun.enable=false"
+    #     depends_on:
+    #         - traefik
+
+    # qbittorrent:
+    #     image: lscr.io/linuxserver/qbittorrent:latest
+    #     container_name: qbittorrent
+    #     restart: unless-stopped
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #         - WEBUI_PORT=8080 # must match "qbittorrent web interface" port number in gluetun's service above
+    #         - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS} # proton forwarded port, pulled from .env
+    #     volumes:
+    #         - configQbit:/config
+    #         - torrents:/data
+    #     depends_on:
+    #         gluetun:
+    #             condition: service_healthy
+    #             restart: true
+    #     network_mode: service:gluetun
+    #     healthcheck:
+    #         test: ping -c 1 www.google.com || exit 1
+    #         interval: 60s
+    #         retries: 3
+    #         start_period: 20s
+    #         timeout: 10s
+    #     labels:
+    #         - deunhealth.restart.on.unhealthy=true
+
+    ## OLD (without VPN)
+    # qbittorrent:
+    #     image: ghcr.io/hotio/qbittorrent
+    #     container_name: qbittorrent
+    #     environment:
+    #         - PGID=${PGID}
+    #         - PUID=${PUID}
+    #         - TZ=${TZ}
+    #         - WEBUI_PORT=8080
+    #     volumes:
+    #         - configQbit:/config
+    #         - torrents:/data
+    #     ports:
+    #         - 6881:6881
+    #         - 6881:6881/udp
+    #     restart: unless-stopped
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+    #         - "traefik.http.routers.qbittorrent.rule=Host(`${BIT_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+    #         - "traefik.http.routers.qbittorrent.middlewares=common-auth@file"
+    #         - "traefik.http.routers.qbittorrent.service=qbittorrent"
+    #         - "com.centurylinklabs.qbittorrent.enable=false"
+    #     depends_on:
+    #         - traefik
+
+    #endregion
+
+#endregion Containers
+
+#region Networks
+networks:
+  default:
+    name: traefik-network
+    external: true
+#endregion Networks
+
+#region Volumes
+volumes:
+    #region Volumes Config
+    configQbit:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/qbit
+    configGluetun:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/gluetun
+    configSonarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr
+    configSonarrAnime:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/sonarr-animes
+    configRadarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/radarr
+    configBazarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/bazarr
+    configProwlarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/prowlarr
+    configNotifiarr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/notifiarr
+    configSeerr:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/seerr
+    #endregion Config
+
+    #region Volumes Media
+    alldata:
+        external: true
+    torrents:
+        external: true
+    media:
+        external: true
+    musics:
+        external: true
+    movies:
+        external: true
+    #endregion Media
+#endregion Volumes

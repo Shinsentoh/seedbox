@@ -1,4 +1,6 @@
 version: "3.7"
+
+name: apps
 services:
     cnv-arena-client:
         build:
@@ -35,3 +37,10 @@ services:
             - "traefik.http.routers.cnv-arena-server.service=cnv-arena-server"
         depends_on:
             - traefik
+
+#region Networks
+networks:
+  default:
+    name: traefik-network
+    external: true
+#endregion Networks

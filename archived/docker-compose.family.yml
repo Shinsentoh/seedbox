@@ -106,6 +106,13 @@ networks:
 #endregion Networks
 
 volumes:
+    #region Volumes Media
+    alldata:
+        external: true
+    torrents:
+        external: true
+    #endregion Media
+
     configFolksSonarr:
         driver: local-persist
         driver_opts:

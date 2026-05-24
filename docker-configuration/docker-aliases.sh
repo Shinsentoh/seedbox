@@ -62,12 +62,84 @@ function dcr-fn {
 	docker-compose run $@
 }
 
+function dc-stack {
+  local STACK="$1"
+  shift
+
+  local BASE="{{INSTALL_DIR}}"
+  local FILE="$BASE/docker/$STACK/docker-compose.$STACK.yml"
+
+  if [[ ! -f "$FILE" ]]; then
+    echo "Stack '$STACK' not found"
+    return 1
+  fi
+
+  docker-compose \
+    --env-file "$BASE/.env" \
+    --env-file "$BASE/docker/$STACK/.env" \
+    -f "$FILE" \
+    "$@"
+}
+
+function dcu-all-fn {
+    local BASE="{{INSTALL_DIR}}"
+
+    local PRIORITY_STACKS=(
+        network
+        media
+        tools
+    )
+
+    local STACKS=()
+
+    # stacks prioritaires si elles existent
+    for stack in "${PRIORITY_STACKS[@]}"; do
+        if [[ -f "$BASE/$stack/docker-compose.$stack.yml" ]]; then
+            STACKS+=("$stack")
+        fi
+    done
+
+    # autres dossiers
+    for dir in "$BASE"/*/; do
+        local stack
+        stack=$(basename "$dir")
+
+        # skip déjà ajoutés
+        if [[ " ${STACKS[*]} " =~ " ${stack} " ]]; then
+            continue
+        fi
+
+        # skip dossiers sans compose
+        if [[ ! -f "$BASE/$stack/docker-compose.$stack.yml" ]]; then
+            continue
+        fi
+
+        STACKS+=("$stack")
+    done
+
+    # lancement
+    for stack in "${STACKS[@]}"; do
+        echo ""
+        echo "==================================="
+        echo "Starting stack: $stack"
+        echo "==================================="
+
+        dcu "$stack" up -d --remove-orphans
+    done
+}
+
 function dcu-fn {
-	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans $1
+	# OLD: docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans $1
+  local stack=$1
+  shift
+  dc-stack $stack up -d --remove-orphans "$@"
 }
 
 function dcd-fn {
-	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') down --remove-orphans
+	# OLD: docker-compose $(find docker-compose.* | sed -e 's/^/-f /') down --remove-orphans
+  local stack=$1
+  shift
+  dc-stack $stack down --remove-orphans "$@"
 }
 
 function drmdi-fn {
@@ -81,15 +153,16 @@ function dlab {
 }
 
 function dc-fn {
-  docker-compose $*
+  dc-stack $1 $*
 }
 
 function dcb-fn {
-	docker-compose $(find docker-compose.* | sed -e 's/^/-f /') build --no-cache $1
+	dc-stack $1 build --no-cache $2
 }
 
 alias dc=dc-fn
 alias dcu=dcu-fn
+alias dcu-all=dcu-all-fn
 alias dcd=dcd-fn
 alias dtl=dtl-fn
 alias dex=dex-fn

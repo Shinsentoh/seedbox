@@ -4,7 +4,8 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-echo "[$0] Done with server configuration."
+echo "[$0] Starting server configuration."
+INSTALL_DIR=$(pwd)
 
 find ./ -type f -iname "*.sh" -exec chmod +x {} \;
 

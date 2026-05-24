@@ -1,0 +1,76 @@
+version: "3.7"
+
+name: media
+services:
+
+    plex:
+        image: linuxserver/plex
+        container_name: plex
+        restart: always
+        volumes:
+            - configPlex:/config
+            - media:/data
+            - torrents:/downloads
+            - /tmp:/tmp
+        ports:
+            - "32400:32400/tcp"
+            - "3005:3005/tcp"
+            - "8324:8324/tcp"
+            - "32469:32469/tcp"
+            - "1900:1900/udp"
+            - "32410:32410/udp"
+            - "32412:32412/udp"
+            - "32413:32413/udp"
+            - "32414:32414/udp"
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - VERSION=docker
+            - PLEX_CLAIM=claim-79WzwTKf-8BUQzL33zR2
+            - ADVERTISE_IP=https://${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}:443
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.plex.loadbalancer.server.port=32400"
+            - "traefik.http.routers.plex.rule=Host(`${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.plex.service=plex"
+        depends_on:
+            - traefik
+
+networks:
+  default:
+    name: traefik-network
+    external: true
+
+volumes:
+
+    configPlex:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex
+    configPlexLogs:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application Support/Plex Media Server/Logs/
+
+    # WARNING: if path in driver_opts contains space, let them be, do not add '\'
+    alldata:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}
+    torrents:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${TORRENT_DIR_NAME}
+    media:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}
+    musics:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/musics
+    movies:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies
