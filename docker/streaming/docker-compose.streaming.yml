@@ -34,6 +34,7 @@ services:
         volumes:
             - configAioMetadata:/app/addon/data
         networks:
+            - default
             - traefik-network
         depends_on:
             aiometadata-redis:
