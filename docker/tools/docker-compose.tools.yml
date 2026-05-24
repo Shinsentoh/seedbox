@@ -36,7 +36,7 @@ services:
         volumes:
             - configNextcloud:/config
             - nextcloudData:/data
-            - media_alldata:/seedbox:ro
+            - alldata:/seedbox:ro
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
@@ -128,7 +128,7 @@ services:
         volumes:
             - configDuplicati:/config
             - backups:/backups
-            - media_alldata:/source
+            - alldata:/source
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.duplicati.loadbalancer.server.port=8200"
@@ -192,8 +192,10 @@ networks:
 
 #region Volumes
 volumes:
-    media_alldata:
-        external: true
+    alldata:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}
 
     nextcloudDb:
         driver: local-persist

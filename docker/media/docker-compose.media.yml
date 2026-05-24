@@ -52,10 +52,6 @@ volumes:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/plex/Library/Application Support/Plex Media Server/Logs/
 
     # WARNING: if path in driver_opts contains space, let them be, do not add '\'
-    alldata:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}
     torrents:
         driver: local-persist
         driver_opts:

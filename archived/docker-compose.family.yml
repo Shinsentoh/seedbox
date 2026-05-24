@@ -58,7 +58,7 @@ name: family
 #     #     restart: always
 #     #     volumes:
 #     #         - configLidarr:/config
-#     #         - media_alldata:/data
+#     #         - tools_alldata:/data
 #     #     environment:
 #     #         - PGID=${PGID}
 #     #         - PUID=${PUID}
@@ -81,7 +81,7 @@ name: family
 #             - TZ=${TZ}
 #         volumes:
 #             - configFolksSonarr:/config
-#             - media_alldata:/data
+#             - tools_alldata:/data
 #             - /etc/localtime:/etc/localtime:ro
 #         restart: unless-stopped
 #         labels:
@@ -104,7 +104,7 @@ networks:
 
 volumes:
     #region Volumes Media
-    media_alldata:
+    tools_alldata:
         external: true
     media_torrents:
         external: true

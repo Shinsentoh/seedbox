@@ -83,7 +83,7 @@ services:
     #         - TZ=${TZ}
     #     volumes:
     #         - configSonarr:/config
-    #         - media_alldata:/data
+    #         - tools_alldata:/data
     #         - /etc/localtime:/etc/localtime:ro
     #     restart: unless-stopped
     #     labels:
@@ -104,7 +104,7 @@ services:
     #         - TZ=${TZ}
     #     volumes:
     #         - configSonarrAnime:/config
-    #         - media_alldata:/data
+    #         - tools_alldata:/data
     #         - /etc/localtime:/etc/localtime:ro
     #     restart: unless-stopped
     #     labels:
@@ -122,7 +122,7 @@ services:
     #     restart: always
     #     volumes:
     #         - configRadarr:/config
-    #         - media_alldata:/data
+    #         - tools_alldata:/data
     #         - /etc/localtime:/etc/localtime:ro
     #     environment:
     #         - PGID=${PGID}
@@ -279,7 +279,7 @@ volumes:
     #endregion Config
 
     #region Volumes Media
-    media_alldata:
+    tools_alldata:
         external: true
     media_torrents:
         external: true
