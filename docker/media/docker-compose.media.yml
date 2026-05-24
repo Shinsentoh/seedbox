@@ -64,11 +64,3 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}
-    musics:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/musics
-    movies:
-        driver: local-persist
-        driver_opts:
-            mountpoint: ${BASE_PATH}/${MEDIA_DIR_NAME}/movies

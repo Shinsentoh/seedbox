@@ -112,5 +112,10 @@ Thanks to the **local-persist** Docker plugin, the data located in these volumes
 rsync -hrtplu --progress -e 'ssh -p 22' /home/seedbox/media/ seedbox@remote.server.com:/home/seedbox/media
 ```
 
+## Create .env file beside any docker-compose*
+```sh
+find . -type f -name 'docker-compose*' -exec dirname {} \; | sort -u | xargs -I{} touch "{}/.env"
+```
+
 ## todo
 Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).

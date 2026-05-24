@@ -82,7 +82,7 @@ function dc-stack {
 }
 
 function dcu-all-fn {
-    local BASE="{{INSTALL_DIR}}"
+    local BASE="{{INSTALL_DIR}}/docker"
 
     local PRIORITY_STACKS=(
         network
@@ -124,7 +124,7 @@ function dcu-all-fn {
         echo "Starting stack: $stack"
         echo "==================================="
 
-        dcu "$stack" up -d --remove-orphans
+        dcu "$stack"
     done
 }
 
