@@ -24,8 +24,6 @@ services:
             - "traefik.http.routers.seerr.rule=Host(`${REQUEST_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.seerr.service=seerr"
             - "traefik.http.services.seerr.loadbalancer.server.port=5055"
-        depends_on:
-            - traefik
 
     # bazarr:
     #     image: lscr.io/linuxserver/bazarr
@@ -43,8 +41,6 @@ services:
     #         - "traefik.http.routers.bazarr.rule=Host(`bazarr.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.bazarr.middlewares=common-auth@file"
     #         - "traefik.http.routers.bazarr.service=bazarr"
-    #     depends_on:
-    #         - traefik
 
     # prowlarr:
     #     image: lscr.io/linuxserver/prowlarr
@@ -62,8 +58,6 @@ services:
     #         - "traefik.http.routers.prowlarr.rule=Host(`${INDEXER_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.prowlarr.middlewares=common-auth@file"
     #         - "traefik.http.routers.prowlarr.service=prowlarr"
-    #     depends_on:
-    #         - traefik
 
     # notifiarr:
     #     container_name: notifiarr
@@ -79,8 +73,6 @@ services:
     #         - "traefik.http.routers.notifiarr.rule=Host(`notif.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.notifiarr.middlewares=common-auth@file"
     #         - "traefik.http.routers.notifiarr.service=notifiarr"
-    #     depends_on:
-    #         - traefik
 
     # sonarr:
     #     image: ghcr.io/linuxserver/sonarr
@@ -100,8 +92,6 @@ services:
     #         - "traefik.http.routers.sonarr.rule=Host(`${SONARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.sonarr.middlewares=common-auth@file"
     #         - "traefik.http.routers.sonarr.service=sonarr"
-    #     depends_on:
-    #         - traefik
     #     security_opt:
     #         - seccomp=unconfined
 
@@ -123,8 +113,6 @@ services:
     #         - "traefik.http.routers.sonarr-anime.rule=Host(`${SONARR_ANIME_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.sonarr-anime.middlewares=common-auth@file"
     #         - "traefik.http.routers.sonarr-anime.service=sonarr-anime"
-    #     depends_on:
-    #         - traefik
     #     security_opt:
     #         - seccomp=unconfined
 
@@ -146,8 +134,6 @@ services:
     #         - "traefik.http.routers.radarr.rule=Host(`${RADARR_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.radarr.middlewares=common-auth@file"
     #         - "traefik.http.routers.radarr.service=radarr"
-    #     depends_on:
-    #         - traefik
 
     #endregion
 
@@ -188,8 +174,6 @@ services:
     #         - "traefik.http.routers.gluetun.middlewares=common-auth@file"
     #         - "traefik.http.routers.gluetun.service=gluetun"
     #         - "com.centurylinklabs.gluetun.enable=false"
-    #     depends_on:
-    #         - traefik
 
     # qbittorrent:
     #     image: lscr.io/linuxserver/qbittorrent:latest
@@ -241,8 +225,6 @@ services:
     #         - "traefik.http.routers.qbittorrent.middlewares=common-auth@file"
     #         - "traefik.http.routers.qbittorrent.service=qbittorrent"
     #         - "com.centurylinklabs.qbittorrent.enable=false"
-    #     depends_on:
-    #         - traefik
 
     #endregion
 

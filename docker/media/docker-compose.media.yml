@@ -34,8 +34,6 @@ services:
             - "traefik.http.services.plex.loadbalancer.server.port=32400"
             - "traefik.http.routers.plex.rule=Host(`${PLEX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             - "traefik.http.routers.plex.service=plex"
-        depends_on:
-            - traefik
 
 networks:
   default:

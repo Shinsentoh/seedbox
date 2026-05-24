@@ -25,7 +25,6 @@ services:
     # See init-setup-nextcloud.sh for first install
     nextcloud:
         depends_on:
-            - traefik
             - nextcloud-db
         image: lscr.io/linuxserver/nextcloud:latest
         container_name: nextcloud
@@ -65,8 +64,6 @@ services:
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
         networks:
             - traefik-network
-        depends_on:
-            - traefik
 
     # netdata:
     #     image: netdata/netdata
@@ -99,8 +96,6 @@ services:
     #         - "traefik.http.routers.netdata.service=netdata"
     #     networks:
     #         - traefik-network
-    #     depends_on:
-    #         - traefik
 
     glances:
         image: nicolargo/glances:latest
@@ -121,8 +116,6 @@ services:
             - "traefik.http.routers.glances.service=glances"
         networks:
             - traefik-network
-        depends_on:
-            - traefik
 
     duplicati:
         image: linuxserver/duplicati
@@ -145,8 +138,6 @@ services:
             - "com.centurylinklabs.watchtower.enable=false"
         networks:
             - traefik-network
-        depends_on:
-            - traefik
 
     # shellinabox:
     #     image: sspreitzer/shellinabox:latest
@@ -168,8 +159,6 @@ services:
     #         - "traefik.http.routers.shellinabox.rule=Host(`${SHELLINABOX_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
     #         - "traefik.http.routers.shellinabox.middlewares=common-auth@file"
     #         - "traefik.http.routers.shellinabox.service=shellinabox"
-    #     depends_on:
-    #         - traefik
 
     organizr:
         image: organizr/organizr
@@ -188,8 +177,6 @@ services:
             - "traefik.http.routers.organizr.service=organizr"
         networks:
             - traefik-network
-        depends_on:
-            - traefik
 
 #endregion Containers
 

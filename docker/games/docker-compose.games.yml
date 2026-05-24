@@ -184,8 +184,6 @@ services:
             - "traefik.http.routers.olivetin.service=olivetin"
         networks:
             - traefik-network
-        depends_on:
-            - traefik
 
     # palworld:
     #     image: thijsvanloef/palworld-server-docker:latest
