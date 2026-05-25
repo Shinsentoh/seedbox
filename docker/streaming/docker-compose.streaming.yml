@@ -89,7 +89,7 @@ services:
             - PGID=${PGID}
             - PUID=${PUID}
             - TZ=${TZ}
-            - PORT=3333
+            - PORT=3100
             - SUBSENSE_ENCRYPTION_KEY=${SUBSENSE_ENCRYPTION_KEY}               # REQUIRED - encryption key for user API keys
             # --- Provider API keys ---
             # - WYZIE_API_KEYS=             # REQUIRED for wyzie provider (comma-separated for multiple keys)
@@ -100,7 +100,7 @@ services:
             - ANIDB_CLIENT_VER=${ANIDB_CLIENT_VER}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.subsense.loadbalancer.server.port=3333"
+            - "traefik.http.services.subsense.loadbalancer.server.port=3100"
             - "traefik.http.routers.subsense.rule=Host(`${SUBSENSE_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
             # do not use auth middleware because nuvio needs access to this api.
             # use ip/vpn whitelisting instead (Traefik ?)
