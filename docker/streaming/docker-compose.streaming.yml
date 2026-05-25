@@ -92,7 +92,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.services.crosswatch.loadbalancer.server.port=8787"
             - "traefik.http.routers.crosswatch.rule=Host(`${CROSSWATCH_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            - "traefik.http.routers.crosswatch.middlewares=common-auth@file"
+            # do not use auth middleware because trakt/simkl apis needs access to this api.
             - "traefik.http.routers.crosswatch.service=crosswatch"
 
 networks:
