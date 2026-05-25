@@ -2,6 +2,29 @@ version: "3.7"
 
 name: streaming
 services:
+    crosswatch:
+        image: ghcr.io/cenodude/crosswatch:latest
+        container_name: crosswatch
+        environment:
+            - TZ=${TZ}
+            - APP_UID=${PUID}
+            - APP_GID=${PGID}
+            - APP_USER=${MEDIA_USER}
+            - APP_GROUP=${MEDIA_USER}
+        volumes:
+            - configCrosswatch:/config
+        restart: unless-stopped
+        networks:
+            - traefik-network
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.crosswatch.loadbalancer.server.port=8787"
+            - "traefik.http.routers.crosswatch.rule=Host(`${CROSSWATCH_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            # do not use auth middleware because trakt/simkl apis needs access to this api.
+            - "traefik.http.routers.crosswatch.service=crosswatch"
+
+    # Addons
+
     aiometadata:
         image: ghcr.io/cedya77/aiometadata:latest
         container_name: aiometadata
@@ -24,7 +47,7 @@ services:
             - META_TTL=604800
             - CATALOG_TTL=86400
             - CATALOG_LIST_ITEMS_SIZE=${CATALOG_LIST_ITEMS_SIZE}
-            - LOG_LEVEL=debug
+            - LOG_LEVEL=info
             - ADMIN_KEY=${ADMIN_KEY?}
             - TMDB_SOCKS_PROXY_URL=${TMDB_SOCKS_PROXY_URL?}
             - DATABASE_URI=sqlite://addon/data/db.sqlite
@@ -58,42 +81,32 @@ services:
             timeout: 5s
             retries: 5
 
-    #aiometadata_postgres:
-    #  image: postgres:latest
-    #  container_name: aiometadata_postgres
-    #  restart: unless-stopped
-    #  environment:
-    #    - POSTGRES_DB=aiometadata
-    #    - POSTGRES_USER=postgres
-    #    - POSTGRES_PASSWORD=password
-    #  volumes:
-    #    - ${DOCKER_DATA_DIR}/aiometadata/postgres:/var/lib/postgresql/data
-    #  healthcheck:
-    #    test: ["CMD-SHELL", "pg_isready -U postgres -d aiometadata"]
-    #    interval: 10s
-    #    timeout: 5s
-    #    retries: 5
-
-    crosswatch:
-        image: ghcr.io/cenodude/crosswatch:latest
-        container_name: crosswatch
-        environment:
-            - TZ=${TZ}
-            - APP_UID=${PUID}
-            - APP_GID=${PGID}
-            - APP_USER=${MEDIA_USER}
-            - APP_GROUP=${MEDIA_USER}
-        volumes:
-            - configCrosswatch:/config
+    subsense: # gestion des sous titres
+        image: nepiraw/stremio-subsense:latest
+        container_name: subsense
         restart: unless-stopped
-        networks:
-            - traefik-network
+        environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
+            - PORT=3333
+            - SUBSENSE_ENCRYPTION_KEY=${SUBSENSE_ENCRYPTION_KEY}               # REQUIRED - encryption key for user API keys
+            # --- Provider API keys ---
+            # - WYZIE_API_KEYS=             # REQUIRED for wyzie provider (comma-separated for multiple keys)
+            # - BETASERIES_API_KEY=         # Optional - BetaSeries (French/English)
+            - TVDB_API_KEY=${TVDB_API_KEY}  # Optional - Gestdown provider (TVDB lookup)
+            - TMDB_API_KEY=${TMDB_API_KEY}  # Optional - Gestdown fallback (TMDB lookup)
         labels:
             - "traefik.enable=true"
-            - "traefik.http.services.crosswatch.loadbalancer.server.port=8787"
-            - "traefik.http.routers.crosswatch.rule=Host(`${CROSSWATCH_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
-            # do not use auth middleware because trakt/simkl apis needs access to this api.
-            - "traefik.http.routers.crosswatch.service=crosswatch"
+            - "traefik.http.services.subsense.loadbalancer.server.port=3333"
+            - "traefik.http.routers.subsense.rule=Host(`${SUBSENSE_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            # do not use auth middleware because nuvio needs access to this api.
+            # use ip/vpn whitelisting instead (Traefik ?)
+            - "traefik.http.routers.subsense.service=subsense"
+        networks:
+            - traefik-network
+        volumes:
+            - configSubsense:/app/data  # Persist cache database
 
 networks:
     default:
@@ -119,3 +132,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/crosswatch
+
+    configSubsense:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/subsense
