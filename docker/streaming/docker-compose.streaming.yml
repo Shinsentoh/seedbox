@@ -32,8 +32,9 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.aiometadata.loadbalancer.server.port=3232"
-            - "traefik.http.routers.aiometadata.rule=Host(`${AIOMETADATA_HOSTNAME}`)"
-            # - "traefik.http.routers.aiometadata.middlewares=common-auth@file"
+            - "traefik.http.routers.aiometadata.rule=Host(`${AIOMETADATA_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            # do not use auth middleware because nuvio needs access to this api.
+            # use ip/vpn whitelisting instead (Traefik ?)
             - "traefik.http.routers.aiometadata.service=aiometadata"
         volumes:
             - configAioMetadata:/app/addon/data
@@ -49,7 +50,7 @@ services:
         container_name: aiometadata-redis
         restart: unless-stopped
         volumes:
-        - configAioMetadata-cache:/data
+            - configAioMetadata-cache:/data
         command: redis-server --appendonly yes --save 60 1
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
@@ -73,6 +74,26 @@ services:
     #    timeout: 5s
     #    retries: 5
 
+    crosswatch:
+        image: ghcr.io/cenodude/crosswatch:latest
+        container_name: crosswatch
+        environment:
+            - TZ=${TZ}
+            - APP_UID=${PUID}
+            - APP_GID=${PGID}
+            - APP_USER=${MEDIA_USER}
+            - APP_GROUP=${MEDIA_USER}
+        volumes:
+            - configCrosswatch:/config
+        restart: unless-stopped
+        networks:
+            - traefik-network
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.services.crosswatch.loadbalancer.server.port=8787"
+            - "traefik.http.routers.crosswatch.rule=Host(`${CROSSWATCH_SUB_DOMAIN}.${TRAEFIK_DOMAIN}`)"
+            - "traefik.http.routers.crosswatch.middlewares=common-auth@file"
+            - "traefik.http.routers.crosswatch.service=crosswatch"
 
 networks:
     default:
@@ -93,3 +114,8 @@ volumes:
         driver: local-persist
         driver_opts:
             mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/aiometadata/cache
+
+    configCrosswatch:
+        driver: local-persist
+        driver_opts:
+            mountpoint: ${BASE_PATH}/${CONFIG_DIR_NAME}/crosswatch
