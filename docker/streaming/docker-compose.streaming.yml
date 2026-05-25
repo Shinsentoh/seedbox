@@ -96,6 +96,8 @@ services:
             # - BETASERIES_API_KEY=         # Optional - BetaSeries (French/English)
             - TVDB_API_KEY=${TVDB_API_KEY}  # Optional - Gestdown provider (TVDB lookup)
             - TMDB_API_KEY=${TMDB_API_KEY}  # Optional - Gestdown fallback (TMDB lookup)
+            - ANIDB_CLIENT=${ANIDB_CLIENT}
+            - ANIDB_CLIENT_VER=${ANIDB_CLIENT_VER}
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.subsense.loadbalancer.server.port=3333"
