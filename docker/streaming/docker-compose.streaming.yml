@@ -9,6 +9,9 @@ services:
         expose:
             - 3232
         environment:
+            - PGID=${PGID}
+            - PUID=${PUID}
+            - TZ=${TZ}
             - PORT=3232
             - TMDB_API=${TMDB_API_KEY?}
             - TVDB_API_KEY=${TVDB_API_KEY?}
