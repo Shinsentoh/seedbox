@@ -42,16 +42,19 @@ services:
             - MDBLIST_API_KEY=${MDBLIST_API_KEY?}
             - RPDB_API_KEY=${RPDB_API_KEY?}
             - GEMINI_API_KEY=${GEMINI_API_KEY?}
-            - HOST_NAME=https://${AIOMETADATA_HOSTNAME?}
+            - HOST_NAME=${AIOMETADATA_HOSTNAME?}
+            - NODE_ENV=production
             - REDIS_URL=redis://aiometadata-redis:6379
             - META_TTL=604800
             - CATALOG_TTL=86400
             - CATALOG_LIST_ITEMS_SIZE=${CATALOG_LIST_ITEMS_SIZE}
             - LOG_LEVEL=info
             - ADMIN_KEY=${ADMIN_KEY?}
+            - ADDON_PASSWORD=${ADMIN_KEY?}
             - TMDB_SOCKS_PROXY_URL=${TMDB_SOCKS_PROXY_URL?}
             - DATABASE_URI=sqlite://addon/data/db.sqlite
             - CACHE_WARM_LANGUAGE=${CACHE_WARM_LANGUAGE?}
+            - DISABLE_GUEST_MODE=true
         labels:
             - "traefik.enable=true"
             - "traefik.http.services.aiometadata.loadbalancer.server.port=3232"
