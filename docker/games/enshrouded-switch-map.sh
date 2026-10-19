@@ -1,10 +1,13 @@
 ﻿#!/bin/bash
 # Switch de map sur le serveur
 
+# permet l'utilisation des alias
+shopt -s expand_aliases
+
 # Configuration des chemins
 TARGET_MAP=$1
 SAVE_DIR="/home/seedbox/games/enshrouded/savegame"
-MAP_DIR="/home/seedbox/games/enshrouded/"
+MAP_DIR="/home/seedbox/games/enshrouded"
 LINK_NAME="${MAP_DIR}/active_save"
 BACKUP_DIR="/home/seedbox/games/enshrouded/backups"
 
