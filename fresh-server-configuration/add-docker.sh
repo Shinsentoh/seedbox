@@ -38,19 +38,15 @@ else
     echo "[$0] docker is already installed."
 fi
 
-# docker-compose
-if ! command -v docker-compose &> /dev/null; then
-    DOCKER_COMPOSE_VERSION=$(getGithubLatestRelease "docker/compose")
-    echo "[$0] Installing docker-compose version $DOCKER_COMPOSE_VERSION ..."
-    curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose &>> ./logfile-seedbox-docker.log
+# docker compose plugin
+if ! docker compose version &> /dev/null; then
+    echo "[$0] Installing docker-compose plugin ..."
+    apt-get install -y docker-compose-plugin &>> ./logfile-seedbox-docker.log
 
-    echo "[$0] Settings permissions to execute /usr/local/bin/docker-compose ..."
-    chmod +x /usr/local/bin/docker-compose
-
-    echo "[$0] check docker-compose version installed ..."
-    docker-compose --version
+    echo "[$0] check docker compose version installed ..."
+    docker compose version
 else
-    echo "[$0] docker-compose is already installed."
+    echo "[$0] docker compose plugin is already installed."
 fi
 
 # local-persist Docker plugin

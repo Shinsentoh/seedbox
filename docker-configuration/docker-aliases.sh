@@ -7,9 +7,9 @@
 #     copy/paste these lines into your .bashrc or .zshrc file or just      #
 #                                                                          #
 #     # Usage:                                                             #
-#     dc             : docker-compose                                      #
-#     dcu            : docker-compose up -d                                #
-#     dcd            : docker-compose down                                 #
+#     dc             : docker compose                                      #
+#     dcu            : docker compose up -d                                #
+#     dcd            : docker compose down                                 #
 #     dtl            : docker truncate logs                                #
 #     dex <container>: execute a bash shell inside the RUNNING <container> #
 #     di <container> : docker inspect <container>                          #
@@ -59,7 +59,7 @@ function dtl-fn {
 }
 
 function dcr-fn {
-	docker-compose run $@
+	docker compose run $@
 }
 
 function dc-stack {
@@ -74,7 +74,7 @@ function dc-stack {
     return 1
   fi
 
-  docker-compose \
+  docker compose \
     --env-file "$BASE/.env" \
     --env-file "$BASE/docker/$STACK/.env" \
     -f "$FILE" \
@@ -129,14 +129,14 @@ function dcu-all-fn {
 }
 
 function dcu-fn {
-	# OLD: docker-compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans $1
+	# OLD: docker compose $(find docker-compose.* | sed -e 's/^/-f /') up -d --remove-orphans $1
   local stack=$1
   shift
   dc-stack $stack up -d --remove-orphans "$@"
 }
 
 function dcd-fn {
-	# OLD: docker-compose $(find docker-compose.* | sed -e 's/^/-f /') down --remove-orphans
+	# OLD: docker compose $(find docker-compose.* | sed -e 's/^/-f /') down --remove-orphans
   local stack=$1
   shift
   dc-stack $stack down --remove-orphans "$@"

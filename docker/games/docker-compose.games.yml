@@ -33,6 +33,8 @@ services:
     #     restart: unless-stopped
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
+    #     networks:
+    #         - traefik-network
 
     # mc:
     #     container_name: 'minecraft-server'
@@ -146,6 +148,8 @@ services:
     #         - /tmp:/tmp
     #     labels:
     #         - "com.centurylinklabs.watchtower1.enable=false"
+    #     networks:
+    #         - traefik-network
 
     # icarus:
     #     image: mornedhels/icarus-server:dev
@@ -167,6 +171,8 @@ services:
     #     volumes:
     #         - icarusConfig:/home/icarus/drive_c/icarus
     #         - icarusServer:/opt/icarus
+    #     networks:
+    #         - traefik-network
 
     olivetin:
         image: jamesread/olivetin
@@ -206,6 +212,8 @@ services:
     #         - SERVER_PASSWORD=${GAMES_JOIN_PASSWORD}
     #     volumes:
     #         - palworldConfig:/palworld/
+    #     networks:
+    #         - traefik-network
 
     enshrouded:
         image: mornedhels/enshrouded-server:latest
@@ -230,6 +238,8 @@ services:
             - RESTART_CRON=* 3 * * *
             - RESTART_CHECK_PLAYERS=true
             - "SERVER_SAVE_DIR=../active_save"
+        networks:
+            - traefik-network
 
     # core-keeper:
     #     image: escaping/core-keeper-dedicated
@@ -246,6 +256,8 @@ services:
     #         - coreKeeperData:/home/steam/core-keeper-data
     #     restart: always
     #     stop_grace_period: 2m
+    #     networks:
+    #         - traefik-network
 
 #region Networks
 networks:

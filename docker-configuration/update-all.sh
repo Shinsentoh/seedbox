@@ -6,7 +6,7 @@ echo "${HTTP_USER}:${HTTP_PASSWORD}" > ${BASE_PATH}/config/traefik/behaviour/htt
 chown -R seedbox:seedbox ${BASE_PATH}
 
 echo "[$0] ***** Pulling all images... *****"
-docker-compose pull
+docker compose pull
 echo "[$0] ***** Recreating containers if required... *****"
 dcu-all
 echo "[$0] ***** Done updating containers *****"

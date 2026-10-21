@@ -7,6 +7,6 @@ fi
 
 source .env
 
-docker-compose down --volumes
+docker compose down --volumes
 # rm -Rif $BASE_PATH
 # deluser $MEDIA_USER
