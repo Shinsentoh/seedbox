@@ -55,7 +55,7 @@ function dl-fn {
 }
 
 function dtl-fn {
-  sh -c 'truncate -s 0 /home/docker/containers/*/*-json.log'
+  for c in $(docker ps -q); do docker truncate $c --size 0; done
 }
 
 function dcr-fn {

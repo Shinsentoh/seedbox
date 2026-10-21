@@ -3,10 +3,11 @@
 
 # Configuration des chemins
 TARGET_MAP=$1
-SAVE_DIR="/home/seedbox/games/enshrouded/server/savegame"
-MAP_DIR="/home/seedbox/games/enshrouded"
-LINK_NAME="${MAP_DIR}/active_save"
-BACKUP_DIR="/home/seedbox/games/enshrouded/backups"
+SAVE_DIR="/home/seedbox/games/enshrouded"
+LINK_NAME="active_save"
+LINK_PATH="${SAVE_DIR}/$LINK_NAME"
+BACKUP_DIR="${SAVE_DIR}/backups"
+SCRIPT_DIR=$(pwd)
 
 # Validation de l'argument
 if [ "$TARGET_MAP" != "A" ] && [ "$TARGET_MAP" != "B" ]; then
@@ -15,8 +16,8 @@ if [ "$TARGET_MAP" != "A" ] && [ "$TARGET_MAP" != "B" ]; then
 fi
 
 # Déterminer quelle carte est actuellement active avant le switch
-if [ -L "$LINK_NAME" ]; then
-    CURRENT_TARGET=$(basename $(readlink "$LINK_NAME"))
+if [ -L "$LINK_PATH" ]; then
+    CURRENT_TARGET=$(basename $(readlink "$LINK_PATH"))
     if [ "$CURRENT_TARGET" == "world_A" ]; then
         CURRENT_MAP="A"
     elif [ "$CURRENT_TARGET" == "world_B" ]; then
@@ -29,7 +30,7 @@ else
 fi
 
 echo "=== ÉTAPE 1 : Arrêt propre du serveur Enshrouded ==="
-dcd games
+docker stop enshrouded
 
 echo "=== ÉTAPE 2 : Sauvegarde de sécurité automatique ==="
 if [ "$CURRENT_MAP" == "A" ] || [ "$CURRENT_MAP" == "B" ]; then
@@ -45,18 +46,22 @@ else
 fi
 
 echo "=== ÉTAPE 3 : Mise à jour du lien symbolique ==="
-rm -f "$LINK_NAME"
+rm -f "$LINK_PATH"
+
+cd "$SAVE_DIR"
 
 if [ "$TARGET_MAP" == "A" ]; then
-    ln -s "${MAP_DIR}/world_A" "$LINK_NAME"
+    ln -sfn "world_A" "$LINK_NAME"
     echo "Lien symbolique orienté vers -> Map A (world_A)"
 else
-    ln -s "${MAP_DIR}/world_B" "$LINK_NAME"
+    ln -sfn "world_B" "$LINK_NAME"
     echo "Lien symbolique orienté vers -> Map B (world_B)"
 fi
 
+cd "$SCRIPT_DIR"
+
 echo "=== ÉTAPE 4 : Relance du serveur Enshrouded ==="
-dcu games
+docker start enshrouded
 
 echo "========================================="
 echo " Changement terminé ! Le serveur tourne sur la Map ${TARGET_MAP}."

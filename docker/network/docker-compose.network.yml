@@ -53,7 +53,7 @@ services:
 
     watchtower:
         container_name: watchtower
-        image: containrrr/watchtower
+        image: containrrr/watchtower:1.7.1
         environment:
             - WATCHTOWER_CLEANUP=true
         volumes:
